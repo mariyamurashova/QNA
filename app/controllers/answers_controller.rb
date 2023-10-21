@@ -1,6 +1,5 @@
 class AnswersController < ApplicationController
-  # before_action :find_question
-  # expose :answers, -> { Answer.all }
+  
   expose :answer
   expose :question
 
