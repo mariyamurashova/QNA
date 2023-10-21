@@ -5,7 +5,7 @@ FactoryBot.define do
     title { 'MyString' }
     body { 'MyText' }
 
-    trait :invalid do 
+    trait :invalid do
       title { nil }
     end
   end

@@ -1,12 +1,11 @@
 class AnswersController < ApplicationController
-  before_action :find_question
-
-  def new
-    @answer = @question.answers.new
-  end
+  # before_action :find_question
+  # expose :answers, -> { Answer.all }
+  expose :answer
+  expose :question
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = question.answers.new(answer_params)
 
     if @answer.save
       redirect_to @answer
@@ -24,5 +23,4 @@ class AnswersController < ApplicationController
   def answer_params
     params.require(:answer).permit(:body)
   end
-
 end
