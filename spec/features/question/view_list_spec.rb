@@ -5,7 +5,7 @@ feature 'User can view the list of questions', %q{
   As a user
   I'd like to be able to view the list of existing questions
 } do
-  given(:questions) { create_list(:question, 3) }
+  given!(:questions) { create_list(:question, 3) }
   scenario 'views the list of all questions' do
   
     visit questions_path
