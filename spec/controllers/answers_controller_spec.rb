@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
 
   describe 'GET #new' do
     before { login(user) }
-    before { get :new, params: {:question_id => question} }
+    before { get :new, params: { question_id: question, author_id: user } }
      
     it 'assigns a new Answer to @answer' do 
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -21,24 +21,50 @@ RSpec.describe AnswersController, type: :controller do
     before { login(user) }
     context 'with valid attributes' do 
       it 'saves a new answer in the datebase' do 
-        expect { post :create, params: { :question_id => question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
       end
 
       it 'redirects to question show view' do 
-        post :create, params: { :question_id => question, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer) }
          expect(response).to redirect_to question_path(assigns(:question))
       end
     end  
 
     context 'with invalid attributes' do 
       it 'does not save the answer' do
-       expect { post :create, params: { :question_id => question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+       expect { post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
       end
 
       it 'redirects to question show view' do  
-        post :create, params: { :question_id => question, answer: attributes_for(:answer, :invalid) } 
+        post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid) } 
         expect(response).to redirect_to question_path(assigns(:question))   
       end 
     end
     end
+
+  describe 'DELETE #destroy' do 
+    let(:author) { create(:user) }
+    let!(:answer) { create(:answer, question: question, author:author) }
+
+    context 'author delete his answer' do
+      before { login(author) }
+     
+      it "deletes the answer" do 
+       expect { delete :destroy, params: { id: answer, question_id: question, author_id: author } }.to change(Answer, :count).by(-1)
+      end
+    end
+     
+    context "tries to delete others answer" do
+      before { login(user) }
+
+      it "it doesn't delete the answer" do 
+       expect { delete :destroy, params: { id: answer, question_id: question, author_id: author } }.to change(Answer, :count).by(0)
+      end
+    end
+
+      it 'redirects to question show view ' do 
+        delete :destroy, params: { id: answer, question_id: question, author_id: author  }
+        expect(response).to redirect_to question_path(assigns(:question)) 
+      end
+  end
 end

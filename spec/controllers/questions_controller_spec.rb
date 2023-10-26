@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
-
+  let(:question) { create(:question, author:user) }
+  
   describe 'GET #index' do 
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, author: user) }
 
     before { get :index }
 
@@ -47,7 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-     before { login(user) }
+    before { login(user) }
     before {  get :edit, params: {id: question} }
 
     it 'assigns the requested question to @question' do  
@@ -111,7 +111,7 @@ end
     
     it 'does not change question' do 
        question.reload
-       expect(question.title).to eq 'MyString'
+       expect(question.title).to eq 'MyQuestion'
        expect(question.body).to eq 'MyText'
     end
 
@@ -123,7 +123,7 @@ end
 
  describe 'DELETE #destroy' do 
    before { login(user) }
-  let!(:question) { create(:question) }
+  let!(:question) { create(:question, author:user) }
   it 'delete the question' do 
      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
   end
