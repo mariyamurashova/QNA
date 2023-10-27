@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let(:author) { create(:user) }
   let(:question) { create(:question, author:user) }
   
   describe 'GET #index' do 
-    let(:questions) { create_list(:question, 3, author: user) }
+    let(:questions) { create_list(:question, 3, author: author) }
 
     before { get :index }
 
     it 'populates an array of all questions' do 
       get :index
-
       expect(assigns(:questions)).to match_array(questions) 
     end
 
@@ -33,8 +33,7 @@ RSpec.describe QuestionsController, type: :controller do
     end  
 
   describe 'GET #new' do
-    before { login(user) }
-
+    before { login(author) }
     before { get :new }
 
     it 'assigns a new Question to @question' do 
@@ -47,7 +46,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before { login(user) }
+    before { login(author) }
     before {  get :edit, params: {id: question} }
 
     it 'assigns the requested question to @question' do  
@@ -60,34 +59,51 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do 
-    before { login(user) }
-    context 'with valid attributes' do 
-      it 'saves a new question in the datebase' do 
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+
+    context 'Authenticated user' do
+      before { login(author) }
+
+      context 'with valid attributes' do 
+        it 'saves a new question in the datebase' do 
+          expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        end
+
+        it 'redirects to show view' do 
+          post :create, params: { question: attributes_for(:question) }
+          expect(response).to redirect_to assigns(:question)
+        end
+      end  
+
+      context 'with invalid attributes' do 
+        it 'does not save the question' do
+          expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        end
+
+        it 're-renders new view' do  
+          post :create, params: { question: attributes_for(:question, :invalid) } 
+          expect(response).to render_template :new    
+        end 
+      end
+      end
+    end
+
+    context 'Unauthenticated user'do
+      it "doesn't save question" do 
+        expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
       end
 
-      it 'redirects to show view' do 
+      it 'redirects to sign in' do 
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to new_user_session_path 
       end
-    end  
-
-    context 'with invalid attributes' do 
-      it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
-      end
-
-      it 're-renders new view' do  
-        post :create, params: { question: attributes_for(:question, :invalid) } 
-        expect(response).to render_template :new    
-      end 
     end
   end
-end
 
- describe 'PATCH #update' do
-   before { login(user) }
-   context 'with valid attributes' do 
+  describe 'PATCH #update' do
+    before { login(user) }
+
+    context 'with valid attributes' do 
+
       it 'assigns the requested question to @question' do 
         patch :update, params: { id: question, question: attributes_for(:question) } 
         expect(assigns(:question)).to eq question
@@ -100,37 +116,56 @@ end
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
       end
+
       it 'redirects to updated question' do 
         patch :update, params: { id: question, question: attributes_for(:question) } 
         expect(response).to redirect_to question
       end
-   end
+    end
 
-   context 'with invalid attributes' do 
-    before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }}
+    context 'with invalid attributes' do 
+
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }}
     
-    it 'does not change question' do 
-       question.reload
-       expect(question.title).to eq 'MyQuestion'
-       expect(question.body).to eq 'MyText'
+      it 'does not change question' do 
+        question.reload
+        expect(question.title).to eq 'MyQuestion'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 're-renders edit view' do  
+        expect(response).to render_template :edit
+      end
+    end
+  end 
+
+  describe 'DELETE #destroy' do 
+    let!(:question) { create(:question, author:author) }
+
+    context 'author delete his question' do
+      before { login(author) }
+
+      it 'delete the question' do 
+        expect { delete :destroy, params: { id: question } }.to change( Question, :count ).by(-1)
+      end
+
+      it 'redirects to index' do 
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 're-renders edit view' do  
-       expect(response).to render_template :edit
+    context "tries to delete others question" do
+      before { login(user) }
+
+      it "it doesn't delete the question" do 
+       expect { delete :destroy, params: { id: question } }.to_not change( Question, :count )
+      end
+
+      it 'redirects to question show view' do 
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to question
+      end   
     end
-   end
- end 
-
- describe 'DELETE #destroy' do 
-   before { login(user) }
-  let!(:question) { create(:question, author:user) }
-  it 'delete the question' do 
-     expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
   end
-
-  it 'redirects to index' do 
-     delete :destroy, params: { id: question }
-    expect(response).to redirect_to questions_path
-  end
- end
-end
+end  
