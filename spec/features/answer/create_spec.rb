@@ -27,7 +27,7 @@ describe 'Authenticated user' do
     expect(page).to have_content 'Answer,answer,answer'
   end
 
-  scenario 'Authenticated user tries to publish an empty answe' do
+  scenario 'Authenticated user tries to publish an empty answer' do
     click_on 'Add Answer'
 
     expect(page).to have_content "Body can't be blank"
