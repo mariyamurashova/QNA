@@ -8,35 +8,34 @@ feature 'User can create the answer', %q{
 } do
 
 given(:user) { create(:user) } 
-given!(:question) { create_list(:question, 3, author: user) }
+given!(:question) { create(:question) }
 
 
 describe 'Authenticated user' do
 
   background do
     sign_in(user)
-    visit questions_path
-    page.all(:css, 'a#questions_list').first.click
+    visit question_path(question)
   end
 
-  scenario 'Authenticated user tries to publish an answer' do
-    fill_in 'body', with: 'Answer,answer,answer'
+  scenario 'Authenticated user tries to publish an answer', js: true do
+    fill_in 'Your answer', with: 'Answer,answer,answer'
     click_on('Add Answer')
 
     expect(page).to have_content 'Your question successfully created'
-    expect(page).to have_content 'Answer,answer,answer'
+    expect(current_path).to eq question_path(question)
+    within '.answers' do
+      expect(page).to have_content 'Answer,answer,answer'
+    end
   end
 
-  scenario 'Authenticated user tries to publish an empty answer' do
+  scenario 'Authenticated user tries to publish an empty answer', js: true do
     click_on 'Add Answer'
-
-    expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content "Body can't be blank"
   end
 end
-
   scenario 'Unauthenticated user tries to publish an answer' do
-    visit questions_path
-    page.all(:css, 'a#questions_list').first.click
+    visit question_path(question)
     click_on 'Add Answer'
      
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

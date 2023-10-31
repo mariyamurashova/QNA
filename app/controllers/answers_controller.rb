@@ -1,11 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question
+  before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy]
-
-  def new
-    @answer = @question.answers.new
-  end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -13,20 +9,18 @@ class AnswersController < ApplicationController
 
     if @answer.save
       redirect_to @question, notice: 'Your question successfully created'
-    else
-      redirect_to @question
     end
   end
 
   def destroy
     if @answer.author == current_user
       @answer.destroy
-      flash[:notice] = 'Your question was successfully deleted'
+      flash[:notice] = 'Your answer was successfully deleted'
     else
-      flash[:notice] = "You could'n delete this question"
+      flash[:notice] = "You could'n delete this answer"
     end
     
-    redirect_to @question
+    redirect_to question_path(@answer.question)
   end
 
 

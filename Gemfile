@@ -16,6 +16,7 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 gem 'bootsnap', require: false
 gem 'slim-rails'
 gem 'devise'
+gem 'bootstrap-sass', '~> 3.3.7'
 
 gem 'decent_exposure', '~> 3.0'
 

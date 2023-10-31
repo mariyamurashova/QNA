@@ -5,19 +5,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, author: user) }
   let(:author) { create(:user) }
 
-  describe 'GET #new' do
-    before { login(author) }
-    before { get :new, params: { question_id: question, author_id: author } }
-     
-    it 'assigns a new Answer to @answer' do 
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new 
-    end 
-  end
-
   describe 'POST #create' do 
 
     context 'Authenticated user' do
@@ -36,7 +23,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'redirects to question show view' do  
           post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid) } 
-        expect(response).to redirect_to (assigns(:question))   
+        expect(response).to redirect_to question   
         end 
       end
       end
@@ -76,7 +63,7 @@ RSpec.describe AnswersController, type: :controller do
   
       it 'redirects to question show view ' do 
         delete :destroy, params: { id: answer, question_id: question, author_id: author  }
-        expect(response).to redirect_to(assigns(:question)) 
+        expect(response).to redirect_to question_path(assigns(:answer).question) 
       end
     end
     end

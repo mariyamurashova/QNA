@@ -14,7 +14,7 @@ I'd like to be able to delete my question
     sign_in(author)
     visit question_path(question)
     click_on 'Delete'
-
+    expect(current_path).to eq questions_path
     expect(page). to have_content 'Your question was successfully deleted'
   end
 
