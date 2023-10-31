@@ -1,4 +1,4 @@
-import { Application } from "@hotwired/stimulus"
+import { Application } from "'@rails/ujs';"
 
 
 const application = Application.start()
@@ -9,6 +9,6 @@ window.Stimulus   = application
 
 export { application }
 
-import Rails from '@rails/ujs';
+//import Rails from '@rails/ujs';
 
-Rails.start();
+//Rails.start();
