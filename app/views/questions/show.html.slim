@@ -4,13 +4,10 @@ p = @question.body
 = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
 
 .answers
-  -@question.answers.each do |answer|
-    p = answer.body
-    =link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?') }, id: 'delete_answer'
+  = render @question.answers
 
 .answer-errors
-  = render 'shared/errors', resource: @answer
-= form_with model: [@question, @answer] do |f|
+= form_with model: [@question, @answer], turbo: false, local: false do |f|
   = f.label :body, 'Your answer'
   = f.text_area :body
   = f.submit 'Add Answer'

@@ -22,7 +22,6 @@ describe 'Authenticated user' do
     fill_in 'Your answer', with: 'Answer,answer,answer'
     click_on('Add Answer')
 
-    expect(page).to have_content 'Your question successfully created'
     expect(current_path).to eq question_path(question)
     within '.answers' do
       expect(page).to have_content 'Answer,answer,answer'

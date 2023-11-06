@@ -13,21 +13,26 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with valid attributes' do 
         it 'saves a new answer in the datebase' do 
-          expect { post :create, params: { question_id: question, author: user, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
-        end
-      
-      context 'with invalid attributes' do 
-        it 'does not save the answer' do
-          expect { post :create, params: { question_id: question, author_id: author, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+          expect { post :create, params: { question_id: question, author: user, answer: attributes_for(:answer), format: :js } }.to change(question.answers, :count).by(1)
         end
 
         it 'redirects to question show view' do  
-          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid) } 
-        expect(response).to redirect_to question   
+          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer), format: :js } 
+          expect(response).to render_template :create 
+        end
+      end
+      
+      context 'with invalid attributes' do 
+        it 'does not save the answer' do
+          expect { post :create, params: { question_id: question, author_id: author, answer: attributes_for(:answer, :invalid) }, format: :js  }.to_not change(Answer, :count)
+        end
+
+        it 'redirects to question show view' do  
+          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid),  format: :js } 
+        expect(response).to render_template :create 
         end 
       end
       end
-    end
 
     context 'Unauthenticated user' do
 
