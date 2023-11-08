@@ -5,6 +5,7 @@ import './add_jquery'
 import "jquery"
 import "jquery_ujs"
 import './answers'
+import './questions'
 
 
 

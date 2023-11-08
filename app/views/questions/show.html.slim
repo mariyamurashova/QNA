@@ -1,12 +1,11 @@
-h1 = @question.title
-p = @question.body
-
-= link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
+.question
+  = render @question
+  = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
 
 .answers
   = render @question.answers
 
-.answer-errors
+.errors
 = form_with model: [@question, @answer], turbo: false, local: false do |f|
   = f.label :body, 'Your answer'
   = f.text_area :body
