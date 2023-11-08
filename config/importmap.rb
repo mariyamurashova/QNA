@@ -13,8 +13,5 @@ pin "jquery_ujs", to: "jquery_ujs.js", preload: true
 pin "@rails/ujs", to: "https://ga.jspm.io/npm:@rails/ujs@7.1.1/app/assets/javascripts/rails-ujs.esm.js"
 pin "jquery", to: "https://ga.jspm.io/npm:jquery@3.7.1/dist/jquery.js"
 pin_all_from 'app/javascript/controllers', under: 'controllers'
-pin_all_from 'app/javascript/components', under: 'components'
-
-pin_all_from 'app/views/answers/', under: 'components'
 
 

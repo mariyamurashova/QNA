@@ -4,5 +4,8 @@ import "controllers"
 import './add_jquery'
 import "jquery"
 import "jquery_ujs"
+import './answers'
+
+
 
 

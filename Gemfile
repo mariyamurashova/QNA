@@ -17,6 +17,7 @@ gem 'bootsnap', require: false
 gem 'slim-rails'
 gem 'devise'
 gem "jquery-rails"
+gem "sass-rails"
 
 gem 'decent_exposure', '~> 3.0'
 
