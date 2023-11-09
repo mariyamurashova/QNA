@@ -11,20 +11,19 @@ I'd like to be able to delete my answer
   given(:question) { create(:question, author: user) }
   given!(:answers) { create_list(:answer, 3, question: question, author: author) }
 
-  scenario "The answers's author tries to delete it" do
+  scenario "The answers's author tries to delete it", js: true do
     sign_in(author)
     visit question_path(question)
-    page.all(:css,'a#delete_answer').first.click
+    page.find(:css,"a#delete_answer_#{ answers[0].id }").click
+    page.driver.browser.switch_to.alert.accept
 
-    expect(page). to have_content 'Your answer was successfully deleted'
+    expect(page).to have_content 'Your answer was successfully deleted'
   end
 
-  scenario "Others try to delete the answer" do
+  scenario "Others try to delete the answer", js: true do
     sign_in(user)
     visit question_path(question)
-    page.all(:css,'a#delete_answer').first.click
 
-    expect(page). to have_content "You could'n delete this answer"
-    
+    expect(page).to_not have_link "Delete Answer"
   end
 end

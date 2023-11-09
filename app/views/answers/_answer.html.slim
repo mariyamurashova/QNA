@@ -1,10 +1,10 @@
-p= answer.body
-=link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?') }, id: 'delete_answer'
+p id="answer-#{answer.id}"= answer.body
 
 -if user_signed_in? && current_user == answer.author
-  p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
+  =link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?'), remote: true }, id: "delete_answer_#{answer.id}"
 
-= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, turbo: false, local: false do |f|
-  = f.label :body, "Your answer"
-  = f.text_area :body, id: 'edit_answer_#{answer.id}'
-  = f.submit 'Save'
+  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, turbo: false, local: false do |f|
+    = f.label :body, "Your answer"
+    = f.text_area :body, id: 'edit_answer_#{answer.id}'
+    = f.submit 'Save'
