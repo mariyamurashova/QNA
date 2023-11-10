@@ -3,7 +3,6 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy, :update]
 
-
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
@@ -23,7 +22,6 @@ class AnswersController < ApplicationController
       flash[:notice] = "You could'n delete this answer"
     end
   end
-
 
   private
 

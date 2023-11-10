@@ -23,13 +23,23 @@ feature 'Author can choose the best answer', %q{
     visit question_path(question)
 
     page.find(:css, "a#best_answer_#{ answers[0].id }").click
-    page.find(:css,"#check_best_answer_#{answers[0].id}").set(true)
-    page.find_button("confirm_#{answers[0].id}").click
-    
-    expect(page).to have_selector("#best_answer-#{answers[0].id}")
+    page.find(:css,"#check_best_answer_#{ answers[0].id }").set(true)
+    page.find_button("confirm_#{ answers[0].id }").click
+
+    expect(page).to have_css(".best")
   end
 
-  scenario 'There can only be one better answer' 
+  scenario 'There can only be one better answer'
 
-  scenario 'The best answer should be first on the list'
+  scenario 'The best answer should be first on the page', js: true do
+    sign_in question_author
+    visit question_path(question)
+
+    page.find(:css, "a#best_answer_#{ answers[1].id }").click
+    page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
+    page.find_button("confirm_#{ answers[1].id }").click
+    first_answer_on_page = page.all(:css, ".answer_list").first
+
+    expect(first_answer_on_page).to have_content(answers[1].body)
+  end
 end
