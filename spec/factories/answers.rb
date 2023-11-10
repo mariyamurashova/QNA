@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :answer do
     body { 'MyAnswer' }
+    best { false }
     question { association :question }
     author { association :user }
 

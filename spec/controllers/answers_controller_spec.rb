@@ -76,6 +76,14 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'attribute best ' do 
+      it 'changes attribute best' do
+          patch :update, params: { id: answer, answer: { best: true } }, format: :js
+          answer.reload
+          expect(answer.best).to eq true
+      end
+    end
   end
 
 
