@@ -6,3 +6,4 @@ import "jquery"
 import "jquery_ujs"
 import './answers'
 import './questions'
+import './best'
