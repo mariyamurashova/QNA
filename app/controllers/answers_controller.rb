@@ -10,7 +10,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    if answer_params.include?(:best) 
+       @answer.mark_as_best if question_author?
+    else
+      @answer.update(answer_params)
+    end
+
     @question = @answer.question
   end
 
@@ -35,6 +40,10 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, :best)
+  end
+
+  def question_author?
+    @answer.question.author == current_user
   end
 
 end

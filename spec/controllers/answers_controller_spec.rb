@@ -29,10 +29,10 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders create template' do  
           post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid),  format: :js } 
-        expect(response).to render_template :create 
+          expect(response).to render_template :create 
         end 
       end
-      end
+    end
 
     context 'Unauthenticated user' do
 
@@ -48,7 +48,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+
     let!(:answer) { create(:answer, question: question, author: author) }
+    let!(:answers) { create_list(:answer,3, question: question, author: author) }
 
     before { login(user) }
 
@@ -77,15 +79,31 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'attribute best ' do 
+    context "Question's author"  do 
       it 'changes attribute best' do
-          patch :update, params: { id: answer, answer: { best: true } }, format: :js
-          answer.reload
-          expect(answer.best).to eq true
+        patch :update, params: { id: answers[0], answer: { best: true } }, format: :js
+        answers[0].reload
+        expect(answers[0].best).to eq true
+        patch :update, params: { id: answers[1], answer: { best: true } }, format: :js
+        answers[1].reload
+        answers[0].reload
+
+        expect(answers[1].best).to eq true 
+        expect(answers[0].best).to eq false
+      end
+    end
+
+    context "Not question's author" do
+       before { login(author) }
+
+      it "doesn't change attribute best" do
+        patch :update, params: { id: answers[0], answer: { best: true } }, format: :js
+        answers[0].reload
+        expect(answers[0].best).to eq false
       end
     end
   end
-
+ 
 
   describe 'DELETE #destroy' do 
     let!(:answer) { create(:answer, question: question, author:author) }

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
+  sequence :body do |n|
+    "MyAnswer#{n}"
+  end
+
   factory :answer do
-    body { 'MyAnswer' }
+    body 
     best { false }
     question { association :question }
     author { association :user }

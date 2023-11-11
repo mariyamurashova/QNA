@@ -18,28 +18,48 @@ feature 'Author can choose the best answer', %q{
     expect(page).to_not have_link "Select Best Answer"
   end
 
-  scenario "Question's author can choose the best answer", js: true do
-    sign_in question_author
-    visit question_path(question)
+  describe "Question's author"  do
 
-    page.find(:css, "a#best_answer_#{ answers[0].id }").click
-    page.find(:css,"#check_best_answer_#{ answers[0].id }").set(true)
-    page.find_button("confirm_#{ answers[0].id }").click
+    background do
+      sign_in question_author
+      visit question_path(question)
+    end
 
-    expect(page).to have_css(".best")
-  end
+    scenario "can choose the best answer", js: true do
+    
+      page.find(:css, "a#best_answer_#{ answers[0].id }").click
+      page.find(:css,"#check_best_answer_#{ answers[0].id }").set(true)
+      page.find_button("confirm_#{ answers[0].id }").click
 
-  scenario 'There can only be one better answer'
+      expect(page).to have_css(".best")
+    end
 
-  scenario 'The best answer should be first on the page', js: true do
-    sign_in question_author
-    visit question_path(question)
+    scenario 'There can only be one best answer', js: true do
+    
+      page.find(:css, "a#best_answer_#{ answers[0].id }").click
+      page.find(:css,"#check_best_answer_#{ answers[0].id }").set(true)
+      page.find_button("confirm_#{ answers[0].id }").click
 
-    page.find(:css, "a#best_answer_#{ answers[1].id }").click
-    page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
-    page.find_button("confirm_#{ answers[1].id }").click
-    first_answer_on_page = page.all(:css, ".answer_list").first
+      page.find(:css, "a#best_answer_#{ answers[1].id }").click
+      page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
+      page.find_button("confirm_#{ answers[1].id }").click
 
-    expect(first_answer_on_page).to have_content(answers[1].body)
+      best_answer = page.find(:css, ".best")
+
+      expect(best_answer).to have_content(answers[1].body)
+      expect(best_answer).to_not have_content(answers[0].body)
+    end
+
+    scenario 'The best answer should be first on the page', js: true do
+
+      page.find(:css, "a#best_answer_#{ answers[1].id }").click
+      page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
+      page.find_button("confirm_#{ answers[1].id }").click
+
+      within ".answers" do
+        first_answer_on_page = page.all(:css, ".answer_list").first
+        expect(first_answer_on_page).to have_content(answers[1].body)
+      end
+    end
   end
 end
