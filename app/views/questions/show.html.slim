@@ -2,6 +2,9 @@
   = render @question
   = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
 
+  -if @question.file.attached?
+    p= link_to @question.file.filename.to_s, url_for(@question.file)
+
 .answers
   = render @question.answers
 
