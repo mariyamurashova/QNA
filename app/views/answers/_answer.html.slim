@@ -12,14 +12,11 @@
     = f.text_area :body, id: 'edit_answer_#{answer.id}'
     = f.submit 'Save'
 
-
 -if current_user == answer.question.author
   = link_to 'Select Best Answer', '#', class: 'best-answer-link', data: { answer_id: answer.id }, id: "best_answer_#{answer.id}"
-
-
+  
   = form_with model: answer, class: 'hidden', html: { id: "best-answer-#{answer.id}" }, turbo: false, local: false do |f|
     = f.label :best, "is this best answer?"
     = f.check_box :best, id: "check_best_answer_#{answer.id}"
     = f.submit "Confirm", id: "confirm_#{answer.id}"
-
 
