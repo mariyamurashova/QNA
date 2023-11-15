@@ -18,7 +18,7 @@ describe 'Authenticated user' do
     visit question_path(question)
   end
 
-  scenario 'Authenticated user tries to publish an answer', js: true do
+  scenario 'tries to publish an answer', js: true do
     fill_in 'Your answer', with: 'Answer,answer,answer'
     click_on('Add Answer')
 
@@ -28,10 +28,22 @@ describe 'Authenticated user' do
     end
   end
 
-  scenario 'Authenticated user tries to publish an empty answer', js: true do
+  scenario ' tries to publish an empty answer', js: true do
     click_on 'Add Answer'
       expect(page).to have_content "Body can't be blank"
   end
+
+  scenario 'answers to a question with attached file', js: true do
+    fill_in 'Your answer', with: 'Answer,answer,answer'
+
+    attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+    click_on('Add Answer')
+    
+    within '.answers' do
+    expect(page).to have_link 'rails_helper.rb'
+    expect(page).to have_link 'spec_helper.rb'
+  end
+  end 
 end
   scenario 'Unauthenticated user tries to publish an answer' do
     visit question_path(question)
