@@ -11,7 +11,7 @@ yandex:
   service: S3
   access_key_id: <%= ENV["YANDEX_ACCESS"] %>
   secret_access_key: <%= ENV["YANDEX_SECRET"] %>
-  region: ru-central3
+  region: ru-central1
   bucket: qna15112023
   endpoint: 'https://storage.yandexcloud.net'
 
