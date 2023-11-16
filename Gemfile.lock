@@ -76,6 +76,22 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
+    aws-eventstream (1.2.0)
+    aws-partitions (1.850.0)
+    aws-sdk-core (3.186.0)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.651.0)
+      aws-sigv4 (~> 1.5)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.72.0)
+      aws-sdk-core (~> 3, >= 3.184.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.136.0)
+      aws-sdk-core (~> 3, >= 3.181.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.6)
+    aws-sigv4 (1.6.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.1.1)
     bcrypt (3.1.19)
     bigdecimal (3.1.4)
@@ -132,6 +148,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jmespath (1.6.2)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -311,6 +328,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap
   byebug (~> 11.1)
   capybara
