@@ -16,9 +16,29 @@ console.log("jquery")
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// import "./answers"
-// import "./questions"
-// import "./best"
+$(document).ready(function(){
+  $('.answers').on('click', '.edit-answer-link', function(e){
+    e.preventDefault();
+    $(this).hide();
+    var answerId = $(this).data('answerId');
+    $('form#edit-answer-' + answerId).removeClass('hidden');
+  })
+});
 
+$(document).ready(function(){
+  $('.answers').on('click', '.best-answer-link', function(e){
+    e.preventDefault();
+    $(this).hide();
+    var answerId = $(this).data('answerId');
+    $('form#best-answer-' + answerId).removeClass('hidden');
+  })
+});
 
-
+$(document).ready(function(){
+  $('.question').on('click', '.edit-question-link', function(e){
+    e.preventDefault();
+    $(this).hide();
+    var questionId = $(this).data('questionId');
+    $('form#edit-question-' + questionId).removeClass('hidden');
+  })
+});
