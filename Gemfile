@@ -41,3 +41,4 @@ group :test do
   gem 'shoulda-matchers'
   gem 'launchy'
 end
+
