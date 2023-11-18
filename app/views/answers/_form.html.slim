@@ -1,4 +1,10 @@
-= form_with model: [@question, @answer], turbo: false, local: false do |f|
-  = f.label :body, 'Your answer'
+= form_with model: [@question, @answer], turbo: false, multipart: true, include_hidden: false, local: false  do |f|
+
   = f.text_area :body
+  br =
+
+  = f.label :files
+  
+  = f.file_field :files, include_hidden: false, direct_upload: true, multiple: true, id:"answe_files"
+
   = f.submit 'Add Answer'

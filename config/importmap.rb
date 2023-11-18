@@ -15,3 +15,5 @@ pin "jquery", to: "https://ga.jspm.io/npm:jquery@3.7.1/dist/jquery.js"
 pin_all_from 'app/javascript/controllers', under: 'controllers'
 
 
+pin "@rails/activestorage", to: "https://ga.jspm.io/npm:@rails/activestorage@7.1.2/app/assets/javascripts/activestorage.esm.js"
+

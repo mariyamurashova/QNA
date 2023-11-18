@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '3.2.1'
 
-gem 'rails', '~> 7.1.1'
+gem 'rails', '~> 7.0.8'
 gem 'sprockets-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
@@ -20,6 +20,7 @@ gem "jquery-rails"
 gem "sass-rails"
 
 gem 'decent_exposure', '~> 3.0'
+gem 'aws-sdk-s3', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -40,3 +41,4 @@ group :test do
   gem 'shoulda-matchers'
   gem 'launchy'
 end
+
