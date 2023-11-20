@@ -19,7 +19,7 @@ describe 'Authenticated user' do
   end
 
   scenario 'tries to publish an answer', js: true do
-    fill_in 'Your answer', with: 'Answer,answer,answer'
+    fill_in 'answer_body', with: 'Answer,answer,answer'
     click_on('Add Answer')
 
     expect(current_path).to eq question_path(question)
@@ -34,7 +34,7 @@ describe 'Authenticated user' do
   end
 
   scenario 'answers to a question with attached file', js: true do
-    fill_in 'Your answer', with: 'Answer,answer,answer'
+    fill_in 'answer_body', with: 'Answer,answer,answer'
 
     attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
     click_on('Add Answer')

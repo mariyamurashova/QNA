@@ -1,6 +1,8 @@
 h1 = question.title
 p = question.body
 
+=render 'files'
+
 -if user_signed_in? && current_user == @question.author
   p=link_to 'EditQuestion', '#', class: 'edit-question-link', data: { question_id: question.id }
 
@@ -9,5 +11,7 @@ p = question.body
     = f.text_area :title
     = f.label :body, "Body"
     = f.text_area :body
+    = f.label :files
+    = f.file_field :files, multiple: true
     = f.submit 'Save'
 

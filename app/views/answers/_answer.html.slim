@@ -3,24 +3,17 @@
 -else
   p class= 'answer_list' id="answer-#{answer.id}"= answer.body
 
-  -if answer.files.attached?
-    -answer.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
+=render 'shared/attached_files', resource: answer
+p= 
 
 -if user_signed_in? && current_user == answer.author
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
+  p=
   =link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?'), remote: true }, id: "delete_answer_#{answer.id}"
 
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, turbo: false, local: false do |f|
-    = f.label :body, "Your answer"
-    = f.text_area :body, id: 'edit_answer_#{answer.id}'
-    = f.submit 'Save'
-
+  = render 'shared/edit_answer_form', resource: answer
+ 
 -if current_user == answer.question.author
   = link_to 'Select Best Answer', '#', class: 'best-answer-link', data: { answer_id: answer.id }, id: "best_answer_#{answer.id}"
   
-  = form_with model: answer, class: 'hidden', html: { id: "best-answer-#{answer.id}" }, turbo: false, local: false do |f|
-    = f.label :best, "is this best answer?"
-    = f.check_box :best, id: "check_best_answer_#{answer.id}"
-    = f.submit "Confirm", id: "confirm_#{answer.id}"
-
+  =render 'shared/form_best', resource: answer

@@ -21,6 +21,7 @@ $(document).ready(function(){
     e.preventDefault();
     $(this).hide();
     var answerId = $(this).data('answerId');
+    $('#delete_file_' + answerId).removeClass('hidden');
     $('form#edit-answer-' + answerId).removeClass('hidden');
   })
 });
