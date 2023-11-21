@@ -22,8 +22,7 @@ feature 'User can edit his question', %q{
 
     within '.question' do
       expect(page).to_not have_link 'EditQuestion'
-    end
-      
+    end   
   end
 
   describe 'Author' do
@@ -32,14 +31,9 @@ feature 'User can edit his question', %q{
       sign_in author
       visit question_path(question) 
       click_on 'EditQuestion'
+      fill_in "Title", with: 'edited question title'
+      fill_in "Body", with: 'edited question body'
     end
-
-    describe 'with attached files' do
-
-      background do
-        fill_in "Title", with: 'edited question title'
-        fill_in "Body", with: 'edited question body'
-      end
       
       scenario 'edits his question', js: true do
         within '.question' do
@@ -53,6 +47,20 @@ feature 'User can edit his question', %q{
         end
       end
 
+      scenario 'edits his question with errors', js: true do
+        within '.question' do
+          fill_in "Title", with: ' '
+          fill_in "Body", with: ' '
+          click_on 'Save'
+          expect(page).to have_selector 'textarea'
+        end
+
+        within '.errors' do
+          expect(page).to have_content "Title can't be blank"
+          expect(page).to have_content "Body can't be blank"
+        end
+      end
+
       scenario 'edits his question with attached files', js: true do
         attach_file 'question_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
@@ -60,21 +68,34 @@ feature 'User can edit his question', %q{
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
-    end
-    
-    scenario 'edits his question with errors', js: true do
+  
+      describe 'with attached files' do
 
-      within '.question' do
-        fill_in "Title", with: ' '
-        fill_in "Body", with: ' '
-        click_on 'Save'
-        expect(page).to have_selector 'textarea'
+        background do
+          question.files.attach(io: File.open(Rails.root.join('spec', 'fixtures', '1.txt')), filename: '1.txt', content_type: 'text/txt')
+          visit question_path(question) 
+          click_on 'EditQuestion'
+        end
+
+      scenario 'can add files to his question', js: true do
+        within '.question' do
+          attach_file 'question_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Save'
+
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+          expect(page).to have_link '1.txt'
+        end
       end
 
-      within '.errors' do
-        expect(page).to have_content "Title can't be blank"
-        expect(page).to have_content "Body can't be blank"
+      scenario 'can delete attached files', js: true do
+        within '.question' do
+          click_on 'Delete file'
+          page.driver.browser.switch_to.alert.accept
+
+          expect(page).to_not have_link '1.txt'
+        end
       end
-    end
+    end 
   end
 end
