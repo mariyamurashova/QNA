@@ -1,6 +1,5 @@
 .question
   = render @question
-  = render 'shared/attached_files', resource: @question
  
   = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
 

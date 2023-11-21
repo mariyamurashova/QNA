@@ -21,7 +21,7 @@ $(document).ready(function(){
     e.preventDefault();
     $(this).hide();
     var answerId = $(this).data('answerId');
-    $('#delete_file_' + answerId).removeClass('hidden');
+    $('.delete_file_' + answerId).removeClass('hidden');
     $('form#edit-answer-' + answerId).removeClass('hidden');
   })
 });
@@ -41,5 +41,6 @@ $(document).ready(function(){
     $(this).hide();
     var questionId = $(this).data('questionId');
     $('form#edit-question-' + questionId).removeClass('hidden');
+    $('.delete_file_' + questionId).removeClass('hidden');
   })
 });

@@ -13,7 +13,7 @@ I'd like to be able to delete my question
   scenario "The question's author tries to delete it" do
     sign_in(author)
     visit question_path(question)
-    click_on 'Delete'
+    click_on 'Delete Question'
 
     expect(page). to have_content 'Your question was successfully deleted'
   end
@@ -21,7 +21,7 @@ I'd like to be able to delete my question
   scenario "Others try to delete question" do
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete'
+    click_on 'Delete Question'
 
     expect(page). to have_content "You could'n delete this question"
     

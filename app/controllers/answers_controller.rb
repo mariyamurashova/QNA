@@ -10,10 +10,11 @@ class AnswersController < ApplicationController
   end
 
   def update
+    attach_files
     if answer_params.include?(:best) 
        @answer.mark_as_best if question_author?
     else
-      @answer.update(answer_params)
+      @answer.update(update_answer_params)
     end
 
     @question = @answer.question
@@ -30,6 +31,18 @@ class AnswersController < ApplicationController
 
   private
 
+  def need_to_attach_files?
+     params[:answer][:files].present?
+  end
+
+  def attach_files
+    if need_to_attach_files?
+      params[:answer][:files].each do |file|
+        @answer.files.attach(file)
+      end
+    end
+  end
+
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
   end
@@ -39,7 +52,11 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :best, files: [])
+    params.require(:answer).permit(:body, :best, files:[])
+  end
+
+  def update_answer_params
+    params.require(:answer).permit(:body, :best)
   end
 
   def question_author?
