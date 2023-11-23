@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
+  let!(:question) { create(:question, author: user) }
   let(:author) { create(:user) }
 
   describe 'POST #create' do 
@@ -24,11 +24,11 @@ RSpec.describe AnswersController, type: :controller do
       
       context 'with invalid attributes' do 
         it 'does not save the answer' do
-          expect { post :create, params: { question_id: question, author_id: author, answer: attributes_for(:answer, :invalid) }, format: :js  }.to_not change(Answer, :count)
+          expect{ post :create, params: { question_id: question, author_id: author, answer: attributes_for(:answer, body: nil) }, format: :js }.to_not change(Answer, :count)
         end
 
         it 'renders create template' do  
-          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid),  format: :js } 
+          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, body: nil),  format: :js } 
           expect(response).to render_template :create 
         end 
       end
@@ -41,15 +41,15 @@ RSpec.describe AnswersController, type: :controller do
       end
       
       it 'redirects to sign in' do  
-          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, :invalid) } 
+          post :create, params: { question_id: question, author_id: user, answer: attributes_for(:answer, body: nil) } 
         expect(response).to redirect_to  new_user_session_path  
       end
     end
   end
 
   describe 'PATCH #update' do
-
-    let!(:answer) { create(:answer, question: question, author: author) }
+   
+    let!(:answer) { create(:answer, question: question, author: author ) }
     let!(:answers) { create_list(:answer,3, question: question, author: author) }
 
     before { login(user) }
@@ -70,11 +70,11 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do 
       it 'does not change answer attributes' do
         expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+          patch :update, params: { id: answer, answer: attributes_for(:answer, body: nil) }, format: :js
         end.to_not change(answer, :body)
       end
       it 'renders update view' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        patch :update, params: { id: answer, answer: attributes_for(:answer, body: nil) }, format: :js
         expect(response).to render_template :update
       end
     end
