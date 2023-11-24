@@ -1,10 +1,20 @@
 = form_with model: [@question, @answer], multipart: true, local: false do |f|
-
+  = f.label :body, 'Your answer'
   = f.text_area :body
   br =
 
   = f.label :files
   
   = f.file_field :files, multiple: true, direct_upload: true
+
+  p Links:  
+  p
+    = f.fields_for :links do |l|
+      p
+        =l.label :name, 'Link name'
+        = l.text_field :name
+      p
+        = l.label :url
+        = l.text_field :url
 
   = f.submit 'Add Answer'
