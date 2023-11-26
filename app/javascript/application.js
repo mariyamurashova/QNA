@@ -7,11 +7,17 @@ import Rails from '@rails/ujs';
 Rails.start();
 console.log("Rails")
 
+import Cocooned from '@notus.sh/cocooned'
+Cocooned.start()
+console.log("Cocooned")
+
 import jquery from 'jquery'
 window.jQuery = jquery
 window.$ = jquery
 
 console.log("jquery")
+
+
 
 import "@hotwired/turbo-rails"
 import "controllers"
