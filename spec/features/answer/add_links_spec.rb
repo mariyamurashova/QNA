@@ -32,4 +32,20 @@ feature 'User can add links to answer', %q{
        expect(page).to have_link 'Google', href: google_url
     end
   end
+
+  scenario 'User adds links with invalid format', js: true do
+    sign_in(user)
+    visit question_path(question)
+    
+    fill_in 'Your answer', with: 'My answer'
+
+    fill_in 'Link name', with:  'My gist'
+    fill_in 'Url', with: '://bar.com/baz'
+    
+    click_on 'Add Answer'
+
+    within '.errors' do
+      expect(page).to have_content 'Links url is invalid'
+    end
+  end
 end
