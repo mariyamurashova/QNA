@@ -29,6 +29,7 @@ $(document).ready(function(){
     var answerId = $(this).data('answerId');
     $('.delete_file_' + answerId).removeClass('hidden');
     $('form#edit-answer-' + answerId).removeClass('hidden');
+    $('.delete_link_' + answerId).removeClass('hidden');
   })
 });
 
@@ -48,5 +49,6 @@ $(document).ready(function(){
     var questionId = $(this).data('questionId');
     $('form#edit-question-' + questionId).removeClass('hidden');
     $('.delete_file_' + questionId).removeClass('hidden');
+    $('.delete_link_' + questionId).removeClass('hidden');
   })
 });

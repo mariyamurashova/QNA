@@ -9,6 +9,7 @@ feature 'User can edit his question', %q{
   given(:author) { create (:user) }
   given(:user) { create (:user) }
   given!(:question) { create (:question), author: author }
+  given!(:link) { create(:link, linkable: question) }
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -68,6 +69,15 @@ feature 'User can edit his question', %q{
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
+
+      scenario 'can delete links from his question', js: true do
+        click_on 'Delete link'
+        page.driver.browser.switch_to.alert.accept
+        
+        within ".question" do
+        expect(page).to_not have_link 'MyGistFactory'
+      end
+    end
   
       describe 'with attached files' do
 

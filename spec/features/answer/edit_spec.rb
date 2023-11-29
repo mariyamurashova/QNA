@@ -10,6 +10,7 @@ feature 'User can edit his answer', %q{
   given(:user) { create (:user) }
   given!(:question) { create (:question), author: author }
   given!(:answer) { create (:answer), author: author, question: question }
+  given!(:link) { create(:link, linkable: answer) }
 
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question) 
@@ -70,6 +71,17 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'can delete links from his answer', js: true do
+        #visit question_path(question) 
+        #click_on 'Edit'
+        click_on 'Delete link'
+        page.driver.browser.switch_to.alert.accept
+        
+        within ".answers" do
+        expect(page).to_not have_link 'MyGistFactory'
+      end
+    end
+
     describe 'with attached files' do
 
         background do
@@ -98,5 +110,11 @@ feature 'User can edit his answer', %q{
           end
         end
     end
+
+    describe 'with links' do
+     
+      
+    end
+  
   end
 end

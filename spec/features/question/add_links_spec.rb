@@ -8,8 +8,9 @@ feature 'User can add links to question', %q{
 
   given(:user) { create(:user)}
   given(:gist_url) {'https://gist.github.com/mariyamurashova'}
+  given(:google_url) {'https://www.google.com'}
 
-  scenario 'User adds link when asks question' do
+  scenario 'User adds link when asks question', js: true do
     sign_in(user)
     visit new_question_path
 
@@ -19,8 +20,33 @@ feature 'User can add links to question', %q{
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
+    click_on 'Add Link'
+
+    page.all('.nested_fields').first.fill_in 'Link name', with:  'Google'
+    page.all('.nested_fields').first.fill_in 'Url', with: google_url
+
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    within '.question' do
+      expect(page).to have_link 'Google', href: google_url
+      expect(page).to have_link 'My gist', href: gist_url
+    end
+  end
+
+  scenario 'User adds links with invalid format', js: true do
+    sign_in(user)
+    visit new_question_path
+    
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text text text'
+
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'Url', with: '://bar.com/baz'
+    
+    click_on 'Ask'
+
+    within '.error' do
+      expect(page).to have_content 'Links url is invalid'
+    end
   end
 end

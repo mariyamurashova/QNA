@@ -7,10 +7,7 @@
 p= 
 
 .Links
-  p Links:
-  ul
-    - answer.links.each do |link|
-      li= link_to link.name, link.url
+  = render 'shared/links', resource: answer
 
 -if user_signed_in? && current_user == answer.author
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
