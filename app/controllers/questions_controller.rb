@@ -70,6 +70,6 @@ class QuestionsController < ApplicationController
   end
 
   def update_question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, links_attributes: [:name, :url])
   end
 end

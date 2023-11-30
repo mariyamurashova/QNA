@@ -11,6 +11,7 @@ feature 'User can edit his answer', %q{
   given!(:question) { create (:question), author: author }
   given!(:answer) { create (:answer), author: author, question: question }
   given!(:link) { create(:link, linkable: answer) }
+  given(:gist_url) {'https://gist.github.com/mariyamurashova'}
 
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question) 
@@ -37,19 +38,19 @@ feature 'User can edit his answer', %q{
     scenario 'edits his answer', js: true do
      
       within '.answers' do
-        fill_in answer[body], with: 'edited answer'
+        fill_in 'answer[body]', with: 'edited answer'
         click_on 'Save'
-
+  
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector 'textarea' 
       end
     end
 
     scenario 'edits his answer with errors', js: true do
       
       within '.answers' do
-        fill_in answer[body], with: ' '
+        fill_in 'answer[body]', with: ' '
         click_on 'Save'
         expect(page).to have_selector 'textarea'
       end
@@ -62,7 +63,7 @@ feature 'User can edit his answer', %q{
     scenario 'edits his answer with attached files', js: true do
 
       within '.answers' do
-        fill_in answer[body], with: 'edited answer'
+        fill_in 'answer[body]', with: 'edited answer'
         attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
 
@@ -72,8 +73,6 @@ feature 'User can edit his answer', %q{
     end
 
     scenario 'can delete links from his answer', js: true do
-        #visit question_path(question) 
-        #click_on 'Edit'
         click_on 'Delete link'
         page.driver.browser.switch_to.alert.accept
         
@@ -82,39 +81,46 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'can add links to his answer', js: true do
+
+      within '.answers' do
+        click_on 'Add Link' 
+        fill_in 'Link name', with:  'My gist'
+        fill_in 'Url', with: gist_url
+        click_on 'Save'
+      
+        expect(page).to have_link 'MyGistFactory'
+        expect(page).to have_link 'My gist', href: gist_url
+      end
+    end
+
     describe 'with attached files' do
 
-        background do
-          answer.files.attach(io: File.open(Rails.root.join('spec', 'fixtures', '1.txt')), filename: '1.txt', content_type: 'text/txt')
-          visit question_path(question) 
-          click_on 'Edit'
+      background do
+        answer.files.attach(io: File.open(Rails.root.join('spec', 'fixtures', '1.txt')), filename: '1.txt', content_type: 'text/txt')
+        visit question_path(question) 
+        click_on 'Edit'
+      end
+
+      scenario 'can add files to his question', js: true do
+        within '.answers' do
+          attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Save'
+
+          expect(page).to have_link 'spec_helper.rb'
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link '1.txt'
         end
+      end
 
-        scenario 'can add files to his question', js: true do
-          within '.answers' do
-            attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-            click_on 'Save'
+      scenario 'can delete attached files', js: true do
+        within '.answers' do
+          click_on 'Delete file'
+          page.driver.browser.switch_to.alert.accept
 
-            expect(page).to have_link 'spec_helper.rb'
-            expect(page).to have_link 'rails_helper.rb'
-            expect(page).to have_link '1.txt'
-          end
+          expect(page).to_not have_link '1.txt'
         end
-
-        scenario 'can delete attached files', js: true do
-          within '.answers' do
-            click_on 'Delete file'
-            page.driver.browser.switch_to.alert.accept
-
-            expect(page).to_not have_link '1.txt'
-          end
-        end
+      end
     end
-
-    describe 'with links' do
-     
-      
-    end
-  
   end
 end

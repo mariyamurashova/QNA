@@ -10,6 +10,7 @@ feature 'User can edit his question', %q{
   given(:user) { create (:user) }
   given!(:question) { create (:question), author: author }
   given!(:link) { create(:link, linkable: question) }
+  given(:gist_url) {'https://gist.github.com/mariyamurashova'}
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -75,9 +76,23 @@ feature 'User can edit his question', %q{
         page.driver.browser.switch_to.alert.accept
         
         within ".question" do
-        expect(page).to_not have_link 'MyGistFactory'
+          expect(page).to_not have_link 'MyGistFactory'
+        end
       end
-    end
+
+      scenario 'can add links to his question', js: true do
+
+        within '.question' do
+          click_on 'Add Link' 
+          fill_in 'Link name', with:  'My gist'
+          fill_in 'Url', with: gist_url
+          click_on 'Save'
+      
+          expect(page).to have_link 'MyGistFactory'
+          expect(page).to have_link 'My gist', href: gist_url
+        end
+      end
+  
   
       describe 'with attached files' do
 

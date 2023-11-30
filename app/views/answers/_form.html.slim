@@ -10,7 +10,7 @@
   h3 Links:
   = cocooned_container do
     = form.fields_for :links do |link_form|
-      = render 'link_fields', f: link_form
+      = render 'questions/link_fields', f: link_form
     = cocooned_add_item_link 'Add Link', form, :links
     
   = form.submit 'Add Answer'

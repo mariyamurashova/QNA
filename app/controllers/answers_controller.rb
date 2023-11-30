@@ -57,7 +57,7 @@ class AnswersController < ApplicationController
   end
 
   def update_answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body, :best, links_attributes: [:name, :url])
   end
 
   def question_author?
