@@ -12,6 +12,16 @@
     = f.label :files
     = f.file_field :files, multiple: true
 
+  p Aword:
+  p
+    = f.fields_for :aword do |l|
+      p
+      = l.label :title, 'Aword Title'
+      = l.text_field :title
+      p
+      = l.label :image
+      = l.file_field :image, direct_upload: true
+
   p Links:  
   = cocooned_container do
     = f.fields_for :links do |link_form|

@@ -1,3 +1,6 @@
+- if !question.aword.nil?
+  h5 = 'You can get an award for the best answer'
+  = image_tag question.aword.image, id: 'aword_image'
 h1 = question.title
 p = question.body
 

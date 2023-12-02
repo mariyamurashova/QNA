@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_23_192103) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_01_154357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_23_192103) do
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
+  create_table "awords", force: :cascade do |t|
+    t.string "title"
+    t.string "image"
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_awords_on_question_id"
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -88,5 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_23_192103) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "author_id"
+  add_foreign_key "awords", "questions"
   add_foreign_key "questions", "users", column: "author_id"
 end

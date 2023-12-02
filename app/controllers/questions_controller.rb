@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question.build_aword
     @question.links.new
   end
 
@@ -66,10 +67,10 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, 
-                                    files:[], links_attributes: [:name, :url])
+                                    files:[], links_attributes: [ :name, :url ], aword_attributes: [ :title, :image ])
   end
 
   def update_question_params
-    params.require(:question).permit(:title, :body, links_attributes: [:name, :url])
+    params.require(:question).permit(:title, :body, links_attributes: [ :name, :url, :_destroy ])
   end
 end
