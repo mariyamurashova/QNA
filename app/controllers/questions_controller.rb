@@ -53,12 +53,8 @@ class QuestionsController < ApplicationController
     @question = Question.with_attached_files.find(params[:id])
   end
 
-  def need_to_attach_files?
-    params[:question][:files].present?
-  end
-
   def attach_files
-    if need_to_attach_files?
+    if params[:question][:files].present?
       params[:question][:files].each do |file|
         @question.files.attach(file)
       end

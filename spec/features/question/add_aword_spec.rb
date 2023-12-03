@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User can create aword for the best answer', %q{
-  In order o reward the author of the best answer
+  In order to reward the author of the best answer
   As a question's author
   I'd like to be able to create an aword
 } do
@@ -30,6 +30,16 @@ describe 'Authenticated user' do
     expect(page).to have_content 'text text text'
     expect(page).to have_content 'You can get an award for the best answer'
     expect(page).to have_css("img[src*='kolokol4848.png']")
+  end
+
+  scenario 'asks a question with errors in Aword' do 
+
+    fill_in 'Aword Title', with: ''
+    attach_file "question[aword_attributes][image]",image
+
+    click_on 'Ask'
+
+    expect(page).to have_content "Aword title can't be blank"
   end
 
 end

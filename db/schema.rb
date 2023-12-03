@@ -54,12 +54,14 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_01_154357) do
   end
 
   create_table "awords", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.string "image"
     t.bigint "question_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_awords_on_question_id"
+    t.index ["user_id"], name: "index_awords_on_user_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -98,5 +100,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_01_154357) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "author_id"
   add_foreign_key "awords", "questions"
+  add_foreign_key "awords", "users"
   add_foreign_key "questions", "users", column: "author_id"
 end
