@@ -7,7 +7,7 @@ feature 'User can add links to question', %q{
 } do
 
   given(:user) { create(:user)}
-  given(:gist_url) {'https://gist.github.com/mariyamurashova'}
+  given(:gist_url) {'https://gist.github.com/mariyamurashova/afd25fa0988abb040110e50ed6b18014'}
   given(:google_url) {'https://www.google.com'}
 
   scenario 'User adds link when asks question', js: true do
@@ -26,10 +26,9 @@ feature 'User can add links to question', %q{
     page.all('.nested_fields').first.fill_in 'Url', with: google_url
 
     click_on 'Ask'
-
     within '.question' do
-      expect(page).to have_link 'Google', href: google_url
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_css('.gist')
+      expect(page).to have_link('Google'), href: google_url
     end
   end
 

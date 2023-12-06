@@ -8,7 +8,7 @@ feature 'User can add links to answer', %q{
 
   given(:user) { create(:user)}
   given(:question) { create(:question) }
-  given(:gist_url) {'https://gist.github.com/mariyamurashova'}
+  given(:gist_url) {'https://gist.github.com/mariyamurashova/afd25fa0988abb040110e50ed6b18014'}
   given(:google_url) {'https://www.google.com'}
 
    scenario 'User adds links when give an answer', js: true do
@@ -28,8 +28,8 @@ feature 'User can add links to answer', %q{
     click_on 'Add Answer'
 
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
-       expect(page).to have_link 'Google', href: google_url
+      expect(page).to have_css('.gist')
+      expect(page).to have_link('Google'), href: google_url
     end
   end
 
