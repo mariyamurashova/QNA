@@ -17,3 +17,5 @@ pin "@notus.sh/cocooned", to: "https://ga.jspm.io/npm:@notus.sh/cocooned@2.0.4/i
 
 pin "@octokit/core", to: "https://esm.sh/@octokit/core"
 
+pin_all_from 'app/javascript/custom', under: 'custom'
+
