@@ -1,9 +1,12 @@
 p Links
 ul
   - resource.links.each do |link|
-    -if link.url.include?('https://gist.github.com/')
-       <script src="#{link.url}.js"></script>
-    p= link_to link.name, link.url, id: "link_link_#{link.id}"
+    -if link.gist?
+      p[id="gist-#{link.id}"]
+        =link_to link.name, link.url, class: "gist", data: {gist_id: link.gist_id, link_id: link.id}, id: "link-#{link.id}"
+    -else
+      p 
+        = link_to link.name, link.url, id: 'link-#{link.id}'
 
     p class= "delete_link_#{resource.id}" class= 'hidden'
       =link_to 'Delete link', link_path(resource), method: :delete, data: {  confirm: ('Are you sure?'), remote: true }, id: "hide_delete_#{link.id}"

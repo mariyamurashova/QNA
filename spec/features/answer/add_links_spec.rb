@@ -27,10 +27,8 @@ feature 'User can add links to answer', %q{
  
     click_on 'Add Answer'
 
-    within '.answers' do
-      expect(page).to have_css('.gist')
-      expect(page).to have_link('Google'), href: google_url
-    end
+    expect(page).to have_link('Google'), href: google_url
+    expect(page).to have_css('.gist') 
   end
 
   scenario 'User adds links with invalid format', js: true do

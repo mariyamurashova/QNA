@@ -14,7 +14,6 @@ pin_all_from 'app/javascript/controllers', under: 'controllers'
 pin "@rails/activestorage", to: "https://ga.jspm.io/npm:@rails/activestorage@7.1.2/app/assets/javascripts/activestorage.esm.js"
 
 pin "@notus.sh/cocooned", to: "https://ga.jspm.io/npm:@notus.sh/cocooned@2.0.4/index.js"
-#pin "gist-embed", to: "https://cdn.jsdelivr.net/npm/gist-embed@2.6.0/gist-embed.js"
-pin "@octokit" to: "https://esm.sh/octokit"
 
+pin "@octokit/core", to: "https://esm.sh/@octokit/core"
 
