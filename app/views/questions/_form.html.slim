@@ -1,12 +1,31 @@
-=render 'shared/errors', resource: @question
+.error
+  =render 'shared/errors', resource: @question
 
 = form_with model: @question do |f|
-  = f.label :title
-  = f.text_field :title
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true
 
-  = f.label :body
-  = f.text_area :body
+  p Aword:
+  p
+    = f.fields_for :aword do |l|
+      p
+      = l.label :title, 'Aword Title'
+      = l.text_field :title
+      p
+      = l.label :image
+      = l.file_field :image, direct_upload: true
 
-   = f.label :files
-  = f.file_field :files, multiple: true
-  = f.submit 'Ask'
+  p Links:  
+  = cocooned_container do
+    = f.fields_for :links do |link_form|
+      = render 'link_fields', f: link_form
+    = cocooned_add_item_link 'Add Link', f, :links
+
+  p= f.submit 'Ask'

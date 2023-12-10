@@ -8,10 +8,13 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.links.new
   end
 
   def new
     @question = Question.new
+    @question.build_aword
+    @question.links.new
   end
 
   def edit
@@ -50,12 +53,8 @@ class QuestionsController < ApplicationController
     @question = Question.with_attached_files.find(params[:id])
   end
 
-  def need_to_attach_files?
-    params[:question][:files].present?
-  end
-
   def attach_files
-    if need_to_attach_files?
+    if params[:question][:files].present?
       params[:question][:files].each do |file|
         @question.files.attach(file)
       end
@@ -63,10 +62,11 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files:[])
+    params.require(:question).permit(:title, :body, 
+                                    files:[], links_attributes: [ :name, :url ], aword_attributes: [ :title, :image ])
   end
 
   def update_question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, links_attributes: [ :name, :url, :_destroy ])
   end
 end

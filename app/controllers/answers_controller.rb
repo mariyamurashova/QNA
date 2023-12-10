@@ -11,12 +11,8 @@ class AnswersController < ApplicationController
 
   def update
     attach_files
-    if answer_params.include?(:best) 
-       @answer.mark_as_best if question_author?
-    else
-      @answer.update(update_answer_params)
-    end
-
+    @answer.update(update_answer_params)  if !set_best
+  
     @question = @answer.question
   end
 
@@ -31,12 +27,19 @@ class AnswersController < ApplicationController
 
   private
 
-  def need_to_attach_files?
-     params[:answer][:files].present?
+   def set_best
+    if answer_params.include?(:best) && question_author?
+      @answer.mark_as_best 
+      @answer.author.awords << @answer.question.aword if @answer.question.aword
+    end
+   end
+
+  def set_aword
+    @answer.author.awords << @answer.question.aword if @answer.question.aword
   end
 
   def attach_files
-    if need_to_attach_files?
+    if params[:answer][:files].present?
       params[:answer][:files].each do |file|
         @answer.files.attach(file)
       end
@@ -52,11 +55,12 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :best, files:[])
+    params.require(:answer).permit(:body, :best, 
+                                    files:[], links_attributes: [ :name, :url ])
   end
 
   def update_answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body, :best, links_attributes: [:name, :url])
   end
 
   def question_author?

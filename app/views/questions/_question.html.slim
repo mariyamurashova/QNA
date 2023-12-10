@@ -1,8 +1,17 @@
+- if !question.aword.nil?
+
+  h5 = 'You can get an award for the best answer'
+  = question.aword.title
+  = image_tag question.aword.image, id: 'aword_image'
+  
 h1 = question.title
 p = question.body
 
 = render 'shared/attached_files', resource: question
 
+.Links
+  = render 'shared/links', resource: question
+  
 = link_to 'Delete Question', question, method: :delete, data: { confirm: ('Are you sure?') }
 
 -if user_signed_in? && current_user == question.author

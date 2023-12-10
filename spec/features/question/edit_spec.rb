@@ -9,6 +9,8 @@ feature 'User can edit his question', %q{
   given(:author) { create (:user) }
   given(:user) { create (:user) }
   given!(:question) { create (:question), author: author }
+  given!(:link) { create(:link, linkable: question) }
+  given(:google_url) {'https://googl.com'}
 
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
@@ -68,6 +70,29 @@ feature 'User can edit his question', %q{
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
+
+      scenario 'can delete links from his question', js: true do
+        click_on 'Delete link'
+        page.driver.browser.switch_to.alert.accept
+        
+        within ".question" do
+          expect(page).to_not have_link 'MyGistFactory'
+        end
+      end
+
+      scenario 'can add links to his question', js: true do
+
+        within '.question' do
+          click_on 'Add Link' 
+          fill_in 'Link name', with:  'Google'
+          fill_in 'Url', with: google_url
+          click_on 'Save'
+
+          expect(page).to have_css('.gist')
+          expect(page).to have_link('Google'), href: google_url
+        end
+      end
+  
   
       describe 'with attached files' do
 
@@ -99,3 +124,4 @@ feature 'User can edit his question', %q{
     end 
   end
 end
+
