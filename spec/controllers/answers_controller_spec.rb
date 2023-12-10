@@ -79,6 +79,29 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
+    context "Question's author"  do 
+      it 'changes attribute best' do
+        patch :update, params: { id: answers[0], answer: { best: true } }, format: :js
+        answers[0].reload
+        expect(answers[0].best).to eq true
+        patch :update, params: { id: answers[1], answer: { best: true } }, format: :js
+        answers[1].reload
+        answers[0].reload
+
+        expect(answers[1].best).to eq true 
+        expect(answers[0].best).to eq false
+      end
+    end
+
+    context "Not question's author" do
+       before { login(author) }
+
+      it "doesn't change attribute best" do
+        patch :update, params: { id: answers[0], answer: { best: true } }, format: :js
+        answers[0].reload
+        expect(answers[0].best).to eq false
+      end
+    end
   end
  
 

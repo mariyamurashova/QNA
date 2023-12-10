@@ -1,16 +1,10 @@
-= form_with model: [@question, @answer], multipart: true, local: false do |form|
-  = form.label :body, 'Your answer'
-  = form.text_area :body
+= form_with model: [@question, @answer], multipart: true, local: false do |f|
+
+  = f.text_area :body
   br =
 
-  = form.label :files
+  = f.label :files
   
-  = form.file_field :files, multiple: true, direct_upload: true
+  = f.file_field :files, multiple: true, direct_upload: true
 
-  h3 Links:
-  = cocooned_container do
-    = form.fields_for :links do |link_form|
-      = render 'link_fields', f: link_form
-    = cocooned_add_item_link 'Add Link', form, :links
-    
-  = form.submit 'Add Answer'
+  = f.submit 'Add Answer'

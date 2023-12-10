@@ -17,8 +17,6 @@ gem 'bootsnap', require: false
 gem 'slim-rails'
 gem 'devise'
 gem "sass-rails"
-gem 'cocooned'
-gem 'octokit'
 
 gem 'decent_exposure', '~> 3.0'
 gem 'aws-sdk-s3', require: false
