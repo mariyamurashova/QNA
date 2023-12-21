@@ -8,4 +8,5 @@ $(document).ready(function(){
     $('form#edit-answer-' + answerId).removeClass('hidden');
     $('.delete_link_' + answerId).removeClass('hidden');
   })
+
 });

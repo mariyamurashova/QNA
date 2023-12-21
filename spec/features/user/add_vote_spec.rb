@@ -1,0 +1,65 @@
+require 'rails_helper'
+
+feature "An authenticated user can vote for a question/answer he likes. ", %q{
+  In order to highlight a question/answer I like, 
+  as an authentecated user 
+  I want to be able to vote for a question/answer I like
+} do
+
+  given(:user) { create(:user) }
+  given(:author) { create(:user) }
+  given!(:question) { create(:question, author: author) }
+  given!(:answer) { create(:answer, question: question, author: author) }
+
+  describe "Unauthenticated user"  do
+
+    background do
+      visit question_path(question)
+    end
+
+    scenario 'can not add like/dislike to a question' do
+
+      within '.votes' do
+        expect(page).to_not have_link "UP"
+        expect(page).to_not have_link "DOWN"
+      end
+    end  
+    
+    scenario 'Unauthenticated user can not add like/dislike to an answer' do
+
+      within '.answers' do
+        expect(page).to_not have_link "Up"
+        expect(page).to_not have_link "Down"
+      end
+    end
+  end
+
+  describe "Authenticated user"  do
+    background do
+      sign_in user
+      visit question_path(question)
+    end
+
+    scenario 'Authenticated user can add like to a question he likes', js: true do
+      within '.votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i
+        click_on 'UP'
+      
+        expect(page).to have_content("#{rating+1}")
+      end
+    end
+    scenario 'Authenticated user can add like to an answer he likes'
+    scenario "Authenticated user can add dislike to an answer he doesn't like"
+
+    scenario "Authenticated user can add dislike to a question he doesn't like", js: true do
+      within '.votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i
+        click_on 'DOWN'
+      
+        expect(page).to have_content("#{rating-1}")
+      end
+    end
+
+  end
+
+end

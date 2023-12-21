@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  include Vottable
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :aword, dependent: :destroy

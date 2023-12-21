@@ -2,6 +2,10 @@
   = render @question
  
   = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
+  br=
+.votes 
+  -if user_signed_in? 
+    =render 'votes/form'
 
 .answers
   = render @question.answers

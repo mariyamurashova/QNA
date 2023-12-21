@@ -1,0 +1,4 @@
+= link_to "UP", question_votes_path(@question, :value => 1), method: :post, class: "vote-up", remote: true, data: { type: :json }
+.rating
+  p id="change_rating" value="#{@question.rating}"=@question.rating
+= link_to "DOWN", question_votes_path(@question, :value => -1),method: :post, class: "vote-down", remote: true, data: { type: :json }

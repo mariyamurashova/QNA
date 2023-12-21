@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   
   resources :questions, shallow: true do
     resources :answers, shallow: true
+    resources :votes, shallow: true
   end
 
   resources :files, only: :destroy
