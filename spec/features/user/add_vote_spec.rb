@@ -19,7 +19,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario 'can not add like/dislike to a question' do
 
-      within '.votes' do
+      within '.question_votes' do
         expect(page).to_not have_link "UP"
         expect(page).to_not have_link "DOWN"
       end
@@ -27,7 +27,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
     
     scenario 'Unauthenticated user can not add like/dislike to an answer' do
 
-      within '.answers' do
+      within '.answer_votes' do
         expect(page).to_not have_link "Up"
         expect(page).to_not have_link "Down"
       end
@@ -41,18 +41,34 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
     end
 
     scenario 'Authenticated user can add like to a question he likes', js: true do
-      within '.votes' do
+      within '.question_votes' do
         rating = (page.find(:css, "#change_rating").value).to_i
         click_on 'UP'
       
         expect(page).to have_content("#{rating+1}")
       end
     end
-    scenario 'Authenticated user can add like to an answer he likes'
-    scenario "Authenticated user can add dislike to an answer he doesn't like"
+
+    scenario 'Authenticated user can add like to an answer he likes', js: true do
+      within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        click_on 'UP'
+      
+        expect(page).to have_content("#{rating+1}")
+      end
+    end
+
+    scenario "Authenticated user can add dislike to an answer he doesn't like", js: true do
+      within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        click_on 'DOWN'
+      
+        expect(page).to have_content("#{rating-1}")
+      end 
+    end
 
     scenario "Authenticated user can add dislike to a question he doesn't like", js: true do
-      within '.votes' do
+      within '.question_votes' do
         rating = (page.find(:css, "#change_rating").value).to_i
         click_on 'DOWN'
       

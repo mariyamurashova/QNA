@@ -6,8 +6,11 @@ Rails.application.routes.draw do
   root to: 'questions#index'
   
   resources :questions, shallow: true do
-    resources :answers, shallow: true
-    resources :votes, shallow: true
+    resources :votes, defaults: { vottable: 'question'}
+    resources :answers, shallow: true do
+       resources :votes, defaults: { vottable: 'answer'}
+    end
+   
   end
 
   resources :files, only: :destroy
@@ -15,5 +18,7 @@ Rails.application.routes.draw do
   resources :links, only: :destroy
 
   resources :awords, only: :index
+
+
 
 end

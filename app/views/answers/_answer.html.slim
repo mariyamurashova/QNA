@@ -9,6 +9,10 @@ p=
 .Links
   = render 'shared/links', resource: answer
 
+.answer_votes 
+  -if user_signed_in? 
+    =render 'votes/form_answer', resource: answer
+
 -if user_signed_in? && current_user == answer.author
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
   p=

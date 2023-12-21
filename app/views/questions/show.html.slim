@@ -3,9 +3,9 @@
  
   = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
   br=
-.votes 
+.question_votes 
   -if user_signed_in? 
-    =render 'votes/form'
+    =render 'votes/form_question', resource: @question
 
 .answers
   = render @question.answers

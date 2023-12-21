@@ -9,4 +9,18 @@ $(document).ready(function(){
     $('.delete_link_' + answerId).removeClass('hidden');
   })
 
+  $('.vote-up-answer').on('ajax:success', function(e) {
+    var rating= parseInt($('#change_answer_rating')[0].innerText)
+    rating++
+    console.log(rating)
+    $('#change_answer_rating')[0].innerText = rating;
+  })
+
+  $('.vote-down-answer').on('ajax:success', function(e) {
+    var rating= parseInt($('#change_answer_rating')[0].innerText)
+    rating--
+    console.log(rating)
+    $('#change_answer_rating')[0].innerText = rating;
+  })
+
 });

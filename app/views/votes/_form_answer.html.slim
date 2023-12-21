@@ -1,0 +1,6 @@
+= link_to "UP", answer_votes_path(resource, @vottable, :vottable_id => resource.id, :value => 1), method: :post, class: "vote-up-answer", remote: true, data: { type: :json }
+
+.answer_rating
+    p id="change_answer_rating" value="#{resource.rating}"=resource.rating
+ 
+= link_to "DOWN", answer_votes_path(resource, @vottable, :vottable_id => resource.id, :value => -1),method: :post, class: "vote-down-answer", remote: true, data: { type: :json }

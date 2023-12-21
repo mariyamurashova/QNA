@@ -1,10 +1,11 @@
 class VotesController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:create]
+  before_action :set_vottable, only: [:create]
+
 
   def create
-    @vote = @question.votes.new(user: current_user, value: params[:value])
-    @rating = @question.rating
+    @vote = @vottable.votes.new(user: current_user, value: params[:value])
+    @rating = @vottable.rating
     respond_to do |format|
       if @vote.save
         format.json { render json: @vote }
@@ -14,8 +15,12 @@ class VotesController < ApplicationController
 
   private
 
-  def find_question
-    @question = Question.find(params[:question_id])
+   def vottable_name
+    params[:vottable]
+  end
+
+  def set_vottable
+    @vottable = vottable_name.classify.constantize.find(params[:vottable_id])
   end
 
 end
