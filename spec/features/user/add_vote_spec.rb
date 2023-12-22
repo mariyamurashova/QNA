@@ -12,13 +12,11 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
   given!(:answer) { create(:answer, question: question, author: author) }
 
   describe "Unauthenticated user"  do
-
     background do
       visit question_path(question)
     end
 
     scenario 'can not add like/dislike to a question' do
-
       within '.question_votes' do
         expect(page).to_not have_link "UP"
         expect(page).to_not have_link "DOWN"
@@ -26,7 +24,6 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
     end  
     
     scenario 'Unauthenticated user can not add like/dislike to an answer' do
-
       within '.answer_votes' do
         expect(page).to_not have_link "Up"
         expect(page).to_not have_link "Down"
@@ -40,42 +37,61 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
       visit question_path(question)
     end
 
-    scenario 'Authenticated user can add like to a question he likes', js: true do
+    scenario 'can add like to a question he likes', js: true do
       within '.question_votes' do
         rating = (page.find(:css, "#change_rating").value).to_i
-        click_on 'UP'
-      
+        click_on 'UP'   
         expect(page).to have_content("#{rating+1}")
       end
     end
 
-    scenario 'Authenticated user can add like to an answer he likes', js: true do
+    scenario 'can add like to an answer he likes', js: true do
       within '.answer_votes' do
         rating = (page.find(:css, "#change_answer_rating").value).to_i
         click_on 'UP'
-      
         expect(page).to have_content("#{rating+1}")
       end
     end
 
-    scenario "Authenticated user can add dislike to an answer he doesn't like", js: true do
+    scenario "can add dislike to an answer he doesn't like", js: true do
       within '.answer_votes' do
         rating = (page.find(:css, "#change_answer_rating").value).to_i
         click_on 'DOWN'
-      
         expect(page).to have_content("#{rating-1}")
       end 
     end
 
-    scenario "Authenticated user can add dislike to a question he doesn't like", js: true do
+    scenario "can add dislike to a question he doesn't like", js: true do
       within '.question_votes' do
         rating = (page.find(:css, "#change_rating").value).to_i
         click_on 'DOWN'
-      
         expect(page).to have_content("#{rating-1}")
       end
     end
+  end  
 
+  describe "Author "  do
+    background do
+      sign_in author
+      visit question_path(question)
+    end
+
+    scenario 'cannot vote for his question', js: true do
+      within '.question_votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i  
+        click_on 'UP'
+        expect(page).to have_content("#{rating}")
+      end
+      expect(page).to have_content("You couldn't vote for your question")
+    end
+
+    scenario 'cannot vote for his answer', js: true do
+     within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i 
+        click_on 'UP'
+        expect(page).to have_content("#{rating}")
+      end
+      expect(page).to have_content("You couldn't vote for your answer")
+    end
   end
-
 end

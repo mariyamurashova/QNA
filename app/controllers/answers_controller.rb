@@ -66,5 +66,5 @@ class AnswersController < ApplicationController
   def question_author?
     @answer.question.author == current_user
   end
-
+  
 end
