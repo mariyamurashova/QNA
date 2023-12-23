@@ -68,6 +68,46 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         expect(page).to have_content("#{rating-1}")
       end
     end
+
+    scenario "can add like for question just once", js: true do
+      within '.question_votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i
+        click_on 'UP'
+        click_on 'UP'
+        expect(page).to have_content("#{rating+1}")
+      end
+      expect(page).to have_content("You couldn't vote twice!")
+    end
+
+    scenario "can add dislike for question just once", js: true do
+      within '.question_votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i
+        click_on 'DOWN'
+        click_link 'DOWN'
+        expect(page).to have_content("#{rating-1}")
+      end
+      expect(page).to have_content("You couldn't vote twice!")
+    end
+
+    scenario "can add like for answer just once", js: true do
+      within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        click_on 'UP'
+        click_on 'UP'
+        expect(page).to have_content("#{rating+1}")
+      end
+      expect(page).to have_content("You couldn't vote twice!")
+    end
+
+    scenario "can add dislike for question just once", js: true do
+      within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        click_on 'DOWN'
+        click_link 'DOWN'
+        expect(page).to have_content("#{rating-1}")
+      end
+      expect(page).to have_content("You couldn't vote twice!")
+    end
   end  
 
   describe "Author "  do
