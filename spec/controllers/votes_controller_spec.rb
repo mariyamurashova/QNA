@@ -56,6 +56,63 @@ RSpec.describe VotesController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do 
+  
+    context "User can delete his vote for question/answer" do
+      let!(:vote) { create(:vote, vottable: question, user: user ) }
+      let!(:vote_answer) { create(:vote, vottable: answer, user: user ) }
+
+      before { login(user) }
+
+      it "deletes the vote from question" do 
+        expect { delete :destroy, params: { id: question.id, vottable: "question", vottable_id: question.id }, format: :json }.to change(Vote, :count).by(-1)
+      end
+
+      it 'returns success status' do  
+        delete :destroy, params: { id: question.id, vottable: "question", vottable_id: question.id, :format => :json  } 
+  
+        expect(response).to have_http_status(:success)
+      end
+
+      it "deletes the vote from answer" do 
+        expect { delete :destroy, params: { id: answer.id, vottable: "answer", vottable_id: answer.id, :format => :json  }, format: :json }.to change(Vote, :count).by(-1)
+      end
+
+      it 'returns success status' do  
+        delete :destroy, params: { id: answer.id, vottable: "question", vottable_id: question.id, :format => :json  } 
+  
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "User cannot delete others vote from question/answer" do
+      let!(:vote) { create(:vote, vottable: question, user: user ) }
+      let!(:vote_answer) { create(:vote, vottable: answer, user: user ) }
+      let(:new_user) { create(:user) }
+      
+      before { login(new_user) }
+      it "doesn't delete the vote from question" do 
+        expect { delete :destroy, params: { id: question.id, vottable: "question", vottable_id: question.id }, format: :json }.to change(Vote, :count).by(0)
+      end
+
+      it 'returns error status' do  
+        delete :destroy, params: { id: question.id, vottable: "question", vottable_id: question.id, :format => :json  } 
+  
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "doesn't delete the vote from answer" do 
+        expect { delete :destroy, params: { id: answer.id, vottable: "answer", vottable_id: answer.id, :format => :json  }, format: :json }.to change(Vote, :count).by(0)
+      end
+
+      it 'returns error status' do  
+        delete :destroy, params: { id: answer.id, vottable: "question", vottable_id: question.id, :format => :json  } 
+  
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end
 
 

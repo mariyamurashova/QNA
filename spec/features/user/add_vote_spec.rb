@@ -108,6 +108,28 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
       end
       expect(page).to have_content("You couldn't vote twice!")
     end
+
+    scenario "can re-vote for question", js: true do
+      within '.question_votes' do
+        rating = (page.find(:css, "#change_rating").value).to_i
+        click_on 'UP'
+        click_on 're-vote'
+        page.driver.browser.switch_to.alert.accept
+        click_on 'DOWN'
+        expect(page).to have_content("#{rating-1}")
+      end
+    end
+
+    scenario "can re-vote for answer", js: true do
+      within '.answer_votes' do
+        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        click_on 'UP'
+        click_on 're-vote'
+        page.driver.browser.switch_to.alert.accept
+        click_on 'DOWN'
+        expect(page).to have_content("#{rating-1}")
+      end
+    end
   end  
 
   describe "Author "  do

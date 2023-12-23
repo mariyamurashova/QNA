@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :vote do
-    lile { 1 }
-    dislike { 1 }
+    value { 1 }
     association :user
 
   transient do
