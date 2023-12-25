@@ -10,7 +10,6 @@ RSpec.describe VotesController, type: :controller do
    
     context "User votes for question/answer" do
        before { login(user) }
-
       it "saves a new question's vote in the datebase" do 
         expect { post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } }.to change(question.votes, :count).by(1)
       end
@@ -34,25 +33,25 @@ RSpec.describe VotesController, type: :controller do
 
     context "Author tries to vote for his question/answer" do
       before { login(author) }
-
+      
       it "doesn't save a new question's vote in the datebase" do 
         expect { post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } }.to change(question.votes, :count).by(0)
       end
 
-      it 'returns unprocessable_entity status' do  
+      it 'returns forbidden status' do  
         post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } 
   
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:forbidden)
       end
 
       it "doesn't save a new answer's vote in the datebase" do 
         expect { post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } }.to change(answer.votes, :count).by(0)
       end
 
-      it 'returns unprocessable_entity status' do  
+      it 'returns forbidden status' do  
         post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } 
   
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

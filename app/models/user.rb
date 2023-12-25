@@ -10,9 +10,5 @@ class User < ApplicationRecord
   has_many :awords
   has_many :votes
 
-   def author_of?(vottable)
-     if vottable.author == self
-      vottable.errors.add(:'', "You couldn't vote for your #{vottable.class.to_s.downcase}")
-    end
-  end
+
 end

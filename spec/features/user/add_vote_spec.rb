@@ -76,7 +76,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         click_on 'UP'
         expect(page).to have_content("#{rating+1}")
       end
-      expect(page).to have_content("You couldn't vote twice!")
+      expect(page).to have_content("User you couldn't vote twice")
     end
 
     scenario "can add dislike for question just once", js: true do
@@ -86,7 +86,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         click_link 'DOWN'
         expect(page).to have_content("#{rating-1}")
       end
-      expect(page).to have_content("You couldn't vote twice!")
+      expect(page).to have_content("User you couldn't vote twice")
     end
 
     scenario "can add like for answer just once", js: true do
@@ -96,7 +96,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         click_on 'UP'
         expect(page).to have_content("#{rating+1}")
       end
-      expect(page).to have_content("You couldn't vote twice!")
+      expect(page).to have_content("User you couldn't vote twice")
     end
 
     scenario "can add dislike for question just once", js: true do
@@ -106,7 +106,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         click_link 'DOWN'
         expect(page).to have_content("#{rating-1}")
       end
-      expect(page).to have_content("You couldn't vote twice!")
+      expect(page).to have_content("User you couldn't vote twice")
     end
 
     scenario "can re-vote for question", js: true do
