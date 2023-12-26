@@ -1,27 +1,13 @@
 import $ from "jquery";
 $(document).ready(function(){
-  $('.vote-up-answer').on('ajax:success', function(e) {
+  $('.vote-up-answer, .vote-down-answer, .answer_delete_vote').on('ajax:success', function(e) {
+    console.log('success')
     render_rating(e.detail[0]);
   })
-
-    .on('ajax:error', function (e) {  
+    .on('ajax:error', function (e) { 
+      console.log('error') 
       render_errors(e.detail[0]);
     });
-
-  $('.vote-down-answer').on('ajax:success', function(e) {
-     render_rating(e.detail[0]);
-  })
-
-    .on('ajax:error', function (e) {  
-      render_errors(e.detail[0]);
-    }) 
-
-  $('.answer_delete_vote').on('ajax:success', function(e) {
-    render_rating(e.detail[0]);
-  })
-    .on('ajax:error', function (e) {  
-      render_errors(e.detail[0]);
-    })
 
   function render_rating(rating) {
     $('.notice').html(" ");
@@ -38,5 +24,4 @@ $(document).ready(function(){
       $('.notice').append('<p>' + value + '</p>');
     })
   }
-
 });

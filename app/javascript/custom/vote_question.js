@@ -1,21 +1,7 @@
 import $ from "jquery";
 $(document).ready(function(){
 
-  $('.vote-up').on('ajax:success', function(e) {
-    render_rating(e.detail[0]);
-  })
-    .on('ajax:error', function (e) {  
-      render_errors(e.detail[0]);
-    }) 
-
-  $('.vote-down').on('ajax:success', function(e) {
-    render_rating(e.detail[0]);
-  })
-    .on('ajax:error', function (e) {  
-      render_errors(e.detail[0]);
-    })
-
-  $('.question_delete_vote').on('ajax:success', function(e) {
+  $('.vote-up, .vote-down, .question_delete_vote').on('ajax:success', function(e) {
     render_rating(e.detail[0]);
   })
     .on('ajax:error', function (e) {  
