@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require Rails.root.join("spec/models/concerns/vottable_spec.rb")
 
 RSpec.describe Answer, type: :model do
+  it_behaves_like "vottable"
   it { should belong_to :question }
   it { should have_many(:links).dependent(:destroy) }
 

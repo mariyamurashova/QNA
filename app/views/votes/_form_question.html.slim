@@ -1,0 +1,8 @@
+= link_to "UP", question_votes_path(resource, :vottable_id => resource.id, :value => "like"), method: :post, class: "vote-up", remote: true, data: { type: :json }
+
+.rating
+  p id="change_rating" value="#{resource.rating}"=resource.rating
+ 
+= link_to "DOWN", question_votes_path(resource, :vottable_id => resource.id, :value => "dislike"),method: :post, class: "vote-down", remote: true, data: { type: :json }
+
+= link_to 're-vote', vote_path(resource, :vottable_id => resource.id ), method: :delete, data: { confirm: ('Are you sure?'), remote: true, type: :json }, class: "question_delete_vote"

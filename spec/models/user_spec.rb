@@ -6,4 +6,5 @@ RSpec.describe User, type: :model do
  it { should have_many(:answers).with_foreign_key('author_id') }
  it { should have_many(:questions).with_foreign_key('author_id') }
  it { should have_many(:awords) }
+ it { should have_many(:votes) }
 end

@@ -1,8 +1,8 @@
--if @awords
+- if !@awords.empty?
   p Your awords:
   -@awords.each do |aword|
     p = aword.title
     p = aword.question.title
     = image_tag aword.image
--else   
-  p 'You have no awords yet'
+- else   
+  p You have no awords yet
