@@ -22,6 +22,7 @@ gem 'octokit'
 
 gem 'decent_exposure', '~> 3.0'
 gem 'aws-sdk-s3', require: false
+gem 'gon'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -17,5 +17,8 @@ pin "@notus.sh/cocooned", to: "https://ga.jspm.io/npm:@notus.sh/cocooned@2.0.4/i
 
 pin "@octokit/core", to: "https://esm.sh/@octokit/core"
 
+pin "@rails/actioncable", to: "https://ga.jspm.io/npm:@rails/actioncable@7.0.3-1/app/assets/javascripts/actioncable.esm.js"
+
 pin_all_from 'app/javascript/custom', under: 'custom'
+pin_all_from 'app/javascript/channels', under: 'channels'
 

@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 $(document).ready(function(){
   $('.question').on('click', '.edit-question-link', function(e){
     e.preventDefault();
@@ -9,3 +10,5 @@ $(document).ready(function(){
     $('.delete_link_' + questionId).removeClass('hidden');
   })
 });
+
+
