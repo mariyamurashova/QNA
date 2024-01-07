@@ -20,6 +20,5 @@ Rails.application.routes.draw do
 
   resources :awords, only: :index
 
-
-
+  mount ActionCable.server => '/cable'
 end

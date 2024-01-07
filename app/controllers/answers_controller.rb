@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy, :update]
 
+  after_action :publish_answer, only: [:create]
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
@@ -66,5 +68,9 @@ class AnswersController < ApplicationController
   def question_author?
     @answer.question.author == current_user
   end
-  
+
+  def publish_answer
+    return if @answer.errors.any?    
+    ActionCable.server.broadcast("answer_for_question#{@answer.question.id}", {answer: @answer })
+  end 
 end
