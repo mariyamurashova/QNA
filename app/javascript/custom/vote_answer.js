@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 $(document).ready(function(){
   $('.vote-up-answer, .vote-down-answer, .answer_delete_vote').on('ajax:success', function(e) {
     console.log('success')

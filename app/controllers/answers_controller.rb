@@ -70,7 +70,11 @@ class AnswersController < ApplicationController
   end
 
   def publish_answer
-    return if @answer.errors.any?    
-    ActionCable.server.broadcast("answer_for_question#{@answer.question.id}", {answer: @answer })
+    return if @answer.errors.any?
+    ActionCable.server.broadcast("answer_for_question#{@answer.question.id}", ApplicationController.render(
+        partial: 'answers/answer_ac',
+        locals: { answer: @answer }
+      )
+    )
   end 
 end

@@ -56,7 +56,7 @@ feature 'Author can choose the best answer', %q{
       page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
       page.find_button("confirm_#{ answers[1].id }").click
 
-      within ".bests" do
+      within ".answers" do
         first_answer_on_page = page.all(:css, ".answer_list").first
         expect(first_answer_on_page).to have_content(answers[1].body)
       end

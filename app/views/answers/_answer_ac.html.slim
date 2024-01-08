@@ -1,0 +1,19 @@
+-if answer.best == true
+  p class= 'best' class= 'answer_list' id="answer-#{answer.id}"= answer.body 
+-else
+  p class= 'answer_list' id="answer-#{answer.id}"= answer.body
+
+=render 'shared/attached_files', resource: answer
+p= 
+
+.Links
+  p Links
+  ul
+    - answer.links.each do |link|
+      -if link.gist?
+        p[id="gist-#{link.id}"]
+          =link_to link.name, link.url, class: "gist", data: {gist_id: link.gist_id, link_id: link.id}, id: "link-#{link.id}"
+      -else
+        p 
+          = link_to link.name, link.url, id: 'link-#{link.id}'
+
