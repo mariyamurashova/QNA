@@ -7,8 +7,10 @@ Rails.application.routes.draw do
   
   resources :questions, shallow: true do
     resources :votes, defaults: { vottable: 'question'}, only: [:create, :destroy]
+    resources :comments, defaults: { commentable: 'questions'}, only: [:create, :destroy], shallow: true
     resources :answers, shallow: true do
       resources :votes, defaults: { vottable: 'answer'}, only: [:create]
+      resources :comments, defaults: { commentable: 'answers'}, only: [:create, :destroy], shallow: true
       delete '/vote', to: 'votes#destroy', defaults: { vottable: 'answer'}
     end
   end

@@ -2,6 +2,7 @@
 
 class Question < ApplicationRecord
   include Vottable
+  include Commentable
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :aword, dependent: :destroy

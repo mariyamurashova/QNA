@@ -10,8 +10,11 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    #@comment = Comment.new
     @answer.links.new
     gon.question_id = @question.id
+    gon.current_user = current_user.id if !current_user.nil?
+    gon.author = @question.answers.last.author.id if !@question.answers.empty?
   end
 
   def new
@@ -77,7 +80,7 @@ class QuestionsController < ApplicationController
     return if @question.errors.any?
     ActionCable.server.broadcast("questions", ApplicationController.render(
         partial: 'questions/question_ac',
-        locals: { question: @question }
+        locals: { question: @question}
       )
     )
   end

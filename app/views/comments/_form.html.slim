@@ -1,0 +1,5 @@
+= form_with model: [resource, @comment], class: "hidden", html: { id: "comment-answer-#{resource.id}" } do |form|
+  = form.label :body, 'Comment'
+  = form.text_area :body
+  br =
+  = form.submit 'Add Comment'
