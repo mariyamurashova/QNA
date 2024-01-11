@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 $(document).ready(function(){
   $('.answers').on('click', '.comment-answer-link', function(e){
     e.preventDefault();
@@ -6,6 +7,4 @@ $(document).ready(function(){
     var answerId = $(this).data('answerId');
     $('form#comment-Answer-' + answerId).removeClass('hidden');
   })
-
-
 });

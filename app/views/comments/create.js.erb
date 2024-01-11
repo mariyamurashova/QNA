@@ -3,4 +3,6 @@ $('.errors').html('<%= render 'shared/errors', resource: @comment %>');
 <% if @comment.persisted? %>
   $('.answer_'+<%= @comment.commentable.id %>+'_comments').append('<%= j render @comment %>');
   $('#comment_body').val('');
+  $('form#comment-Answer-' + <%= @comment.commentable.id %>).addClass('hidden');
+  $('.comment-answer-link').show()
 <% end %>

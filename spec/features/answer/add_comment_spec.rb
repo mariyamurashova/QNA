@@ -26,7 +26,9 @@ feature 'User can add comments to answer', %q{
 
   scenario "Unauthentecated user doesn't add comment to the answer" do
     visit question_path(question)
-    expect(page).to_not have_link('Add Comment')
+    click_link 'Add Comment'
+
+    expect(page).to have_current_path(new_user_session_path)
   end
 end
 

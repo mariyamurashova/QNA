@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
-
-   #after_action :publish_comment, only: [:create]
+ 
+   after_action :publish_comment, only: [:create]
 
   def create
     @comment = @commentable.comments.new(comment_params)
@@ -24,13 +24,22 @@ class CommentsController < ApplicationController
     params[:commentable]
   end
 
- # def publish_comment
-  #  return if @comment.errors.any?
-  #    ActionCable.server.broadcast("#{commentable}_#{commentable_id}_comment", ApplicationController.render(
-  #      partial: 'comments/comment',
-  #      locals: { comment: @comment}
-  #    )
-  #  )
- # end
+  def id_for_broadcast
+    if commentable_name.include?("answers")
+       @comment.commentable.question.id
+    else
+      @comment.commentable
+    end
+  end
 
+  def publish_comment
+    return if @comment.errors.any?
+     ActionCable.server.broadcast("#{commentable_name}_#{id_for_broadcast}_comment", 
+                {commentable_id: @comment.commentable_id, 
+                  partial: ApplicationController.render(                                                               
+                          partial: 'comments/comment',
+                          locals: { comment: @comment}  )}
+                  )
+  end
 end
+
