@@ -58,7 +58,8 @@ context "mulitple sessions" do
 
         fill_in 'Title', with: 'Test question'
         fill_in 'Body', with: 'text text text'
-       click_on 'Ask'
+        click_on 'Ask'
+      
         expect(page).to have_content 'Test question'
         expect(page).to have_content 'text text text'
       end

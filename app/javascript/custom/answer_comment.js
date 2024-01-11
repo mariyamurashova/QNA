@@ -4,7 +4,8 @@ $(document).ready(function(){
     e.preventDefault();
     $(this).hide();
     var answerId = $(this).data('answerId');
-    $('form#comment-answer-' + answerId).removeClass('hidden');
+    $('form#comment-Answer-' + answerId).removeClass('hidden');
   })
+
 
 });

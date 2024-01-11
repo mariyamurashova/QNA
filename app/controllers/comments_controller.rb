@@ -2,32 +2,12 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
 
+   #after_action :publish_comment, only: [:create]
+
   def create
-    @comment = @commentable.comments.new(user: current_user, body: comment_params[:body])
-
-    respond_to do |format|
-      if @comment.save
-        format.json { render json: @comment.body } 
-      else
-        format.json do
-          render json: @comment.errors.full_messages, status: :forbidden
-        end
-      end 
-    end
-  end
-
-  def destroy
-
-    @comment =Comment.find_by(commentable_id: params[:commentable_id], commentable_type: params[:commentable].capitalize, user_id: current_user)
-
-     respond_to do |format|
-      if @comment.destroy
-        format.json do
-          flash[:notice] = "Your comment was successfully deleted"
-          render json: flash, status: :unprocessable_entity 
-        end
-      end
-    end
+    @comment = @commentable.comments.new(comment_params)
+    @comment.user = current_user
+    @comment.save
   end
 
   private
@@ -36,7 +16,6 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:body)
   end
 
-
   def set_commentable
     @commentable = commentable_name.classify.constantize.find(params["#{commentable_name.singularize}_id".to_sym])
   end
@@ -44,5 +23,14 @@ class CommentsController < ApplicationController
   def commentable_name
     params[:commentable]
   end
+
+ # def publish_comment
+  #  return if @comment.errors.any?
+  #    ActionCable.server.broadcast("#{commentable}_#{commentable_id}_comment", ApplicationController.render(
+  #      partial: 'comments/comment',
+  #      locals: { comment: @comment}
+  #    )
+  #  )
+ # end
 
 end

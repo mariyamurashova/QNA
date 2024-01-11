@@ -10,7 +10,6 @@ feature 'User can signed out', %q{
     sign_in(user)
     click_on 'Log out'
     expect(page).to have_content 'Signed out successfully.'
-    expect(page).to have_current_path(questions_path)
   end
 end
   

@@ -3,11 +3,11 @@ FactoryBot.define do
     body { "new comment" }
     association :user
 
-  transient do
-    commentable { nil }
-  end
+  #transient do
+   # commentable {answer }
+  #end
 
-  commentable_id { commentable.id }
-  commentable_type { commentable.class.name }
+  #commentable_id { commentable.id }
+  #commentable_type { commentable.class.name }
   end
 end

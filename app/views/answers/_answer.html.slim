@@ -3,8 +3,16 @@
 -else
   p class= 'answer_list' id="answer-#{answer.id}"= answer.body
 
+.answer_comments
 
-=render 'shared/attached_files', resource: answer
+  p class='answer_#{answer.id}_comments'
+    = render 'shared/comments', resource: answer
+    
+    -if user_signed_in?
+      =link_to 'Add Comment', '#', class: 'comment-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
+  = render 'comments/form', resource: answer
+
+= render 'shared/attached_files', resource: answer
 p= 
 
 .Links

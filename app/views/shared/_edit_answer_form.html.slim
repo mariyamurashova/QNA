@@ -1,6 +1,7 @@
- = form_with model: resource, class: 'hidden', html: { id: "edit-answer-#{resource.id}" }, turbo: false, local: false do |form|
+.edit-answer-form
+  = form_with model: resource, class: 'hidden', html: { id: "edit-answer-#{resource.id}" }, turbo: false, local: false do |form|
     = form.label :body, "Your answer"
-    = form.text_area :body, id: 'edit_answer_#{resource.id}'
+    = form.text_area :body, id: "edit_answer_#{resource.id}"
     = form.label :files
     = form.file_field :files, multiple: true
     
