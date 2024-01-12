@@ -7,6 +7,17 @@
 h1 = question.title
 p = question.body
 
+.question_comments
+
+  p class='questions_#{question.id}_comments'
+    = render 'shared/comments', resource: question
+
+    -if user_signed_in?
+      =link_to 'Add Comment', '#', class: 'comment-question-link', data: { question_id: question.id }, id: "edit_question_#{question.id}"
+    -else
+      =link_to 'Add Comment', new_user_session_path
+  = render 'comments/form', resource: question
+
 
 
 = render 'shared/attached_files', resource: question

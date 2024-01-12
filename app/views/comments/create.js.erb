@@ -1,8 +1,16 @@
-$('.errors').html('<%= render 'shared/errors', resource: @comment %>');
+$('.comment_errors').html('<%= render 'shared/errors', resource: @comment %>');
 
-<% if @comment.persisted? %>
-  $('.answer_'+<%= @comment.commentable.id %>+'_comments').append('<%= j render @comment %>');
+<% if @comment.persisted? && @comment.commentable_type.include?("Answer")%>
+  $('.answers_'+<%= @comment.commentable.id %>+'_comments').append('<%= j render @comment %>');
   $('#comment_body').val('');
   $('form#comment-Answer-' + <%= @comment.commentable.id %>).addClass('hidden');
   $('.comment-answer-link').show()
 <% end %>
+
+<% if @comment.persisted? && @comment.commentable_type.include?("Question")%>
+  $('.questions_'+<%= @comment.commentable.id %>+'_comments').append('<%= j render @comment %>');
+  $('#comment_body').val('');
+  $('form#comment-Question-' + <%= @comment.commentable.id %>).addClass('hidden');
+  $('.comment-question-link').show()
+<% end %>
+

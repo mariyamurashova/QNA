@@ -45,6 +45,36 @@ describe 'Authenticated user' do
   end
   end 
 end
+
+  context "mulitple sessions" do
+    scenario "answer appears on another user's page(with the answer's question) ", js: true do
+    Capybara.current_driver = :selenium
+     Capybara.using_session('user') do
+        sign_in(user)
+        click_on 'MyQuestion'
+      end
+ 
+      Capybara.using_session('guest') do
+        visit questions_path
+        click_on 'MyQuestion'
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer_body', with: 'Answer,answer,answer'
+        click_on('Add Answer')
+
+        expect(current_path).to eq question_path(question)
+        within '.answers' do
+          expect(page).to have_content 'Answer,answer,answer'
+        end
+      end
+      sleep(10)
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Answer,answer,answer'
+      end
+    end
+  end  
+
   scenario 'Unauthenticated user tries to publish an answer' do
     visit question_path(question)
     click_on 'Add Answer'

@@ -1,1 +1,5 @@
-p id="answer_#{comment.commentable_id}_comment"=comment.body
+-if comment.commentable_type.include?('Answer')
+  p id="answers_#{comment.commentable_id}_comments"=comment.body
+-else
+  p id="questions_#{comment.commentable_id}_comments"=comment.body
+

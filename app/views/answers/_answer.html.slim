@@ -5,7 +5,7 @@
 
 .answer_comments
 
-  p class='answer_#{answer.id}_comments'
+  p class='answers_#{answer.id}_comments'
     = render 'shared/comments', resource: answer
 
     -if user_signed_in?

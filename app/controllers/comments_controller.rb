@@ -28,14 +28,14 @@ class CommentsController < ApplicationController
     if commentable_name.include?("answers")
        @comment.commentable.question.id
     else
-      @comment.commentable
+      @comment.commentable.id
     end
   end
 
   def publish_comment
     return if @comment.errors.any?
-     ActionCable.server.broadcast("#{commentable_name}_#{id_for_broadcast}_comment", 
-                {commentable_id: @comment.commentable_id, 
+     ActionCable.server.broadcast("commentable_#{id_for_broadcast}_comment", 
+                {commentable_id: @comment.commentable_id, commentable_name: commentable_name,
                   partial: ApplicationController.render(                                                               
                           partial: 'comments/comment',
                           locals: { comment: @comment}  )}

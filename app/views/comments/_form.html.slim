@@ -1,3 +1,4 @@
+.comment_errors
 = form_with model: [resource, resource.comments.new], class: "hidden", multipart: true, local: false, html: { id: "comment-#{resource.class}-#{resource.id}" } do |form|
   = form.label :body, 'Comment'
   = form.text_area :body

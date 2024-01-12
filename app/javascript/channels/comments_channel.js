@@ -8,12 +8,13 @@ consumer.subscriptions.create({ channel: "CommentsChannel"}, {
   },
 
   received(data) {
- 
+    console.log(data)
     if (gon.current_user == gon.author) {
       return 
     }
     else {
-     var element =  document.querySelector('.answer_'+data.commentable_id+'_comments')
+     var element =  document.querySelector('.'+data.commentable_name+'_'+data.commentable_id+'_comments')
+     console.log(element)
       element.insertAdjacentHTML("beforeend", data.partial)
     }
   }
