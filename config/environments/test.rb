@@ -37,7 +37,6 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   
   config.action_cable.disable_request_forgery_protection = true
-
   #config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /file:\/\/*/, 'file://', nil]
 
   # Store uploaded files on the local file system in a temporary directory.

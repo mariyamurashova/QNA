@@ -1,6 +1,6 @@
 import $ from "jquery";
 $(document).ready(function(){
-
+  
   $('.vote-up, .vote-down, .question_delete_vote').on('ajax:success', function(e) {
     render_rating(e.detail[0]);
   })

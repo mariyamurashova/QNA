@@ -2,12 +2,21 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
  
-   after_action :publish_comment, only: [:create]
+   #after_action :publish_comment, only: [:create]
 
   def create
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
-    @comment.save
+    
+      if @comment.save
+           publish_comment
+        else
+          respond_to do |format|
+            format.json do
+              render json: @comment.errors.full_messages, status: :forbidden
+            end
+          end 
+      end
   end
 
   private
@@ -25,7 +34,7 @@ class CommentsController < ApplicationController
   end
 
   def id_for_broadcast
-    if commentable_name.include?("answers")
+    if commentable_name.include?('answers')
        @comment.commentable.question.id
     else
       @comment.commentable.id
@@ -35,8 +44,9 @@ class CommentsController < ApplicationController
   def publish_comment
     return if @comment.errors.any?
      ActionCable.server.broadcast("commentable_#{id_for_broadcast}_comment", 
-                {commentable_id: @comment.commentable_id, commentable_name: commentable_name,
-                  partial: ApplicationController.render(                                                               
+                {commentable_id: @comment.commentable_id, commentable_name: commentable_name, 
+                 commentable_type: @comment.commentable_type,
+                 partial: ApplicationController.render(                                                               
                           partial: 'comments/comment',
                           locals: { comment: @comment}  )}
                   )

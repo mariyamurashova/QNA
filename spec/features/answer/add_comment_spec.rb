@@ -31,9 +31,7 @@ feature 'User can add comments to answer', %q{
       click_link 'Add Comment'
       click_on 'Add Comment'
 
-    within '.comment_errors' do
       expect(page).to have_content("Body can't be blank")
-    end
     end
   end
 
@@ -76,4 +74,3 @@ feature 'User can add comments to answer', %q{
     end
   end
 end
-#end

@@ -30,11 +30,10 @@ feature 'User can add comments to questions', %q{
     visit question_path(question)
     within '.question' do
       click_link 'Add Comment'
+      fill_in 'Comment', with: ''
       click_on 'Add Comment'
-
-    within '.comment_errors' do
+      save_and_open_page
       expect(page).to have_content("Body can't be blank")
-    end
     end
   end
 

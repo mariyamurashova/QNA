@@ -1,6 +1,6 @@
 .comment_errors
-= form_with model: [resource, resource.comments.new], class: "hidden", multipart: true, local: false, html: { id: "comment-#{resource.class}-#{resource.id}" } do |form|
+= form_with model: [resource, resource.comments.new], class: "new-comment hidden", multipart: true, local: false, data: { type: :json }, html: { id: "comment-#{resource.class}-#{resource.id}" } do |form|
   = form.label :body, 'Comment'
   = form.text_area :body
   br =
-  = form.submit 'Add Comment'
+  = form.submit 'Add Comment', class: "submith_comment"

@@ -7,4 +7,4 @@ $(document).ready(function(){
     var answerId = $(this).data('answerId');
     $('form#comment-Answer-' + answerId).removeClass('hidden');
   })
-});
+  });
