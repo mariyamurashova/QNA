@@ -35,9 +35,9 @@ feature 'Author can choose the best answer', %q{
     end
 
     scenario 'There can only be one best answer', js: true do
-    
+
       page.find(:css, "a#best_answer_#{ answers[0].id }").click
-      page.find(:css,"#check_best_answer_#{ answers[0].id }").set(true)
+      page.find(:css,"#check_best_answer_#{ answers[0].id}").set(true)
       page.find_button("confirm_#{ answers[0].id }").click
 
       page.find(:css, "a#best_answer_#{ answers[1].id }").click

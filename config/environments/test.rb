@@ -37,7 +37,10 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   
   config.action_cable.disable_request_forgery_protection = true
-  #config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /file:\/\/*/, 'file://', nil]
+
+  # Rails.application.config.action_cable.allowed_request_origins = ['http://127.0.0.1'] 
+
+   config.action_cable.allowed_request_origins = ['/ws://*/, /wss://*/'] 
 
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test

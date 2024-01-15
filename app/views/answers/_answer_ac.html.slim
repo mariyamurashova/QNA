@@ -4,6 +4,7 @@
   p class= 'answer_list' id="answer-#{answer.id}"= answer.body
 
 =render 'shared/attached_files', resource: answer
+
 p= 
 
 .Links
@@ -16,4 +17,3 @@ p=
       -else
         p 
           = link_to link.name, link.url, id: 'link-#{link.id}'
-

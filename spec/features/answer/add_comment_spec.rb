@@ -16,26 +16,28 @@ feature 'User can add comments to answer', %q{
     visit question_path(question)
     within '.answers' do
       click_link 'Add Comment'
-
       fill_in 'Comment', with: 'My comment'
       click_on 'Add Comment'
-
+    end
+    within '.answer_comments' do
       expect(page).to have_content('My comment')
     end
   end
 
-  scenario 'Authenticated User tries to add empty comment to the answer', js: true do
+
+  scenario 'Authenticated User tries to add empty comment to the answer', js:true do
     sign_in(user)
     visit question_path(question)
     within '.answers' do
       click_link 'Add Comment'
       click_on 'Add Comment'
-
-      expect(page).to have_content("Body can't be blank")
+    end 
+    within '.notice' do
+        expect(page).to have_content("Body can't be blank")
     end
   end
 
-   scenario "All users with open question's page can see new comment to question's answer", js: true do
+   scenario "All users with open question's page can see new comment to question's answer", js:true do
     #Capybara.current_driver = :selenium
     Capybara.using_session('user') do
       sign_in(user)
@@ -59,7 +61,8 @@ feature 'User can add comments to answer', %q{
     end
 
     Capybara.using_session('guest') do
-      within '.answers' do
+      sleep(5)
+      within '.answer_comments' do
         expect(page).to have_content('My comment')
       end
     end

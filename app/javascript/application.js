@@ -11,6 +11,8 @@ import Cocooned from '@notus.sh/cocooned'
 Cocooned.start()
 console.log("Cocooned")
 
+import * as bootstrap from "bootstrap"  
+
 import jquery from 'jquery'
 window.jQuery = jquery
 window.$ = jquery
@@ -28,7 +30,8 @@ import "./custom/add_comment_errors.js"
 import "./custom/answer_comment.js"
 import "./custom/question_comment.js"
 import "./custom/gist.js"
-import "./channels/consumer.js"
-import "./channels/answers_channel.js"
-import "./channels/questions_channel.js"
-import "./channels/comments_channel.js"
+import "channels"
+//import "./channels/consumer.js"
+//import "./channels/answers_channel.js"
+//import "./channels/questions_channel.js"
+//import "./channels/comments_channel.js"

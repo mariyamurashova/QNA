@@ -42,31 +42,35 @@ describe 'Authenticated user' do
   end 
 end
 
-context "mulitple sessions" do
-    scenario "question appears on another user's page", js: true do
-    Capybara.current_driver = :selenium
-     Capybara.using_session('user') do
-        sign_in(user)
-        visit questions_path
-      end
+context "mulitple sessions", js: true do
+  scenario "question appears on another user's page" do
+    #Capybara.current_driver = :selenium
+    Capybara.using_session('user') do
+      sign_in(user)
+      visit questions_path
+    end
  
-      Capybara.using_session('guest') do
-        visit questions_path
-      end
+    Capybara.using_session('guest') do
+      visit questions_path
+    end
 
-      Capybara.using_session('user') do
-        click_on 'Ask question'
+    Capybara.using_session('user') do
+      click_on 'Ask question'
       
-        fill_in 'Title', with: 'Test question'
-        fill_in 'Body', with: 'text text text'
-        click_on 'Ask'
-      end
-      sleep(10)
-      Capybara.using_session('guest') do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+      click_on 'Ask'
+
+      expect(page).to have_content 'Test question'
+    end
+      
+    Capybara.using_session('guest') do
+      within '.questions_list' do
         expect(page).to have_content 'Test question'
       end
     end
-  end  
+  end
+end  
 
    scenario 'Unauthenticated user tries to ask a question' do 
     visit questions_path

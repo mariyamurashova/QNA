@@ -19,7 +19,8 @@ feature 'User can add comments to questions', %q{
 
       fill_in 'Comment', with: 'My comment'
       click_on 'Add Comment'
-
+    end
+    within '.question_comments' do
       expect(page).to have_content('My comment')
     end
   end
@@ -32,22 +33,21 @@ feature 'User can add comments to questions', %q{
       click_link 'Add Comment'
       fill_in 'Comment', with: ''
       click_on 'Add Comment'
-      save_and_open_page
+    end
+    within '.notice' do
       expect(page).to have_content("Body can't be blank")
     end
   end
 
   scenario "All users with open question's page can see new comment to the question", js: true do
-    Capybara.current_driver = :selenium
+    #Capybara.current_driver = :selenium
     Capybara.using_session('user') do
       sign_in(user)
-      visit questions_path(question)
-      click_on 'MyQuestion'
+      visit question_path(question)
     end
  
     Capybara.using_session('guest') do
-      visit questions_path(question)
-      click_on 'MyQuestion'
+      visit question_path(question)
     end
 
     Capybara.using_session('user') do
@@ -56,13 +56,14 @@ feature 'User can add comments to questions', %q{
 
         fill_in 'Comment', with: 'My comment'  
         click_on 'Add Comment'
-
+      end
+      within '.question_comments' do
         expect(page).to have_content('My comment')
       end
     end
 
     Capybara.using_session('guest') do
-      within '.question' do
+      within '.question_comments' do
         expect(page).to have_content('My comment')
       end
     end
