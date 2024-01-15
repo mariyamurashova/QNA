@@ -17,8 +17,9 @@
 = render 'shared/attached_files', resource: answer
 p= 
 
-.Links
-  = render 'shared/links', resource: answer
+-if !answer.links.empty?
+  .Links
+    = render 'shared/links', resource: answer
 
 .answer_votes 
   -if user_signed_in? 
@@ -27,7 +28,7 @@ p=
 
 -if user_signed_in? && current_user == answer.author
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
- 
+  br
   =link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?'), remote: true }, id: "delete_answer_#{answer.id}"
 
   = render 'shared/edit_answer_form', resource: answer

@@ -1,12 +1,7 @@
 import consumer from "./consumer"
  
-consumer.subscriptions.create({ channel: "CommentsChannel"}, {
+consumer.subscriptions.create({ channel: "CommentsChannel", question_id: gon.question_id}, {
   
-  connected() {
-   console.log("connected to comments channel")
-    this.perform("follow", {question_id: gon.question_id} )
-  },
-
   received(data) {
     console.log(data)
  
