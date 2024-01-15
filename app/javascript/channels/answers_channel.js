@@ -4,7 +4,7 @@ consumer.subscriptions.create({ channel: "AnswersChannel", question_id: gon.ques
   
   received(data) {
   console.log(data)
-    if (gon.current_user == gon.author) {
+    if (gon.current_user == data.answer_author) {
       return 
     }
     else {
