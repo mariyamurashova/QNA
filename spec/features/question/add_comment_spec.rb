@@ -57,13 +57,14 @@ feature 'User can add comments to questions', %q{
         fill_in 'Comment', with: 'My comment'  
         click_on 'Add Comment'
       end
-      within '.question_comments' do
+      within '.question' do
         expect(page).to have_content('My comment')
       end
     end
 
     Capybara.using_session('guest') do
-      within '.question_comments' do
+      visit question_path(question)
+      within '.question' do
         expect(page).to have_content('My comment')
       end
     end

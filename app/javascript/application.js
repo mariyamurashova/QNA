@@ -1,4 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "controllers"
+
 import * as ActiveStorage from '@rails/activestorage'
 ActiveStorage.start()
 console.log("ActiveStorage2")
@@ -17,9 +20,6 @@ import jquery from 'jquery'
 window.jQuery = jquery
 window.$ = jquery
 console.log("jquery")
-
-import "@hotwired/turbo-rails"
-import "controllers"
 
 import "./custom/best_answer.js"
 import "./custom/edit_answer.js"
