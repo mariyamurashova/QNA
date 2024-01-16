@@ -13,7 +13,6 @@ class QuestionsController < ApplicationController
     @answer.links.new
     gon.question_id = @question.id
     gon.current_user = current_user.id if !current_user.nil?
-    gon.author = @question.answers.last.author.id if !@question.answers.empty?
   end
 
   def new

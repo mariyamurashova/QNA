@@ -31,7 +31,4 @@ import "./custom/answer_comment.js"
 import "./custom/question_comment.js"
 import "./custom/gist.js"
 import "channels"
-//import "./channels/consumer.js"
-//import "./channels/answers_channel.js"
-//import "./channels/questions_channel.js"
-//import "./channels/comments_channel.js"
+
