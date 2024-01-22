@@ -4,7 +4,7 @@ class User < ApplicationRecord
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github]
+         :omniauthable, omniauth_providers: [:github, :vkontakte]
 
   has_many :answers, foreign_key: 'author_id'
   has_many :questions, foreign_key: "author_id"

@@ -26,6 +26,7 @@ gem 'bootstrap'
 gem 'rack-cors', :require => 'rack/cors' 
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-vkontakte'
 gem 'omniauth-rails_csrf_protection'
 
 group :development, :test do
@@ -34,6 +35,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 6.0.0'
   gem 'byebug', '~> 11.1'
+  gem 'letter_opener'
 end
 
 group :development do
