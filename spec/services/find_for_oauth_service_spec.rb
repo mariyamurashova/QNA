@@ -11,6 +11,7 @@ RSpec.describe FindForOauthService do
       end  
     end
 
+ 
     context 'user has not authorization' do
       context 'user already exists' do
         let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: user.email }) }
@@ -63,5 +64,11 @@ RSpec.describe FindForOauthService do
         end
       end
     end
-     
+  context "provider doesn't return email " do
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'vkontakte', uid: '123456') }
+
+    it 'returns false'do
+       expect(subject.call).to eq false
+    end
+  end
 end

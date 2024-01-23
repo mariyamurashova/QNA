@@ -7,6 +7,8 @@ feature 'User can sign in', %q{
 } do 
 
   given(:user) { create(:user) }
+  given(:authorization) { create(:authorization, provider: 'github', uid: '123456', user: user)}
+  given(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
 
   background { visit new_user_session_path }
   
@@ -24,6 +26,30 @@ feature 'User can sign in', %q{
     click_on 'Log in'
 
     expect(page).to have_content 'Invalid Email or password.'
+  end
+
+  context 'User tries sign in with github ' do
+
+    scenario 'user already has authorization' do
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({ 
+        :provider => 'github', 
+        :uid => '123456', 
+        info: { email: user.email } })
+   
+      click_on 'Sign in with GitHub'
+
+      expect(page).to have_content 'Successfully authenticated from Github account.'
+    end
+
+    scenario 'user has not authorization' do
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({ 
+        :provider => 'github', 
+        :uid => '123456', 
+        info: { email: 'user@test.com' } })
+
+      click_on 'Sign in with GitHub'
+      expect(page).to have_content 'Successfully authenticated from Github account.'
+    end
   end
 end
   

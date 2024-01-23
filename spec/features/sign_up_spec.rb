@@ -30,13 +30,19 @@ feature 'User can sign up', %q{
     expect(page).to have_content "Password confirmation doesn't match Password"
   end
 
-    scenario 'Unregistrated User tries to sign up with valid attributes' do
+  scenario 'Unregistrated User tries to sign up with valid attributes' do
     fill_in 'Email', with: "user1@test.com"
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password
     click_on 'Sign up'
+
+    open_email("user1@test.com")
+    current_email.click_link 'Confirm my account'
     
-    expect(page).to have_content "Welcome! You have signed up successfully."
+    expect(page).to have_content "Your email address has been successfully confirmed."
+    sign_in user
+
+    expect(page).to have_content 'Signed in successfully.'
   end
 
 end

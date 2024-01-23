@@ -6,16 +6,15 @@ class AuthorizationsController < ApplicationController
 
   def create
     if find_user
-       @authorization = @user.authorizations.new(provider: params[:provider], uid: params[:uid])
-      sign_in_and_redirect @user, event: :authentication if @authorization.save! 
-    
-      
-      #set_flash_message(:notice, :success, kind: 'Vkontakte') if is_navigational_format?
+      @authorization = @user.authorizations.new(authorization_params)
+      @user.send_confirmation_instructions
+      #sign_in_and_redirect @user, event: :authentication if @authorization.save! 
     else
       password = Devise.friendly_token[0, 20]
-      user = User.new
-      user.create_user(params_email, password)
-      user.create_authorization(auth)
+      user = User.new(email: authorization_params[:email], password: password)
+      user.send_confirmation_instructions
+      user.save
+      user.create_authorization(authorization_params)
     end
   end
 
@@ -25,7 +24,7 @@ def find_user
   @user = User.where(email: params[:email]).first
 end
 
-def params_email
+def authorization_params
   params.require(:authorization).permit(:email, :uid, :provider)
 end
 
