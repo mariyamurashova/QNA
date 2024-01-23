@@ -2,6 +2,9 @@ h1="Please enter your password"
 
 = form_with url: authorizations_path, method: :post do |f|
   =f.email_field :email, autofocus: true, autocomplete: "email"
+  =f.text_field :uid, value: params[:uid], class: "hidden"
+  =f.text_field :provider, value: params[:provider], class: "hidden"
+
 
   = f.submit "SEND"
  

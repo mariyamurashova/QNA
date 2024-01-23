@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks', confirmations: 'confirmations'} 
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks'} 
     resources :authorizations
 
   post '/users/:id/', to: 'authorizations#email_confirm', as: :email_confirm
