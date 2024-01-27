@@ -1,4 +1,4 @@
-h1="Please enter your password"
+h1="Please enter your email"
 
 = form_with model: @authorization, url: authorizations_path, method: :post do |f|
   =f.email_field :email, autofocus: true, autocomplete: "email"

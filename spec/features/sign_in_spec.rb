@@ -8,7 +8,6 @@ feature 'User can sign in', %q{
 
   given(:user) { create(:user) }
   given(:authorization) { create(:authorization, provider: 'github', uid: '123456', user: user)}
-  given(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
 
   background { visit new_user_session_path }
   
@@ -49,6 +48,37 @@ feature 'User can sign in', %q{
 
       click_on 'Sign in with GitHub'
       expect(page).to have_content 'Successfully authenticated from Github account.'
+    end
+  end
+
+  context 'user tries sign in with vkontakte' do
+    scenario 'user already has authorization' do
+
+      OmniAuth.config.mock_auth[:vkontakte] = OmniAuth::AuthHash.new({ 
+        :provider =>  'vkontakte', 
+        :uid =>  '123456'})
+       user.create_authorization( OmniAuth.config.mock_auth[:vkontakte])
+   
+      click_on 'Sign in with Vkontakte'
+      expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
+    end
+
+    scenario 'user has not authorization' do
+      OmniAuth.config.mock_auth[:vkontakte] = OmniAuth::AuthHash.new({ 
+        :provider => 'vkontakte', 
+        :uid => '654321'})
+
+      click_on 'Sign in with Vkontakte'
+  
+      fill_in 'authorization_email', with:'new_user@test'
+      click_on 'SEND'
+
+      open_email("new_user@test")
+      current_email.click_link 'Confirm my account'
+    
+      expect(page).to have_content "Your email address has been successfully confirmed."
+      click_on 'Sign in with Vkontakte'
+      expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
     end
   end
 end

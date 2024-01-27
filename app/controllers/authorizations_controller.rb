@@ -5,23 +5,24 @@ class AuthorizationsController < ApplicationController
   end
 
   def create
+
     if find_user
-      @authorization = @user.authorizations.new(authorization_params)
-      @user.send_confirmation_instructions
-      #sign_in_and_redirect @user, event: :authentication if @authorization.save! 
+      @user.create_authorization(provider: authorization_params[:provider], uid: authorization_params[:uid]) 
     else
       password = Devise.friendly_token[0, 20]
-      user = User.new(email: authorization_params[:email], password: password)
-      user.send_confirmation_instructions
-      user.save
-      user.create_authorization(authorization_params)
+      @user = User.create(email: authorization_params[:email], password: password, password_confirmation: password)
+    
+      @user.create_authorization(provider: authorization_params[:provider], uid: authorization_params[:uid])
     end
+    
+    sign_in_and_redirect @user, event: :authentication
+    flash[:notice] = "Successfully authenticated from #{authorization_params[:provider]} account."
   end
 
 private
 
 def find_user
-  @user = User.where(email: params[:email]).first
+  @user = User.where(email: authorization_params[:email]).first
 end
 
 def authorization_params

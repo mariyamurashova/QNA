@@ -17,11 +17,7 @@ class User < ApplicationRecord
   end
 
   def create_authorization(auth)
-    self.authorizations.create(provider:auth.provider, uid:auth.uid)
-  end
-
-  def self.create_user(password, email)
-    self.create!(email: email, password: password, password_confirmation: password)
+    self.authorizations.create(provider: auth[:provider], uid: auth[:uid])
   end
 
 end
