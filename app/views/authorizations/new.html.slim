@@ -1,7 +1,7 @@
 h1="Please enter your email"
 
-= form_with model: @authorization, url: authorizations_path, method: :post do |f|
-  =f.email_field :email, autofocus: true, autocomplete: "email"
+= form_with model: @authorization do |f|
+  =f.email_field :email
   =f.text_field :uid, value: params[:uid], class: "hidden"
   =f.text_field :provider, value: params[:provider], class: "hidden"
 

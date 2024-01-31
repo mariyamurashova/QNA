@@ -4,6 +4,7 @@ RSpec.describe FindForOauthService do
     let!(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }
     subject { FindForOauthService.new(auth) }
+    
     context 'user already has authorization' do
       it 'returns the user' do
         user.authorizations.create(provider: 'facebook', uid: '123456')

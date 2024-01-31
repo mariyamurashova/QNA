@@ -20,4 +20,13 @@ class User < ApplicationRecord
     self.authorizations.create(provider: auth[:provider], uid: auth[:uid])
   end
 
+  def self.find_user(email)
+    self.where(email: email).first
+  end
+
+  def self.create_user(email)
+    password = Devise.friendly_token[0, 20] 
+    self.create(email: email, password: password, password_confirmation: password)
+  end
+
 end

@@ -18,7 +18,28 @@ RSpec.describe User, type: :model do
       expect(FindForOauthService).to receive(:new).with(auth).and_return(service)
       expect(service).to receive(:call)
       User.find_for_oauth(auth)
-    end
-     
+    end  
   end
+
+  describe '.find_user' do
+    context 'user exists' do
+      let!(:user) { create(:user) }
+      
+      it 'returns user' do
+        User.find_user(user.email).should == user
+      end
+    end
+
+    context 'user does not exist' do
+      it 'returns nil' do
+        User.find_user('new_user@mail').should == nil
+      end
+    end
+  end
+
+  describe '.create_user' do
+    it 'creates user' do
+      User.create_user('newuser@mail').should be_an_instance_of(User)
+    end
+   end
 end
