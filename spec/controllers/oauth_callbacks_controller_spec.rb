@@ -67,16 +67,13 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     context 'user does not exist' do
-      #let!(:user) { assigns(:user) }
       before do
         allow(User).to receive(:find_for_oauth).and_return(false)
         get :vkontakte
       end
 
       it 'redirects to new authorization path' do
-        byebug
         expect(subject.create_authorization(oauth_data)).to redirect_to(new_authorization_path(provider: oauth_data['provider'], uid: oauth_data['uid']))
-        #expect(response).to redirect_to(new_authorization_path(provider: oauth_data['provider'], uid: oauth_data['uid']))
       end
 
       it 'does not login user' do
