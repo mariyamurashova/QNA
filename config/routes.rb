@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks'}
 
-    resources :authorizations, only: [:create, :new] 
+  resources :authorizations, only: [:create, :new] 
 
   post '/users/:id/', to: 'authorizations#email_confirm', as: :email_confirm
 
