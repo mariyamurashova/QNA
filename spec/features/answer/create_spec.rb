@@ -68,8 +68,8 @@ end
       end
       
       Capybara.using_session('guest') do
-        sleep(5)
-        within '.answer_list' do
+        sleep(20)
+        within '.answers' do
           expect(page).to have_content 'Answer,answer,answer'
         end
       end

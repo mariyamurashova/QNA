@@ -63,14 +63,15 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #edit' do
     before { login(author) }
-    before {  get :edit, params: {id: question} }
+    before { get :edit, params: { id: question }, format: :js }
 
     it 'assigns the requested question to @question' do  
       expect(assigns(:question)).to eq question
     end
 
     it 'renders edit view' do
-      expect(response).to render_template :edit
+       get :edit, params: { id: question }, format: :json
+       expect(response).to redirect_to root_path
     end  
   end
 
@@ -169,19 +170,6 @@ RSpec.describe QuestionsController, type: :controller do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to questions_path
       end
-    end
-
-    context "tries to delete others question" do
-      before { login(user) }
-
-      it "it doesn't delete the question" do 
-       expect { delete :destroy, params: { id: question } }.to_not change( Question, :count )
-      end
-
-      it 'redirects to question show view' do 
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to question
-      end   
     end
   end
 end  

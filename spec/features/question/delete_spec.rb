@@ -21,9 +21,7 @@ I'd like to be able to delete my question
   scenario "Others try to delete question" do
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete Question'
-
-    expect(page). to have_content "You could'n delete this question"
-    
+   
+    expect(page).to_not have_link 'Delete Question'
   end
 end

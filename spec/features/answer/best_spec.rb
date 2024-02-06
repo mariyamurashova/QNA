@@ -39,9 +39,12 @@ feature 'Author can choose the best answer', %q{
       page.find(:css, "a#best_answer_#{ answers[0].id }").click
       page.find(:css,"#check_best_answer_#{ answers[0].id}").set(true)
       page.find_button("confirm_#{ answers[0].id }").click
-
+      sleep(5)
       page.find(:css, "a#best_answer_#{ answers[1].id }").click
+
       page.find(:css,"#check_best_answer_#{ answers[1].id }").set(true)
+     
+
       page.find_button("confirm_#{ answers[1].id }").click
 
       best_answer = page.find(:css, ".best")

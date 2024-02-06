@@ -1,7 +1,6 @@
 .question
   = render @question
- 
-  = link_to 'Delete', @question, method: :delete, data: { confirm: ('Are you sure?') }
+  
   br=
 .question_votes 
   -if user_signed_in? 

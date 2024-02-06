@@ -12,11 +12,11 @@ p = question.body
   p class='questions_#{question.id}_comments'
     = render 'shared/comments', resource: question
 
-    -if user_signed_in?
+    - if can?(:create, Comment)
       =link_to 'Add Comment', '#', class: 'comment-question-link', data: { question_id: question.id }, id: "edit_question_#{question.id}"
-    -else
+    - else
       =link_to 'Add Comment', new_user_session_path
-  = render 'comments/form', resource: question
+    = render 'comments/form', resource: question
 
 
 
@@ -24,11 +24,11 @@ p = question.body
 
 .Links
   = render 'shared/links', resource: question
-  
-= link_to 'Delete Question', question, method: :delete, data: { confirm: ('Are you sure?') }
 
--if user_signed_in? && current_user == question.author
+- if can?(:destroy, question)  
+  = link_to 'Delete Question', question, method: :delete, data: { confirm: ('Are you sure?') }
 
+- if can?(:update, question)
   p=link_to 'EditQuestion', '#', class: 'edit-question-link', data: { question_id: question.id }
 
   = render 'shared/edit_question_form', resource: question

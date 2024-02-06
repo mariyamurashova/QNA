@@ -8,7 +8,7 @@
   p class='answers_#{answer.id}_comments'
     = render 'shared/comments', resource: answer
 
-    -if user_signed_in?
+    -if can?(:create, Comment)
       =link_to 'Add Comment', '#', class: 'comment-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
     -else
       =link_to 'Add Comment', new_user_session_path
@@ -26,15 +26,17 @@ p=
     =render 'votes/form_answer', resource: answer
 
 
--if user_signed_in? && current_user == answer.author
+-if can?(:update, answer)
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
   br
+-if can?(:destroy, answer)
   =link_to 'Delete Answer', answer, method: :delete, data: { confirm: ('Are you sure?'), remote: true }, id: "delete_answer_#{answer.id}"
 
   = render 'shared/edit_answer_form', resource: answer
- 
-p class= "best_answer#{answer.id}"
-  -if current_user == answer.question.author
+
+-if can?(:set_best, answer)
+  p class= "best_answer#{answer.id}"
+
     =link_to 'Select Best Answer', '#', class: 'best-answer-link', data: { answer_id: answer.id }, id: "best_answer_#{answer.id}"
   
     =render 'shared/form_best', resource: answer

@@ -49,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
    
-    let!(:answer) { create(:answer, question: question, author: author ) }
+    let!(:answer) { create(:answer, question: question, author: user ) }
     let!(:answers) { create_list(:answer,3, question: question, author: author) }
 
     before { login(user) }
@@ -62,7 +62,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders update view' do
-        patch :update, params: { id: answer, answer: {body: 'new body'} }, format: :js 
+        patch :update, params: { id: answer, answer: {body: 'new body'}, author: user }, format: :js 
         expect(response).to render_template :update
       end
     end
@@ -89,19 +89,20 @@ RSpec.describe AnswersController, type: :controller do
       before { login(author) }
      
       it "deletes the answer" do 
-       expect { delete :destroy, params: { id: answer, question_id: question, author_id: author }, format: :js }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer, question_id: question, author_id: author }, format: :js }.to change(Answer, :count).by(-1)
       end
     
     context "tries to delete others answer" do
       before { login(user) }
 
       it "it doesn't delete the answer" do 
-       expect { delete :destroy, params: { id: answer, question_id: question, author_id: author }, format: :js }.to change(Answer, :count).by(0)
+        expect { delete :destroy, params: { id: answer, question_id: question, author_id: author }, format: :js }.to change(Answer, :count).by(0)
       end
   
       it 'renders template destroy' do 
-        delete :destroy, params: { id: answer, question_id: question, author_id: author  }, format: :js
-        expect(response).to render_template :destroy
+        delete :destroy, params: { id: answer, question_id: question, author_id: author  }, format: :json
+      
+        expect(response).to redirect_to root_path
       end
     end
     end

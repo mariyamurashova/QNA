@@ -2,8 +2,10 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy, :update]
+  before_action :find_answer_best, only: [:set_best]
 
   after_action :publish_answer, only: [:create]
+  authorize_resource
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -13,31 +15,28 @@ class AnswersController < ApplicationController
 
   def update
     attach_files
-    @answer.update(update_answer_params)  if !set_best
-  
+    @answer.update(update_answer_params)  
+   
     @question = @answer.question
   end
 
   def destroy
-    if @answer.author == current_user
-      @answer.destroy
-      flash[:notice] = 'Your answer was successfully deleted'
-    else
-      flash[:notice] = "You could'n delete this answer"
+    @answer.destroy
+    flash[:notice] = 'Your answer was successfully deleted'
+  end
+
+  def set_best
+    if can?(:set_best, @answer)
+      @answer.mark_as_best 
+      @answer.author.awords << @answer.question.aword if @answer.question.aword
+      @question = @answer.question
     end
   end
 
-  private
+private
 
-   def set_best
-    if answer_params.include?(:best) && question_author?
-      @answer.mark_as_best 
-      @answer.author.awords << @answer.question.aword if @answer.question.aword
-    end
-   end
-
-  def set_aword
-    @answer.author.awords << @answer.question.aword if @answer.question.aword
+  def find_answer_best
+    @answer=Answer.with_attached_files.find(params[:answer][:answer_id])
   end
 
   def attach_files
@@ -57,7 +56,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :best, 
+    params.require(:answer).permit(:answer_id, :body, :best, 
                                     files:[], links_attributes: [ :name, :url ])
   end
 

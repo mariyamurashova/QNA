@@ -1,9 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
-
   after_action :publish_question, only: [:create]
-
+  
+  load_and_authorize_resource
   def index
     @questions = Question.all
   end
@@ -42,14 +41,9 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.author == current_user
-      @question.destroy!
-      flash[:notice] = 'Your question was successfully deleted'
-      redirect_to questions_path
-    else
-      flash[:notice] = "You could'n delete this question"
-      redirect_to @question
-    end  
+    @question.destroy!
+    flash[:notice] = 'Your question was successfully deleted'
+    redirect_to questions_path
   end
 
   private
