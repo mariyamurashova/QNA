@@ -6,26 +6,26 @@ RSpec.describe VotesController, type: :controller do
   let(:question) { create(:question, author:author) }
   let(:answer) { create(:answer, question: question, author: author) }
 
-  describe 'POST #create' do 
+  describe 'POST #vote' do 
    
     context "User votes for question/answer" do
        before { login(user) }
       it "saves a new question's vote in the datebase" do 
-        expect { post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } }.to change(question.votes, :count).by(1)
+        expect { post :vote, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } } .to change(question.votes, :count).by(1)
       end
 
       it 'returns success status' do  
-        post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } 
+        post :vote, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } 
   
         expect(response).to have_http_status(:success)
       end
 
         it "saves a new answer's vote in the datebase" do 
-        expect { post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } }.to change(answer.votes, :count).by(1)
+        expect { post :vote, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } }.to change(answer.votes, :count).by(1)
       end
 
       it 'returns success status' do  
-        post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } 
+        post :vote, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } 
   
         expect(response).to have_http_status(:success)
       end
@@ -35,21 +35,21 @@ RSpec.describe VotesController, type: :controller do
       before { login(author) }
       
       it "doesn't save a new question's vote in the datebase" do 
-        expect { post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } }.to change(question.votes, :count).by(0)
+        expect { post :vote, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } }.to change(question.votes, :count).by(0)
       end
 
       it 'returns forbidden status' do  
-        post :create, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } 
+        post :vote, params: { question_id: question, vottable: "question", vottable_id: question.id, value: 1, :format => :json } 
   
         expect(response).to have_http_status(:forbidden)
       end
 
       it "doesn't save a new answer's vote in the datebase" do 
-        expect { post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } }.to change(answer.votes, :count).by(0)
+        expect { post :vote, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } }.to change(answer.votes, :count).by(0)
       end
 
       it 'returns forbidden status' do  
-        post :create, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } 
+        post :vote, params: { answer_id: answer, vottable: "answer", vottable_id: answer.id, value: 1, :format => :json } 
   
         expect(response).to have_http_status(:forbidden)
       end
@@ -98,7 +98,7 @@ RSpec.describe VotesController, type: :controller do
       it 'returns error status' do  
         delete :destroy, params: { id: question.id, vottable: "question", vottable_id: question.id, :format => :json  } 
   
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:forbidden)
       end
 
       it "doesn't delete the vote from answer" do 
@@ -108,7 +108,7 @@ RSpec.describe VotesController, type: :controller do
       it 'returns error status' do  
         delete :destroy, params: { id: answer.id, vottable: "question", vottable_id: question.id, :format => :json  } 
   
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

@@ -1,5 +1,6 @@
 class AuthorizationsController < ApplicationController
   before_action :find_user, only: [:create]
+ 
   
   def new
     @authorization = Authorization.new()

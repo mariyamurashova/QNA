@@ -1,9 +1,9 @@
-= link_to "UP", answer_votes_path(resource, :vottable_id => resource.id, :value => "like"), method: :post, class: "vote-up-answer", remote: true, data: { type: :json }
+= link_to "UP", vote_answer_path(resource, :vottable_id => resource.id, :value => "like"), method: :post, class: "vote-up-answer", remote: true, data: { type: :json }
 
 .answer_rating
-    p id="change_answer_rating" value="#{resource.rating}"=resource.rating
+    p id="change_answer#{resource.id}_rating" value="#{resource.rating}"=resource.rating
  
-= link_to "DOWN", answer_votes_path(resource, :vottable_id => resource.id, :value => "dislike"),method: :post, class: "vote-down-answer", remote: true, data: { type: :json }
+= link_to "DOWN", vote_answer_path(resource, :vottable_id => resource.id, :value => "dislike"),method: :post, class: "vote-down-answer", remote: true, data: { type: :json }
 p=
 = link_to 're-vote', answer_vote_path(resource, :vottable_id => resource.id ), method: :delete, data: { confirm: ('Are you sure?'),  remote: true, type: :json }, class: "answer_delete_vote"
 br

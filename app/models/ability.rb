@@ -3,9 +3,10 @@
 class Ability
   include CanCan::Ability
 
-  attr_reader :new_user, :answer_paramas
+  attr_reader :user
 
-  def initialize(user, params=nil)
+  def initialize(user)
+
     @user = user
     if user 
       user.admin? ? admin_abilities : user_abilities
@@ -28,10 +29,15 @@ class Ability
     can :set_best, Answer do |answer|
       answer.question.author == @user 
     end
+    can [:update, :destroy], [ Question, Answer ], author: @user
 
-    can [:destroy, :update], [Question], author: @user
+    can :vote, [ Answer, Question ] do |vottable|
+      vottable.author != @user
+    end
 
-    can [:update, :destroy], Answer, author: @user
-    can [:destroy, :update], Comment, user: @user
-  end
+    can :destroy, Vote, { user_id: @user.id }
+
+    can :destroy, Link, { :linkable => { :author_id => @user.id } }
+    #can :destroy, Link, { :question => { :author_id => @user.id } }
+      end
 end

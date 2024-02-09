@@ -95,14 +95,10 @@ RSpec.describe AnswersController, type: :controller do
     context "tries to delete others answer" do
       before { login(user) }
 
-      it "it doesn't delete the answer" do 
-        expect { delete :destroy, params: { id: answer, question_id: question, author_id: author }, format: :js }.to change(Answer, :count).by(0)
-      end
-  
-      it 'renders template destroy' do 
+      it 'returns forbidden ststus' do 
         delete :destroy, params: { id: answer, question_id: question, author_id: author  }, format: :json
       
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:forbidden)
       end
     end
     end

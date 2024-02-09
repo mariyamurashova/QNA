@@ -1,4 +1,4 @@
-= form_with model: resource, class: 'hidden', url: set_best_answer_path, data: { id: resource.id }, html: { id: "best-answer-#{resource.id}" }, turbo: false, local: false do |f|
+= form_with model: resource, class: 'hidden', url: set_best_answer_path(resource), data: { id: resource.id }, html: { id: "best-answer-#{resource.id}" }, turbo: false, local: false do |f|
     = f.label :best, "is this best answer?"
     = f.check_box :best, id: "check_best_answer_#{resource.id}"
     = f.text_field :answer_id, value: resource.id, class: "hidden"

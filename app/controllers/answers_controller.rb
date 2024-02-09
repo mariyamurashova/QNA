@@ -64,10 +64,6 @@ private
     params.require(:answer).permit(:body, :best, links_attributes: [:name, :url])
   end
 
-  def question_author?
-    @answer.question.author == current_user
-  end
-
   def publish_answer
     return if @answer.errors.any?
     ActionCable.server.broadcast("answer_for_question#{@answer.question.id}",

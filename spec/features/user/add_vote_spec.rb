@@ -39,7 +39,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario 'can add like to a question he likes', js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i
         click_on 'UP'   
         expect(page).to have_content("#{rating+1}")
       end
@@ -47,7 +47,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario 'can add like to an answer he likes', js: true do
       within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i
         click_on 'UP'
         expect(page).to have_content("#{rating+1}")
       end
@@ -55,7 +55,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add dislike to an answer he doesn't like", js: true do
       within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i
         click_on 'DOWN'
         expect(page).to have_content("#{rating-1}")
       end 
@@ -63,7 +63,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add dislike to a question he doesn't like", js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i
         click_on 'DOWN'
         expect(page).to have_content("#{rating-1}")
       end
@@ -71,7 +71,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add like for question just once", js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i
         click_on 'UP'
         click_on 'UP'
         expect(page).to have_content("#{rating+1}")
@@ -81,7 +81,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add dislike for question just once", js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i
         click_on 'DOWN'
         click_link 'DOWN'
         expect(page).to have_content("#{rating-1}")
@@ -91,7 +91,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add like for answer just once", js: true do
       within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i
         click_on 'UP'
         click_on 'UP'
         expect(page).to have_content("#{rating+1}")
@@ -101,7 +101,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can add dislike for question just once", js: true do
       within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i
         click_on 'DOWN'
         click_link 'DOWN'
         expect(page).to have_content("#{rating-1}")
@@ -111,7 +111,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can re-vote for question", js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i
         click_on 'UP'
         click_on 're-vote'
         page.driver.browser.switch_to.alert.accept
@@ -122,7 +122,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario "can re-vote for answer", js: true do
       within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i
         click_on 'UP'
         click_on 're-vote'
         page.driver.browser.switch_to.alert.accept
@@ -140,7 +140,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario 'cannot vote for his question', js: true do
       within '.question_votes' do
-        rating = (page.find(:css, "#change_rating").value).to_i  
+        rating = (page.find(:css, "#change_question#{question.id}_rating").value).to_i  
         click_on 'UP'
         expect(page).to have_content("#{rating}")
       end
@@ -149,7 +149,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
 
     scenario 'cannot vote for his answer', js: true do
      within '.answer_votes' do
-        rating = (page.find(:css, "#change_answer_rating").value).to_i 
+        rating = (page.find(:css, "#change_answer#{answer.id}_rating").value).to_i 
         click_on 'UP'
         expect(page).to have_content("#{rating}")
       end

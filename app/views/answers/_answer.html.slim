@@ -22,7 +22,7 @@ p=
     = render 'shared/links', resource: answer
 
 .answer_votes 
-  -if user_signed_in? 
+  -if can?(:create, answer)
     =render 'votes/form_answer', resource: answer
 
 

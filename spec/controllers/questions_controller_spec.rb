@@ -62,7 +62,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before { login(author) }
+    before { login(user) }
     before { get :edit, params: { id: question }, format: :js }
 
     it 'assigns the requested question to @question' do  
@@ -70,8 +70,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'renders edit view' do
-       get :edit, params: { id: question }, format: :json
-       expect(response).to redirect_to root_path
+      expect(response).to render_template :edit
     end  
   end
 

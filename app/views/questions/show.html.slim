@@ -3,7 +3,7 @@
   
   br=
 .question_votes 
-  -if user_signed_in? 
+  -if can?(:create, @question)
     =render 'votes/form_question', resource: @question
 
 .answers

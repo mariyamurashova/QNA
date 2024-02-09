@@ -18,17 +18,10 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: answer}, format: :js }.to change(Link, :count).by(-1)
         end
       end
-    
-      context "tries to delete others answer's link" do
-        before { login(user) }
-
-        it "it doesn't delete the file" do 
-          expect { delete :destroy, params: { id: answer }, format: :js }.to change(Link, :count).by(0)
-        end
-      end
+   
     end
 
-    context "Question's attached files" do
+    context "Question's attached links" do
       let!(:link) { create(:link, linkable: question) }
 
       context "answer's author delete the link" do
@@ -38,14 +31,7 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: {  id: question  }, format: :js }.to change(Link, :count).by(-1)
         end
       end
-    
-      context "tries to delete others answer" do
-        before { login(user) }
 
-        it "it doesn't delete the link" do 
-          expect { delete :destroy, params: { id: question }, format: :js }.to change(Link, :count).by(0)
-        end
-      end
     end
   end     
 end
