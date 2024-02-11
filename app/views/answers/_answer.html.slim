@@ -25,7 +25,6 @@ p=
   -if can?(:create, answer)
     =render 'votes/form_answer', resource: answer
 
-
 -if can?(:update, answer)
   =link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }, id: "edit_answer_#{answer.id}"
   br

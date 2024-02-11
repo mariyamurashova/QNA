@@ -18,7 +18,6 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: answer}, format: :js }.to change(Link, :count).by(-1)
         end
       end
-   
     end
 
     context "Question's attached links" do
@@ -31,7 +30,6 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: {  id: question  }, format: :js }.to change(Link, :count).by(-1)
         end
       end
-
     end
   end     
 end

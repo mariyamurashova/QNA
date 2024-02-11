@@ -1,12 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
- 
-  #after_action :publish_comment, only: [:create]
 
   authorize_resource
 
-  def coment
+  def create
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
     

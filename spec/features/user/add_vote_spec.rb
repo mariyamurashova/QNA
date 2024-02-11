@@ -127,6 +127,7 @@ feature "An authenticated user can vote for a question/answer he likes. ", %q{
         click_on 're-vote'
         page.driver.browser.switch_to.alert.accept
         click_on 'DOWN'
+
         expect(page).to have_content("#{rating-1}")
       end
     end

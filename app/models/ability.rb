@@ -27,7 +27,7 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can :set_best, Answer do |answer|
-      answer.question.author == @user 
+      answer.question.author == user 
     end
     can [:update, :destroy], [ Question, Answer ], author: @user
 
@@ -35,9 +35,9 @@ class Ability
       vottable.author != @user
     end
 
-    can :destroy, Vote, { user_id: @user.id }
+    can :destroy, Vote, { user_id: user.id }
 
-    can :destroy, Link, { :linkable => { :author_id => @user.id } }
-    #can :destroy, Link, { :question => { :author_id => @user.id } }
-      end
+    can :destroy, Link, { :linkable => { :author_id => user.id } }
+   
+  end
 end

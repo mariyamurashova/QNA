@@ -35,7 +35,6 @@ class VotesController < ApplicationController
 
   private
 
-
   def define_vote_value(value)
     return 1 if value == "like"
     return -1 if value == "dislike"

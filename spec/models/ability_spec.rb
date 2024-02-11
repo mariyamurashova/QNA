@@ -45,10 +45,6 @@ describe Ability do
     it { should be_able_to :update, create(:answer, author: user)}
     it { should_not be_able_to :update, create(:answer, author: other) }
 
-
-    #it { should be_able_to :update, create(:comment, commentable: question, user: user) }
-   # it { should_not be_able_to :update, create(:comment, commentable: question, user: other), user: user }
-
     context "question's author tries to set answer as best" do
       it { should be_able_to :set_best, create(:answer, question: question, author: other) }
     end
