@@ -1,11 +1,11 @@
 class FilesController < ApplicationController
   before_action :authenticate_user!
- 
+  skip_authorization_check
+  
   def destroy
 
     @file =ActiveStorage::Attachment.find_by(record_id: params[:id])
-    authorize! :destroy, find_resource
-    @file.purge
+    @file.purge if current_user.author?(find_resource)
   end
 
   private
