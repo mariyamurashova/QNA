@@ -30,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def author?(resource)
-    self.id == resource.author.id
+    self.id == resource.author_id
   end
 
 end

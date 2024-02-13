@@ -14,8 +14,11 @@ class ApplicationController < ActionController::Base
     flash[:error] = exception.message
 
     respond_to do |format|
-      format.html { render flash[:error], status: :forbidden}
-     
+      format.html do
+        flash[:error] = exception.message
+        redirect_to root_path
+      end
+
       format.json { render json: flash, status: :forbidden }
   
       format.js { render js: flash[:error], status: :forbidden }

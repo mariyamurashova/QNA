@@ -42,4 +42,25 @@ RSpec.describe User, type: :model do
       User.create_user('newuser@mail').should be_an_instance_of(User)
     end
    end
+
+  describe '.author?' do
+    let!(:current_user) { create(:user) }
+
+    context 'author of resource' do
+      let!(:resource) { create(:question, author: current_user) }
+
+      it 'returns true' do
+        (current_user.id).should == (resource.author_id)
+      end
+    end
+
+    context 'not author' do
+      let(:user) {create(:user)}
+      let!(:resource) { create(:question, author: user) }
+
+      it 'returns false' do
+        (current_user.id).should_not == (resource.author_id)
+      end
+    end
+  end
 end
