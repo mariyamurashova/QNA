@@ -9,8 +9,10 @@ RSpec.describe User, type: :model do
   it { should have_many(:votes) }
   it { should have_many(:authorizations).dependent(:destroy) }
 
-  describe '.find_for_path' do
+  describe 'User' do
     let(:user) { create(:user) }
+
+  describe '.find_for_path' do
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }
     let(:service) { double('FindForOauthService')}
 
@@ -23,7 +25,6 @@ RSpec.describe User, type: :model do
 
   describe '.find_user' do
     context 'user exists' do
-      let(:user) { create(:user) }
       
       it 'returns user' do
         expect(User.find_user(user.email)).to eq(user)
@@ -55,7 +56,6 @@ RSpec.describe User, type: :model do
     end
 
     context 'not author' do
-      let(:user) {create(:user)}
       let(:resource) { create(:question, author: user) }
 
       it 'returns false' do
@@ -63,4 +63,5 @@ RSpec.describe User, type: :model do
       end
     end
   end
+end
 end
