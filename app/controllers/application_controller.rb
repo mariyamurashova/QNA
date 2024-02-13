@@ -12,14 +12,16 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = exception.message
+
     respond_to do |format|
-      format.json do
-        render json: flash, status: :forbidden
-      end
-  end
+      format.html { render flash[:error], status: :forbidden}
+     
+      format.json { render json: flash, status: :forbidden }
+  
+      format.js { render js: flash[:error], status: :forbidden }
+    end
   end
 
-  private
+  check_authorization unless: :devise_controller?
 
-  #check_authorization unless: :devise_controller?
 end

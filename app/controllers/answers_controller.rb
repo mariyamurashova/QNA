@@ -26,11 +26,10 @@ class AnswersController < ApplicationController
   end
 
   def set_best
-    if can?(:set_best, @answer)
-      @answer.mark_as_best 
-      @answer.author.awords << @answer.question.aword if @answer.question.aword
-      @question = @answer.question
-    end
+    authorize! :set_best, @answer
+    @answer.mark_as_best 
+    @answer.author.awords << @answer.question.aword if @answer.question.aword
+    @question = @answer.question
   end
 
 private

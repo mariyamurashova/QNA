@@ -29,4 +29,8 @@ class User < ApplicationRecord
     self.create(email: email, password: password, password_confirmation: password)
   end
 
+  def author?(resource)
+    self.id == resource.author.id
+  end
+
 end

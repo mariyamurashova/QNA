@@ -25,14 +25,16 @@ class Ability
 
   def user_abilities
     guest_abilities
+    can :read, Aword
     can :create, [Question, Answer, Comment]
+    
     can :set_best, Answer do |answer|
-      answer.question.author == user 
+      user.author?(answer.question)
     end
-    can [:update, :destroy], [ Question, Answer ], author: @user
+    can [:update, :destroy], [ Question, Answer ], author: user
 
     can :vote, [ Answer, Question ] do |vottable|
-      vottable.author != @user
+     !user.author?(vottable)
     end
 
     can :destroy, Vote, { user_id: user.id }
