@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:authorizations).dependent(:destroy) }
 
   describe '.find_for_path' do
-    let!(:user) { create(:user) }
+    let(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }
     let(:service) { double('FindForOauthService')}
 
@@ -23,16 +23,16 @@ RSpec.describe User, type: :model do
 
   describe '.find_user' do
     context 'user exists' do
-      let!(:user) { create(:user) }
+      let(:user) { create(:user) }
       
       it 'returns user' do
-        User.find_user(user.email).should == user
+        expect(User.find_user(user.email)).to eq(user)
       end
     end
 
     context 'user does not exist' do
       it 'returns nil' do
-        User.find_user('new_user@mail').should == nil
+        expect(User.find_user('new_user@mail')).to be(nil)
       end
     end
   end
@@ -47,19 +47,19 @@ RSpec.describe User, type: :model do
     let!(:current_user) { create(:user) }
 
     context 'author of resource' do
-      let!(:resource) { create(:question, author: current_user) }
+      let(:resource) { create(:question, author: current_user) }
 
       it 'returns true' do
-        (current_user.id).should == (resource.author_id)
+        expect(current_user).to be_author(resource)
       end
     end
 
     context 'not author' do
       let(:user) {create(:user)}
-      let!(:resource) { create(:question, author: user) }
+      let(:resource) { create(:question, author: user) }
 
       it 'returns false' do
-        (current_user.id).should_not == (resource.author_id)
+        expect(current_user).to_not be_author(resource)
       end
     end
   end
