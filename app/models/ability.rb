@@ -40,6 +40,7 @@ class Ability
     can :destroy, Vote, { user_id: user.id }
 
     can :destroy, Link, { :linkable => { :author_id => user.id } }
-   
+
+    can :me, User, { id: user.id } 
   end
 end
