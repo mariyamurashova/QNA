@@ -81,6 +81,43 @@ describe 'GET /api/v1/questions/id' do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+     it_behaves_like 'API Authorizable'
+
+     context 'authorized' do
+      let(:method) { :post }
+      let(:api_path) { "/api/v1/questions" }
+      let(:access_token) { create(:access_token) }
+      let(:questions_amount) { Question.count } 
+    
+      context 'request with valid attributes' do
+        before { post api_path,  params: { title: "Question_title", body: "Question_body", access_token: access_token.token }, headers: nil }
+        
+        it 'returns 201 status' do
+          expect(response).to be_successful
+        end
+
+        it 'adds new question to db' do
+          %w[id title body created_at updated_at].each do |attr|
+            expect(json['question'][attr]).to eq Question.last.send(attr).as_json
+          end
+        end
+      end
+
+      context 'request with invalid attributes' do
+        before { post api_path,  params: { body: "Question_body", access_token: access_token.token }, headers: nil }
+
+         it 'returns 204 status' do
+          expect(response.status).to eq(204)
+        end
+
+        it 'does not add new question to db' do
+          expect(Question.count).to eq(questions_amount)
+        end
+      end
+    end
+  end
 end
 end
 end

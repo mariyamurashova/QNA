@@ -1,5 +1,5 @@
 class AnswerSerializer < ActiveModel::Serializer
-  attributes :id, :body, :comments, :created_at, :updated_at, :links, :files
+  attributes :id, :body, :author_id, :comments, :created_at, :updated_at, :links, :files
 
   def comments
     object.comments.each do |comment|

@@ -9,17 +9,13 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def show
     @question = Question.where(id: params[:id])
-    render json: @question, fields: [:comments, :files, :links]
+    render json: @question, fields: [:id, :title, :body, :created_at, :updated_at, :comments, :files, :links]
   end
 
   def create
     @question = Question.new(question_params)
     @question.author = current_user
-    if @question.save
-      render json: @question,  status: :created 
-    else
-      render json: flash
-    end 
+      render json: @question,  status: :created if @question.save
   end
 
   private
