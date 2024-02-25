@@ -56,34 +56,34 @@ describe 'GET /api/v1/questions' do
   end
 end
 
-describe 'GET /api/v1/questions/id' do
-  let(:method) { :get }
-  let!(:question) { create(:question) }
-  let(:api_path) { "/api/v1/questions/#{question.id}" }
-  let(:question_response) { json['questions'].first }
-  it_behaves_like 'API Authorizable'
+  describe 'GET /api/v1/questions/id' do
+    let(:method) { :get }
+    let!(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:question_response) { json['questions'].first }
+    it_behaves_like 'API Authorizable'
 
-  context 'authorized' do
-    let(:access_token) { create(:access_token) }
-    before { get api_path,  params: { access_token: access_token.token }, headers: headers }
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      before { get api_path,  params: { access_token: access_token.token }, headers: headers }
 
-    it 'returns 200 status' do
-      expect(response).to be_successful
-    end
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
 
-    it 'returns 1 question' do
-      expect(json['questions'].size).to eq 1
-    end
+      it 'returns 1 question' do
+        expect(json['questions'].size).to eq 1
+      end
 
-    it 'returns all public fields' do
-      %w[id title body created_at updated_at].each do |attr|
-         expect(question_response[attr]).to eq question.send(attr).as_json
+      it 'returns all public fields' do
+        %w[id title body created_at updated_at].each do |attr|
+          expect(question_response[attr]).to eq question.send(attr).as_json
+        end
       end
     end
-  end
 
   describe 'POST /api/v1/questions' do
-     it_behaves_like 'API Authorizable'
+    it_behaves_like 'API Authorizable'
 
      context 'authorized' do
       let(:method) { :post }
@@ -117,6 +117,79 @@ describe 'GET /api/v1/questions/id' do
         end
       end
     end
+  end
+
+  describe 'PATCH/api/v1/questions/id' do
+     it_behaves_like 'API Authorizable'
+
+    let(:author) {create(:user)}
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, author: author) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+    let(:access_token_user) { create(:access_token, resource_owner_id: user.id) }
+    
+    context 'author update his question' do
+
+      context 'request with valid attributes' do
+        before { patch api_path,  params: { title: "new_title", access_token: access_token.token },headers: nil }
+        
+        it 'returns 201 status' do
+          expect(response).to be_successful
+        end
+
+        it 'updates question' do
+           question.reload
+            expect(question.title).to eq "new_title"
+        end
+      end
+    end
+
+    context 'not author tries to update the question' do
+      before { patch api_path,  params: { title: "new_title", access_token: access_token_user.token },headers: nil }
+
+      it 'returns 403 status' do
+        expect(response).to_not be_successful
+      end
+
+      it 'does not update question' do
+        question.reload
+        expect(question.title).to eq 'MyQuestion' 
+      end
+    end
+  end
+
+  describe 'DELETE/api/v1/questions/id' do
+    let(:author) {create(:user)}
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, author: author) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+    let(:access_token_user) { create(:access_token, resource_owner_id: user.id) }
+   
+    context 'author update his question' do
+      before { delete api_path,  params: { access_token: access_token.token },headers: nil }
+
+      it 'returns 201 status' do
+        expect(response).to be_successful
+      end
+
+      it 'deletes question' do
+        expect(Question.count).to eq(0)
+      end
+    end
+    context 'not author tries to update the question' do
+
+       before { delete api_path,  params: { access_token: access_token_user.token },headers: nil }
+
+      it 'returns 403 status' do
+        expect(response).to_not be_successful
+      end
+
+      it 'does not delete question' do
+        expect(Question.count).to eq(1)
+      end
+    end 
   end
 end
 end

@@ -25,17 +25,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-   def devise_current_user
-    @devise_current_user ||= warden.authenticate(scope: :user)
-  end
 
-  def current_user
-    if devise_current_user
-      devise_current_user
-    elsif doorkeeper_token
-      User.find(doorkeeper_token.resource_owner_id)
-    end
-  end
 
  
 
