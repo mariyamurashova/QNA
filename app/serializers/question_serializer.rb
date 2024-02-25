@@ -12,7 +12,7 @@ belongs_to :author
     if object.files.attached?
       urls=[ ]
       object.files.each do |file| 
-      urls << Rails.application.routes.url_helpers.rails_blob_url(file.blob, only_path: true) 
+        urls << Rails.application.routes.url_helpers.rails_blob_url(file.blob, only_path: true) 
     end
     return urls
     end
