@@ -24,7 +24,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     end
   end
 
-
   def destroy
     @question =  Question.find(params.require(:id))
     authorize! :destroy, @question

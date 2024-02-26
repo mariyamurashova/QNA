@@ -20,7 +20,6 @@ describe 'Answers API', type: :request do
     it_behaves_like 'API Authorizable'
 
     context 'authorized' do
-
       before { get api_path,  params: { access_token: access_token.token }, headers: headers }
 
       it_behaves_like 'successful response'
@@ -118,7 +117,6 @@ describe 'Answers API', type: :request do
     end
 
     context 'author update his answer' do
-
       before { patch api_path,  params: { body: "new_body", access_token: access_token_author.token },headers: nil }
         
       it_behaves_like 'successful response' 
@@ -162,7 +160,6 @@ describe 'Answers API', type: :request do
     end
 
     context 'not author tries to delete the answer' do
-
       before { delete api_path,  params: { access_token: access_token_user.token }, headers: nil }
 
       it_behaves_like 'NOT successful response'

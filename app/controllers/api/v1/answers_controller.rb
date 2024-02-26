@@ -26,7 +26,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
     end
   end
 
-
   def destroy
     @answer=  Answer.find(params.require(:id))
     authorize! :destroy, @answer
