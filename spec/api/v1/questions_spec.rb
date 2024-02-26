@@ -7,6 +7,7 @@ describe 'Questions API', type: :request do
 describe 'GET /api/v1/questions' do
   let(:method) { :get }
   let(:api_path) { '/api/v1/questions' }
+
   it_behaves_like 'API Authorizable'
 
   context 'authorized' do
@@ -18,18 +19,16 @@ describe 'GET /api/v1/questions' do
 
     before { get api_path,  params: { access_token: access_token.token }, headers: headers }
 
-    it 'returns 200 status' do
-      expect(response).to be_successful
-    end
+    it_behaves_like 'successful response'
 
     it 'returns list of questions' do
       expect(json['questions'].size).to eq 2
     end
 
-    it 'returns all public fields' do
-      %w[id title body created_at updated_at].each do |attr|
-         expect(question_response[attr]).to eq question.send(attr).as_json
-      end
+    it_behaves_like 'returns public fields' do
+      let(:resource_response) { question_response }
+      let(:resource) { question } 
+      let(:attributes) { %w[id title body created_at updated_at] }
     end
 
     it 'contains user object' do
@@ -41,19 +40,17 @@ describe 'GET /api/v1/questions' do
     end
 
     describe 'answers' do
-      let(:answer) { answers.first }
-      let(:answer_response) { question_response['answers'].first }
-
       it 'returns list of answers' do
         expect(question_response['answers'].size).to eq 3
       end
 
-      it 'returns all public fields' do
-        %w[id body author_id created_at updated_at].each do |attr|
-        expect(answer_response[attr]).to eq answer.send(attr).as_json
+      it_behaves_like 'returns public fields' do
+        let(:resource_response) {question_response['answers'].first }
+        let(:resource) {answers.first}
+         let(:attributes) { %w[id body created_at updated_at] }
       end
+
     end
-  end
 end
 
   describe 'GET /api/v1/questions/id' do
@@ -61,43 +58,43 @@ end
     let!(:question) { create(:question) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
     let(:question_response) { json['questions'].first }
+
     it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
       before { get api_path,  params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'successful response'
 
       it 'returns 1 question' do
         expect(json['questions'].size).to eq 1
       end
 
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'returns public fields' do
+        let(:resource_response) { question_response }
+        let(:resource) { question }
+        let(:attributes) { %w[id title body created_at updated_at] }
       end
     end
 
   describe 'POST /api/v1/questions' do
-    it_behaves_like 'API Authorizable'
+    let(:api_path) { "/api/v1/questions" }
 
-     context 'authorized' do
+    it_behaves_like 'API Authorizable' do
       let(:method) { :post }
-      let(:api_path) { "/api/v1/questions" }
+      let(:headers) { nil }
+    end
+
+     context 'authorized' do  
       let(:access_token) { create(:access_token) }
       let(:questions_amount) { Question.count } 
     
       context 'request with valid attributes' do
         before { post api_path,  params: { title: "Question_title", body: "Question_body", access_token: access_token.token }, headers: nil }
         
-        it 'returns 201 status' do
-          expect(response).to be_successful
-        end
-
+        it_behaves_like 'successful response'
+  
         it 'adds new question to db' do
           %w[id title body created_at updated_at].each do |attr|
             expect(json['question'][attr]).to eq Question.last.send(attr).as_json
@@ -120,37 +117,33 @@ end
   end
 
   describe 'PATCH/api/v1/questions/id' do
-     it_behaves_like 'API Authorizable'
-
+    let(:api_path) { "/api/v1/questions/#{question.id}" }   
     let(:author) {create(:user)}
     let(:user) { create(:user) }
     let!(:question) { create(:question, author: author) }
-    let(:api_path) { "/api/v1/questions/#{question.id}" }
     let(:access_token) { create(:access_token, resource_owner_id: author.id) }
     let(:access_token_user) { create(:access_token, resource_owner_id: user.id) }
     
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:headers) { nil }
+    end
+
     context 'author update his question' do
-
-      context 'request with valid attributes' do
-        before { patch api_path,  params: { title: "new_title", access_token: access_token.token },headers: nil }
+      before { patch api_path,  params: { title: "new_title", access_token: access_token.token },headers: nil }
         
-        it 'returns 201 status' do
-          expect(response).to be_successful
-        end
-
-        it 'updates question' do
-           question.reload
-            expect(question.title).to eq "new_title"
-        end
+      it_behaves_like 'successful response'
+       
+      it 'updates question' do
+        question.reload
+        expect(question.title).to eq "new_title"
       end
     end
 
     context 'not author tries to update the question' do
       before { patch api_path,  params: { title: "new_title", access_token: access_token_user.token },headers: nil }
 
-      it 'returns 403 status' do
-        expect(response).to_not be_successful
-      end
+      it_behaves_like 'NOT successful response'
 
       it 'does not update question' do
         question.reload
@@ -160,31 +153,33 @@ end
   end
 
   describe 'DELETE/api/v1/questions/id' do
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
     let(:author) {create(:user)}
     let(:user) { create(:user) }
     let!(:question) { create(:question, author: author) }
-    let(:api_path) { "/api/v1/questions/#{question.id}" }
     let(:access_token) { create(:access_token, resource_owner_id: author.id) }
     let(:access_token_user) { create(:access_token, resource_owner_id: user.id) }
-   
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:headers) { nil }
+    end
+
     context 'author update his question' do
       before { delete api_path,  params: { access_token: access_token.token },headers: nil }
 
-      it 'returns 201 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'successful response'
 
       it 'deletes question' do
         expect(Question.count).to eq(0)
       end
     end
+
     context 'not author tries to update the question' do
 
        before { delete api_path,  params: { access_token: access_token_user.token },headers: nil }
 
-      it 'returns 403 status' do
-        expect(response).to_not be_successful
-      end
+       it_behaves_like 'NOT successful response'
 
       it 'does not delete question' do
         expect(Question.count).to eq(1)
