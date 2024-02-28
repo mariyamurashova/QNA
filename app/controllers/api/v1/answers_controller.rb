@@ -16,9 +16,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
     @answer = @question.answers.new(answer_params)
     @answer.author = current_resource_owner
     if @answer.save
-      render json: @answer if @answer.save
+      render json: @answer
     else
-      render json: @answer.errors, status:204, fields: :errors
+      render json: @answer, status: 422, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer
     end
   end
 
@@ -27,7 +27,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     if @answer.update(answer_params)
      render json: @answer
     else
-      render json: @answer.errors, status: 204
+      render json: @answer, status: 422, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer
     end
   end
 
@@ -40,6 +40,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   private
+
+  def json_resource_errors
+  { errors: @answer.errors }
+end
 
   def find_answer
     @answer = Answer.find(params.require(:id))

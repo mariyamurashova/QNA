@@ -43,3 +43,9 @@ shared_examples_for 'response to show method' do
   end
 end
 
+shared_examples_for 'returns errors' do
+  it 'returns errors' do
+    expect(json['errors']).to_not be_empty
+  end
+end
+

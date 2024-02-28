@@ -102,8 +102,10 @@ end
         before { post api_path,  params: { question: { body: "Question_body"}, access_token: access_token.token }, headers: nil }
 
          it 'returns 204 status' do
-          expect(response.status).to eq (204)
+          expect(response.status).to eq (422)
         end
+
+        it_behaves_like 'returns errors'
 
         it 'does not add new question to db' do
           expect(Question.count).to eq(questions_amount)
@@ -133,6 +135,18 @@ end
       it 'updates question' do
         question.reload
         expect(question.title).to eq "new_title"
+      end
+    end
+
+    context 'with invalid attributes' do
+      #let(:question) { create(:question,  author: author) }
+      before { patch api_path,  params: { question: { title: nil}, access_token: access_token.token } ,headers: nil }
+
+      it_behaves_like 'returns errors'
+
+      it 'does not update the question' do
+        question.reload
+        expect(question.title).to eq('MyQuestion')
       end
     end
 

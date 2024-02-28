@@ -94,8 +94,10 @@ describe 'Answers API', type: :request do
         before { post api_path,  params: { access_token: access_token.token }, headers: nil }
 
         it 'returns 204 status' do
-          expect(response.status).to eq(204)
+          expect(response.status).to eq(422)
         end
+
+      it_behaves_like 'returns errors'
 
         it 'does not add new answer' do
           expect(question.answers.count).to eq(answers_amount)
@@ -106,7 +108,7 @@ describe 'Answers API', type: :request do
 
   describe 'PATCH/api/v1/questions/id/answers/id' do
     let(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
-    let!(:answer) { create(:answer, body: "Answer_body", question:question, author: author) }
+    let(:answer) { create(:answer, body: "Answer_body", question:question, author: author) }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :patch }
@@ -114,13 +116,26 @@ describe 'Answers API', type: :request do
     end
 
     context 'author update his answer' do
-      before { patch api_path,  params: { body: "new_body", access_token: access_token_author.token },headers: nil }
+      context 'with valid attributes' do
+        before { patch api_path,  params: { body: "new_body", access_token: access_token_author.token },headers: nil }
         
-      it_behaves_like 'successful response' 
+        it_behaves_like 'successful response' 
   
-      it 'updates answer' do
-        answer.reload
-        expect(answer.body).to eq "new_body"
+        it 'updates answer' do
+          answer.reload
+          expect(answer.body).to eq "new_body"
+        end
+      end
+
+      context 'with invalid attributes' do
+        before { patch api_path,  params: {body: nil, access_token: access_token_author.token },headers: nil }
+
+        it_behaves_like 'returns errors'
+
+        it 'does not update answer' do
+          answer.reload
+          expect(answer.body). to eq("Answer_body")
+        end
       end
     end
 

@@ -16,7 +16,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.save
       render json: @question,  status: :created 
     else
-      render json: @question.errors, status: :no_content
+       render json: @question, status: 422, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer
     end
   end
 
@@ -24,6 +24,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     authorize! :update, @question
     if @question.update(question_params)
      render json: @question
+    else
+      render json: @question, status: 422, adapter: :json_api, serializer: ActiveModel::Serializer::ErrorSerializer
     end
   end
 

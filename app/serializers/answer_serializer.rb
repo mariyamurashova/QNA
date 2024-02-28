@@ -1,5 +1,5 @@
 class AnswerSerializer < ActiveModel::Serializer
-  attributes :id, :body, :author_id, :comments, :created_at, :updated_at, :links, :files, :errors
+  attributes :id, :body, :author_id, :comments, :created_at, :updated_at, :links, :files
 
   def comments
     object.comments.each do |comment|
@@ -19,11 +19,5 @@ class AnswerSerializer < ActiveModel::Serializer
       urls << Rails.application.routes.url_helpers.rails_blob_url(file.blob, only_path: true) 
     end
     return urls
-  end
-
-  def errors
-    object.errors.each do |error|
-      error.full_messages 
-    end
   end
 end
