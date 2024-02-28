@@ -32,7 +32,6 @@ RSpec.describe Vote, type: :model do
       end
     end
 
-
     context'answer' do
       it_behaves_like 'author cannot vote' do
         let(:resource)  { create :answer, author: author }

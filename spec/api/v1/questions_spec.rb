@@ -57,7 +57,9 @@ end
     let(:method) { :get }
     let!(:question) { create(:question) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
-    let(:question_response) { json['questions'].first }
+    let(:resource_response) { json['question'] }
+    let(:resource) { question }
+    let(:attributes) { %w[id title body created_at updated_at] }
 
     it_behaves_like 'API Authorizable'
 
@@ -67,15 +69,9 @@ end
 
       it_behaves_like 'successful response'
 
-      it 'returns 1 question' do
-        expect(json['questions'].size).to eq 1
-      end
+      it_behaves_like 'response to show method' 
 
-      it_behaves_like 'returns public fields' do
-        let(:resource_response) { question_response }
-        let(:resource) { question }
-        let(:attributes) { %w[id title body created_at updated_at] }
-      end
+      it_behaves_like 'returns public fields'
     end
 
   describe 'POST /api/v1/questions' do
@@ -91,7 +87,7 @@ end
       let(:questions_amount) { Question.count } 
     
       context 'request with valid attributes' do
-        before { post api_path,  params: { title: "Question_title", body: "Question_body", access_token: access_token.token }, headers: nil }
+        before { post api_path,  params: { question: { title: "Question_title", body: "Question_body" }, access_token: access_token.token }, headers: nil }
         
         it_behaves_like 'successful response'
   
@@ -103,10 +99,10 @@ end
       end
 
       context 'request with invalid attributes' do
-        before { post api_path,  params: { body: "Question_body", access_token: access_token.token }, headers: nil }
+        before { post api_path,  params: { question: { body: "Question_body"}, access_token: access_token.token }, headers: nil }
 
          it 'returns 204 status' do
-          expect(response.status).to eq(204)
+          expect(response.status).to eq (204)
         end
 
         it 'does not add new question to db' do
@@ -130,7 +126,7 @@ end
     end
 
     context 'author update his question' do
-      before { patch api_path,  params: { title: "new_title", access_token: access_token.token },headers: nil }
+      before { patch api_path,  params: { question: { title: "new_title"}, access_token: access_token.token } ,headers: nil }
         
       it_behaves_like 'successful response'
        
@@ -141,7 +137,7 @@ end
     end
 
     context 'not author tries to update the question' do
-      before { patch api_path,  params: { title: "new_title", access_token: access_token_user.token },headers: nil }
+      before { patch api_path,  params: { question: { title: "new_title"}, access_token: access_token_user.token },headers: nil }
 
       it_behaves_like 'NOT successful response'
 

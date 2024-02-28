@@ -33,3 +33,13 @@ shared_examples_for 'returns public fields' do
   end
 end
 
+shared_examples_for 'response to show method' do
+  it 'returns 1 question' do
+    resource_name = resource.class.name.downcase
+    attributes.each do |attr|
+       resource.reload
+      expect(json["#{resource_name}"]["#{attr}"]).to eq resource.send(attr).as_json
+    end
+  end
+end
+

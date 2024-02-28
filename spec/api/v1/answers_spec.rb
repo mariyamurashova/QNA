@@ -45,6 +45,9 @@ describe 'Answers API', type: :request do
     context 'authorized' do
       let(:comment) { create(:comment, answer: answer) }
       let(:link) { create(:link, answer: answer) }
+      let(:resource_response) { json['answer'] }
+        let(:resource) { answer }
+        let(:attributes) { %w[id body created_at updated_at] }
 
       before do
         answer.files.attach(io: File.open(Rails.root.join('spec', 'fixtures', '1.txt')), filename: '1.txt', content_type: 'text/txt')
@@ -52,20 +55,14 @@ describe 'Answers API', type: :request do
       end
 
       it_behaves_like 'successful response'
+      
+      it_behaves_like 'response to show method'
 
-      it 'returns 1 answer' do
-        expect(json['answers'].size).to eq 1
-      end
-
-      it_behaves_like 'returns public fields' do
-        let(:resource_response) { answer_response }
-        let(:resource) { answer }
-        let(:attributes) { %w[id body created_at updated_at] }
-      end
+      it_behaves_like 'returns public fields' 
 
       it "returns answr's attached file's url" do
         file_url = Rails.application.routes.url_helpers.rails_blob_url(answer.files.first.blob, only_path: true) 
-        expect( answer_response['files'].first).to eq(file_url)
+        expect( json['answer']['files'].first).to eq(file_url)
       end
     end
   end
