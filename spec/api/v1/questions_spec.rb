@@ -139,7 +139,6 @@ end
     end
 
     context 'with invalid attributes' do
-      #let(:question) { create(:question,  author: author) }
       before { patch api_path,  params: { question: { title: nil}, access_token: access_token.token } ,headers: nil }
 
       it_behaves_like 'returns errors'
