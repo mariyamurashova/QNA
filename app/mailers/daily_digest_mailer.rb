@@ -11,4 +11,9 @@ class DailyDigestMailer < ApplicationMailer
     mail(to: user.email, subject: "you are subscribed to the daily newsletter from Q&A") if !user.nil?
   end
 
+  def new_answer(user, answer)
+    @answer = answer
+    mail(to: user.email, subject: "You receive a new answer to your question") if !user.nil?
+  end
+
 end

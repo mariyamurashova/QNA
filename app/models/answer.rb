@@ -8,11 +8,17 @@ class Answer < ApplicationRecord
   has_many :links, dependent: :destroy, as: :linkable
   has_many_attached :files
 
+  after_commit :send_notification, on: :create
+
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
   validates :body, presence: true
 
   scope :sort_by_best, -> { order(best: :desc) }
+
+  def send_notification
+    SendNotificationService.new.new_answer_notification(self.question.author, self)
+  end
 
   def mark_as_best
     transaction do

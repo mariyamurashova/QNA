@@ -19,10 +19,6 @@ class Question < ApplicationRecord
 
   scope :created_24_hours, -> { where(created_at: 24.hours.ago..Time.now )}
 
-  #def self.created_24_hours
-   # self.where(created_at: 24.hours.ago..Time.now)
-  #end
-
   private
 
   def calculate_reputation
