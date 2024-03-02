@@ -1,6 +1,11 @@
 .question
   = render @question
   
+  .question_subscriptions
+    - if can?(:create, Subscription)
+      =render 'subscriptions/form'
+Copy
+  
   br=
 .question_votes 
   -if can?(:create, @question)

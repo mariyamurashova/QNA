@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:awords) }
   it { should have_many(:votes) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   describe 'User' do
     let(:user) { create(:user) }

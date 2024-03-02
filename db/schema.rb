@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_19_191143) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_02_062814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -145,6 +145,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_19_191143) do
     t.index ["author_id"], name: "index_questions_on_author_id"
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "question_id", null: false
+    t.index ["question_id"], name: "index_subscriptions_on_question_id"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -185,5 +192,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_19_191143) do
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "questions", "users", column: "author_id"
+  add_foreign_key "subscriptions", "questions"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "votes", "users"
 end

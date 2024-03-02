@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   
   resources :questions, shallow: true do
+
+    resources :subscriptions, only: [:create, :destroy]
        
     post '/vote/' => 'votes#vote', as: :vote, defaults: { vottable: 'question'}
     resources :votes, only: :destroy

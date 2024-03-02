@@ -13,7 +13,7 @@ class DailyDigestMailer < ApplicationMailer
 
   def new_answer(user, answer)
     @answer = answer
-    mail(to: user.email, subject: "You receive a new answer to your question") if !user.nil?
+    mail(to: user.email, subject: "new answer was added to your question") 
   end
 
 end

@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @subscription = Subscription.new
     @answer.links.new
     gon.question_id = @question.id
     gon.current_user = current_user.id if !current_user.nil?
