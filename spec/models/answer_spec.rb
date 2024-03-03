@@ -19,20 +19,28 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe "notifications to question's author " do
-    let(:service) { SendNotificationService.new }
+  describe 'send_notification' do
+    let!(:service) { SendNotificationService.new }
     let(:author) {create(:user)}
     let(:question) { create(:question, author: author) }
     let(:answer) { build(:answer, question: question)}
-
 
     before do
       allow(SendNotificationService).to receive(:new).and_return(service)
     end
 
-    it 'calls send_notification' do
-      expect(service).to receive(:new_answer_notification).with(author, answer)
-      answer.save!
+    describe "to question's author " do
+      it 'calls send_notification' do
+        expect(service).to receive(:notification_to_author).with(author, answer)
+        answer.save!
+      end
+    end
+
+    describe "notifications to question's subscribers " do
+      it 'calls send_notification_subscribers' do
+        expect(service).to receive(:notification_to_subscribers).with(Subscription.find_subscribers(question), answer)
+        answer.save!
+      end
     end
   end
 end

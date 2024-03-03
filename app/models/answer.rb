@@ -8,7 +8,7 @@ class Answer < ApplicationRecord
   has_many :links, dependent: :destroy, as: :linkable
   has_many_attached :files
 
-  after_commit :send_notification, on: :create
+  after_commit :call_notification_service, on: :create
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
@@ -16,8 +16,9 @@ class Answer < ApplicationRecord
 
   scope :sort_by_best, -> { order(best: :desc) }
 
-  def send_notification
-    SendNotificationService.new.new_answer_notification(self.question.author, self)
+  def call_notification_service
+    SendNotificationService.new.notification_to_author(self.question.author, self)
+    SendNotificationService.new.notification_to_subscribers(subscribers, self)
   end
 
   def mark_as_best
@@ -25,5 +26,11 @@ class Answer < ApplicationRecord
       self.class.where(question_id: self.question_id).update_all(best: false)
       self.update(best: true)
     end
+  end
+
+  private
+
+  def subscribers
+    Subscription.find_subscribers(self.question)
   end
 end

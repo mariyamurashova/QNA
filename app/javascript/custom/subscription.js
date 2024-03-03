@@ -2,8 +2,8 @@ import $ from "jquery";
 
 $(document).ready(function(){
   $('.question_subscriptions').on('ajax:success', function(e) {
-    console.log("subscribed")
-    console.log(e.detail[0])
+    $('#subscribe_question').addClass('hidden');
+    $('.button').removeClass('hidden');
     render_message(e.detail[0]);
   })
     .on('ajax:error', function (e) { 
@@ -13,7 +13,7 @@ $(document).ready(function(){
 
   function render_message(message) {
      $('.notice').html(" ");
-    $('.notice').append('<p>' + message['1'] + '</p>');
+    $('.notice').append('<p>' + message['0']['1']+ '</p>');
   }
 
   function render_errors(errors) {

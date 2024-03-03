@@ -11,9 +11,15 @@ class DailyDigestMailer < ApplicationMailer
     mail(to: user.email, subject: "you are subscribed to the daily newsletter from Q&A") if !user.nil?
   end
 
-  def new_answer(user, answer)
+  def mail_for_author(user, answer)
     @answer = answer
-    mail(to: user.email, subject: "new answer was added to your question") 
+    mail(to: user.email, subject: "You receive this email as a question's author") 
   end
 
+   def  mail_for_subscribers(users, answer)
+    @answer = answer
+    users.each do |user|
+      mail(to: user.email, subject: "You receive this email as a question's subscriber") 
+    end
+  end
 end

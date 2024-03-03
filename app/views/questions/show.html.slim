@@ -4,6 +4,8 @@
   .question_subscriptions
     - if can?(:create, Subscription)
       =render 'subscriptions/form'
+      .button class = "hidden"
+        p=link_to 'Unsubscribe', questions_path, id: "unsubscribe_btn"
 Copy
   
   br=

@@ -1,5 +1,9 @@
 class SendNotificationService
-  def new_answer_notification(author, answer)
-     DailyDigestMailer.new_answer(author, answer).deliver_later
+  def notification_to_author(author, answer)
+    DailyDigestMailer.mail_for_author(author, answer).deliver_later
+  end
+
+  def notification_to_subscribers(subscribers, answer)
+    DailyDigestMailer.mail_for_subscribers(subscribers, answer).deliver_later
   end
 end
