@@ -26,8 +26,13 @@ class Ability
   def user_abilities
     guest_abilities
     can :read, Aword
-    can :create, [ Question, Answer, Comment, Subscription ]
-    
+
+    can :create, [ Question, Answer, Comment ]
+
+    can :create_subscription, Question do |question|
+      !question.subscribed?(user)
+    end 
+
     can :set_best, Answer do |answer|
       user.author?(answer.question)
     end
@@ -37,7 +42,11 @@ class Ability
      !user.author?(vottable)
     end
 
-    can :destroy, [ Vote, Subscription ], { user_id: user.id }
+    can :destroy, Subscription do |subscription|
+      subscription.question.subscribed?(user)
+    end 
+
+    can :destroy, Vote , { user_id: user.id }
 
     can :destroy, Link, { linkable: { author_id: user.id } }
 

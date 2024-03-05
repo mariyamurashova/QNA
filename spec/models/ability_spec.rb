@@ -26,6 +26,7 @@ describe Ability do
     let(:question) { create :question, author: user }
     let(:question_other) { create :question, author: other }
     let(:answer) { create :answer, question: question, author: other }
+    let(:subscription) {create(:subscription, question:question, user:user)}
 
      
     it { should_not be_able_to :manage, :all }
@@ -35,7 +36,8 @@ describe Ability do
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
     it { should be_able_to :me, User }
-
+    it { should_not be_able_to :create_subscription, Subscription }
+  
     it { should be_able_to :update, create(:question, author: user) }
     it { should_not be_able_to :update, create(:question, author: other)}
 
@@ -74,6 +76,16 @@ describe Ability do
 
       it { should_not be_able_to :destroy, create(:vote, vottable: question, user: other) }  
       it { should_not be_able_to :destroy, create(:vote, vottable: answer, user: other_1) } 
-    end   
+    end 
+
+    context "user can create subscription to question updates" do
+   
+     
+    end
+
+     context "user can cancel subscription to question updates" do
+      it { should be_able_to :destroy, create(:subscription, question: question, user: user), user: user }
+      it { should_not be_able_to :destroy, create(:subscription, question:question, user: other) }
+     end  
   end
 end

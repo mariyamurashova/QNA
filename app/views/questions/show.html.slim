@@ -1,13 +1,14 @@
 .question
   = render @question
-  
-  .question_subscriptions
-    - if can?(:create, Subscription)
-      =render 'subscriptions/form'
-      .button class = "hidden"
-        p=link_to 'Unsubscribe', questions_path, id: "unsubscribe_btn"
-Copy
-  
+-if current_user
+  .question_subscribe
+    -if !@question.subscribed?(current_user)
+      =render 'subscriptions/form', resource: @question
+
+  .question_unsubscribe class = "button"
+    -if @question.subscribed?(current_user) 
+      =render 'subscriptions/delete_btn', resource: @question
+
   br=
 .question_votes 
   -if can?(:create, @question)
@@ -21,3 +22,4 @@ Copy
 
 
 p= link_to 'Back', questions_path
+

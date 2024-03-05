@@ -39,4 +39,19 @@ RSpec.describe Question, type: :model do
         expect(Question.created_24_hours).to eq(questions)
       end
    end
+
+  describe 'subscribed?' do
+    let(:user) { create(:user) }
+    let(:other) { create(:user) }
+    let(:question) { create(:question)}
+    let!(:subscription) {create(:subscription, question: question, user:user)}
+
+    it 'returns true if user was subscribed to question' do
+      expect(question.subscribed?(user)).to eq(true)
+    end
+
+    it "returns false if user wasn't subscribed to question" do
+      expect(question.subscribed?(other)).to eq(false)
+    end
+  end
 end

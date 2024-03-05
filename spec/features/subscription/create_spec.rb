@@ -8,18 +8,19 @@ feature "User can can subscribe to question's updates", %q{
 
 given(:user) { create(:user) } 
 given!(:question) { create(:question) }
+given!(:subscription) { build(:subscription, question: question, user: user ) }
 
 
- scenario 'Authenticated user subscribes to question' do
+  scenario 'Authenticated user subscribes to question' do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
     expect(page).to have_content("the subscription has been successfully created")
   end
 
-scenario 'Unauthenticated user tries to subscribe to question' do
-  visit question_path(question)
-  expect(page).to_not have_link 'Subscribe'
+  scenario 'Unauthenticated user tries to subscribe to question' do
+    visit question_path(question)
+    expect(page).to_not have_link 'Subscribe'
   end
 end
 

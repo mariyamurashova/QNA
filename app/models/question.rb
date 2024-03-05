@@ -20,6 +20,10 @@ class Question < ApplicationRecord
 
   scope :created_24_hours, -> { where(created_at: 24.hours.ago..Time.now )}
 
+  def subscribed?(user)
+    self.subscriptions.where(user_id: user.id).length != 0
+  end
+
   private
 
   def calculate_reputation

@@ -11,23 +11,23 @@ RSpec.describe SubscriptionsController, type: :controller do
       before { login(user) }
 
       it "creates a new user's subscription" do 
-        expect { post :create, params: { question_id: question, user_id: user } }.to change(user.subscriptions, :count).by(1)
+        expect { post :create_subscription, params: { question_id: question, user_id: user }, format: :js}.to change(user.subscriptions, :count).by(1)
       end
 
       it "renders question's show template" do 
-        post :create, params: { question_id: question, user_id: user } 
-        expect(response).to have_http_status(:created)
+        post :create_subscription, params: { question_id: question, user_id: user }, format: :js 
+        expect(response).to render_template :create_subscription 
       end
     end  
     
     context 'Unauthenticated user'do
       it "doesn't create a new user's subscription" do 
-        expect { post :create, params: { question_id: question, user_id: user } }.to change(user.subscriptions, :count).by(0)
+        expect { post :create_subscription, params: { question_id: question, user_id: user }, format: :ja }.to change(user.subscriptions, :count).by(0)
       end
 
       it "renders question's show template" do 
-        post :create, params: { question_id: question, user_id: user } 
-        expect(response).to have_http_status(302)
+        post :create_subscription, params: { question_id: question, user_id: user }, format: :js
+        expect(response).to have_http_status(401)
       end
     end
   end
@@ -39,12 +39,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       before { login(user) }
 
       it 'deletes the subscription' do 
-        expect { delete :destroy, params: { id: subscription } }.to change(Subscription, :count ).by(-1)
-      end
-
-      it "renders question's show template" do 
-        delete :destroy, params: { id: subscription } 
-        expect(response).to have_http_status(204)
+        expect { delete :destroy, params: {id: question.id, user_id: user.id },format: :js  }.to change(Subscription, :count ).by(-1)
       end
     end
   end

@@ -1,0 +1,5 @@
+//$('.notice').html(' ');
+$('.notice').html('<%= flash[:notice] %>');
+$('.question_subscribe').append('<%= render 'subscriptions/form', resource:  @subscription.question %>')
+$('.question_unsubscribe').addClass('hidden');
+
