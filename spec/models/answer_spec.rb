@@ -29,13 +29,6 @@ RSpec.describe Answer, type: :model do
       allow(SendNotificationService).to receive(:new).and_return(service)
     end
 
-    describe "to question's author " do
-      it 'calls send_notification' do
-        expect(service).to receive(:notification_to_author).with(author, answer)
-        answer.save!
-      end
-    end
-
     describe "notifications to question's subscribers " do
       it 'calls send_notification_subscribers' do
         expect(service).to receive(:notification_to_subscribers).with(Subscription.find_subscribers(question), answer)

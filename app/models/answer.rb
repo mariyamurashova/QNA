@@ -17,7 +17,6 @@ class Answer < ApplicationRecord
   scope :sort_by_best, -> { order(best: :desc) }
 
   def call_notification_service
-    SendNotificationService.new.notification_to_author(self.question.author, self)
     SendNotificationService.new.notification_to_subscribers(subscribers, self)
   end
 
