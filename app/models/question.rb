@@ -24,6 +24,14 @@ class Question < ApplicationRecord
     self.subscriptions.where(user_id: user.id).length != 0
   end
 
+  def subscribers
+    subscribers = [ ]
+    self.subscriptions.pluck(:user_id).each do |user_id|
+      subscribers << User.find(user_id)
+    end
+    return subscribers
+  end
+
   private
 
   def calculate_reputation

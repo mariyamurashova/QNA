@@ -6,16 +6,14 @@ feature "User can can subscribe to question's updates", %q{
   I'd like to be able to subscribe to question
 } do
 
-given(:user) { create(:user) } 
-given!(:question) { create(:question) }
-given!(:subscription) { build(:subscription, question: question, user: user ) }
+  given(:user) { create(:user) } 
+  given!(:question) { create(:question) }
 
-
-  scenario 'Authenticated user subscribes to question' do
+  scenario 'Authenticated user subscribes to question', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
-    expect(page).to have_content("the subscription has been successfully created")
+    expect(page).to have_content("the subscription has been successfully created") 
   end
 
   scenario 'Unauthenticated user tries to subscribe to question' do

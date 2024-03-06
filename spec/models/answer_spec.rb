@@ -20,20 +20,13 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'send_notification' do
-    let!(:service) { SendNotificationService.new }
     let(:author) {create(:user)}
     let(:question) { create(:question, author: author) }
     let(:answer) { build(:answer, question: question)}
 
-    before do
-      allow(SendNotificationService).to receive(:new).and_return(service)
-    end
-
-    describe "notifications to question's subscribers " do
-      it 'calls send_notification_subscribers' do
-        expect(service).to receive(:notification_to_subscribers).with(Subscription.find_subscribers(question), answer)
-        answer.save!
-      end
+    it 'send_new_answer_notification' do
+      expect(NewAnswerNotificationJob).to receive(:perform_now).with(answer)
+      answer.save!
     end
   end
 end

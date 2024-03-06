@@ -54,4 +54,14 @@ RSpec.describe Question, type: :model do
       expect(question.subscribed?(other)).to eq(false)
     end
   end
+
+  describe 'subscribers' do
+    let!(:users) { create_list(:user, 2) }
+    let!(:question) { create(:question)}
+    let!(:subscriptions) { [ create(:subscription, question: question, user:users[0]), create(:subscription, question: question, user:users[1])] }
+    
+    it 'returns question subscribers' do
+      expect(question.subscribers).to eq(users)
+    end
+  end
 end

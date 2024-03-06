@@ -1,6 +1,6 @@
 .question
   = render @question
--if current_user
+-if can?(:create, Subscription)
   .question_subscribe
     -if !@question.subscribed?(current_user)
       =render 'subscriptions/form', resource: @question

@@ -27,11 +27,7 @@ class Ability
     guest_abilities
     can :read, Aword
 
-    can :create, [ Question, Answer, Comment ]
-
-    can :create_subscription, Question do |question|
-      !question.subscribed?(user)
-    end 
+    can :create, [ Question, Answer, Comment, Subscription ]
 
     can :set_best, Answer do |answer|
       user.author?(answer.question)

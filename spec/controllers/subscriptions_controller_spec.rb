@@ -11,22 +11,22 @@ RSpec.describe SubscriptionsController, type: :controller do
       before { login(user) }
 
       it "creates a new user's subscription" do 
-        expect { post :create_subscription, params: { question_id: question, user_id: user }, format: :js}.to change(user.subscriptions, :count).by(1)
+        expect { post :create, params: { question_id: question, user_id: user }, format: :js}.to change(user.subscriptions, :count).by(1)
       end
 
       it "renders question's show template" do 
-        post :create_subscription, params: { question_id: question, user_id: user }, format: :js 
-        expect(response).to render_template :create_subscription 
+        post :create, params: { question_id: question, user_id: user }, format: :js 
+        expect(response).to render_template :create
       end
     end  
     
     context 'Unauthenticated user'do
       it "doesn't create a new user's subscription" do 
-        expect { post :create_subscription, params: { question_id: question, user_id: user }, format: :ja }.to change(user.subscriptions, :count).by(0)
+        expect { post :create, params: { question_id: question, user_id: user }, format: :ja }.to change(user.subscriptions, :count).by(0)
       end
 
       it "renders question's show template" do 
-        post :create_subscription, params: { question_id: question, user_id: user }, format: :js
+        post :create, params: { question_id: question, user_id: user }, format: :js
         expect(response).to have_http_status(401)
       end
     end

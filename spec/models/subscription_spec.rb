@@ -18,15 +18,4 @@ RSpec.describe Subscription, type: :model do
       expect{ user.subscriptions.create(question: other_question) }.to change{ Subscription.count }.by(1)
     end
   end
-
-  describe 'find_subscribers' do
-    let!(:question){ create(:question) }
-    let(:user){ create(:user) }
-    let(:user2){ create(:user) }
-    let!(:subscriptions) { [create(:subscription, user: user, question: question), create(:subscription, user: user2, question: question)] }
-    
-    it "should returns subscribers" do
-      expect { self.receive(:where).with(question).and_return([user.id, user2.id]) }
-    end
-  end
 end
