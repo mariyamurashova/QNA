@@ -15,8 +15,8 @@ RSpec.describe SubscriptionsController, type: :controller do
       end
 
       it "renders question's show template" do 
-        post :create, params: { question_id: question, user_id: user }, format: :js 
-        expect(response).to render_template :create
+        post :create, params: { question_id: question, user_id: user }, format: :json 
+        expect(response).to have_http_status(:created)
       end
     end  
     

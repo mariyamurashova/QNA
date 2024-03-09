@@ -5,7 +5,14 @@ class SubscriptionsController < ApplicationController
   def create
     authorize! :create, Subscription
     @subscription = current_user.subscriptions.new(question_id: subscription_params[:question_id])
-    flash[:notice] = "the subscription has been successfully created" if @subscription.save
+    if @subscription.save
+      flash[:notice] = "the subscription has been successfully created"
+      render json: flash, status: :created
+    else
+      render json: @subscription.errors.full_messages, status: :forbidden
+    end
+
+    #flash[:notice] = "the subscription has been successfully created" if @subscription.save
   end
 
   def destroy
