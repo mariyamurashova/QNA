@@ -36,4 +36,5 @@
 /config/database.yml
 .DS_Store
 .byebug_history
-.rdb
+!/.rdb*
+/dump.rdb
