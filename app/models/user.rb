@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include PgSearch::Model
+  multisearchable against: [:email],
+                  update_if: :email_previously_changed?
+  pg_search_scope :search_by, against: [:email]
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,

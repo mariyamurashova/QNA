@@ -31,5 +31,6 @@ import "./custom/answer_comment.js"
 import "./custom/question_comment.js"
 import "./custom/gist.js"
 import "./custom/subscription.js"
+import "./custom/search.js"
 import "channels"
 

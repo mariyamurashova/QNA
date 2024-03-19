@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: [:title, :body],
+                  update_if: :body_previously_changed?,
+                  update_if: :title_previously_changed?
+   pg_search_scope :search_by, against: [:title, :body]
+
   include Vottable
   include Commentable
   has_many :answers, dependent: :destroy

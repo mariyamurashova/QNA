@@ -1,10 +1,20 @@
+= form_with url: "/search", local: false, data: { type: :json }, method: :get, html: { id: "search-form"} do |form| 
+  = form.label :query, "Search for:" 
+  = form.text_field :query
+  = form.submit "Search", class: "search-btn"
+
+p = link_to 'My Awords', awords_path
+
+.search_results_title
+.search_results
+
 - if can?(:create, Question)
   p= link_to 'Ask question', new_question_path
 .questions_list
   -@questions.each do |question|
-    p = link_to question.title, question_path(question), id: 'questions_list' 
+    p = link_to question.title, question_path(question), class: "questions_list" 
     br=
-p = link_to 'My Awords', awords_path
+
 
 
 

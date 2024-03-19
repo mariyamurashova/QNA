@@ -4,7 +4,7 @@ FactoryBot.define do
     association :user
 
   #transient do
-   # commentable {answer }
+   # commentable { answer }
   #end
 
   #commentable_id { commentable.id }

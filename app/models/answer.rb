@@ -3,6 +3,12 @@
 class Answer < ApplicationRecord
   include Vottable
   include Commentable
+
+  include PgSearch::Model
+  multisearchable against: [:body],
+                  update_if: :body_previously_changed?
+  pg_search_scope :search_by, against: [:body]
+
   belongs_to :question
   belongs_to :author, class_name: "User", foreign_key: :author_id
   has_many :links, dependent: :destroy, as: :linkable
