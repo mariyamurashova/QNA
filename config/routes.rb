@@ -41,7 +41,9 @@ Rails.application.routes.draw do
   resources :awords, only: :index
 
   get '/search' => 'search#multisearch' 
-   get '/question_search' => 'search#question_search' 
+  get '/question_search' => 'search#question_search' 
+  get '/answer_search' => 'search#answer_search' 
+  get '/comment_search' => 'search#comment_search' 
 
 
   mount ActionCable.server => '/cable'

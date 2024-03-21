@@ -56,4 +56,57 @@ feature 'User can search content', %q{
       expect(page).to have_content("No results") 
     end
   end
+
+  describe 'Answer scope search' do
+    given!(:answers) {create_list(:answer, 3, body: 'answer search')}
+
+    scenario 'there is content user looking for', js: true do
+      visit questions_path
+      within '.answer_search' do
+        fill_in :query, with:  'answer search'
+        click_on 'Search'
+      end
+    
+      expect(page).to have_content("#{answers[0].body}") 
+      expect(page).to have_content("#{answers[1].body}") 
+      expect(page).to have_content("#{answers[2].body}") 
+    end
+
+    scenario 'there is no content user looking for', js: true do
+      visit questions_path
+      within '.answer_search' do
+        fill_in 'query', with: 'looking for smth'
+        click_on 'Search'
+      end
+    
+      expect(page).to have_content("No results") 
+    end
+  end
+
+  describe 'Comment scope search' do
+    given(:question) {create(:question)}
+    given!(:comments) {create_list(:comment, 3, body: 'comment search', commentable: question)}
+
+    scenario 'there is content user looking for', js: true do
+      visit questions_path
+      within '.comment_search' do
+        fill_in :query, with:  'comment search'
+        click_on 'Search'
+      end
+    
+      expect(page).to have_content("#{comments[0].body}") 
+      expect(page).to have_content("#{comments[1].body}") 
+      expect(page).to have_content("#{comments[2].body}") 
+    end
+
+    scenario 'there is no content user looking for', js: true do
+      visit questions_path
+      within '.answer_search' do
+        fill_in 'query', with: 'looking for smth'
+        click_on 'Search'
+      end
+    
+      expect(page).to have_content("No results") 
+    end
+  end
 end

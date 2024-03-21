@@ -3,6 +3,12 @@
 .question_search
   b= "Search in Questions"
   =render 'shared/search_form', url:  "/question_search"
+.answer_search
+  b= "Search in Answers"
+  =render 'shared/search_form', url:  "/answer_search"
+.comment_search
+  b= "Search in Comments"
+  =render 'shared/search_form', url:  "/comment_search"
 
 p = link_to 'My Awords', awords_path
 
