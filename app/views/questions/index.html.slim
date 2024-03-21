@@ -1,7 +1,8 @@
-= form_with url: "/search", local: false, data: { type: :json }, method: :get, html: { id: "search-form"} do |form| 
-  = form.label :query, "Search for:" 
-  = form.text_field :query
-  = form.submit "Search", class: "search-btn"
+.multisearch
+  =render 'shared/search_form', url:  "/search"
+.question_search
+  b= "Search in Questions"
+  =render 'shared/search_form', url:  "/question_search"
 
 p = link_to 'My Awords', awords_path
 
