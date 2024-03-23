@@ -4,7 +4,8 @@ class User < ApplicationRecord
   include PgSearch::Model
   multisearchable against: [:email],
                   update_if: :email_previously_changed?
-  pg_search_scope :search_by, against: [:email]
+  pg_search_scope :search_by_users, against: [:email]
+              
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,
@@ -14,6 +15,7 @@ class User < ApplicationRecord
   has_many :questions, foreign_key: "author_id"
   has_many :awords
   has_many :votes
+  has_many :comments
   has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 

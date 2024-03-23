@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get '/question_search' => 'search#question_search' 
   get '/answer_search' => 'search#answer_search' 
   get '/comment_search' => 'search#comment_search' 
+  get '/user_search' => 'search#user_search' 
 
 
   mount ActionCable.server => '/cable'

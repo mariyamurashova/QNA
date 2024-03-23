@@ -109,4 +109,34 @@ feature 'User can search content', %q{
       expect(page).to have_content("No results") 
     end
   end
+
+   describe 'User scope search' do
+     given!(:user) {create(:user, email: 'user1@test.com')}
+    given!(:question) {create(:question, author: user)}
+     given!(:answer) {create(:answer, author: user)}
+    given!(:comment) {create(:comment, commentable: question, user: user)}
+
+    scenario 'there is content user looking for', js: true do
+      visit questions_path
+      within '.user_search' do
+        fill_in 'query', with: 'user1@test.com'
+        click_on 'Search'
+      end
+
+      #expect(page).to have_content("No results") 
+      expect(page).to have_content("http://localhost:3000/questions/#{question.id}") 
+      expect(page).to have_content("http://localhost:3000/questions/#{answer.question.id}") 
+      expect(page).to have_content("http://localhost:3000/questions/#{comment.commentable.id}") 
+    end
+
+    scenario 'there is no content user looking for', js: true do
+      visit questions_path
+      within '.user_search' do
+        fill_in 'query', with: 'looking for smth'
+        click_on 'Search'
+      end
+    
+      expect(page).to have_content("No results") 
+    end
+  end
 end

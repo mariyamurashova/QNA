@@ -8,7 +8,7 @@ class Answer < ApplicationRecord
   multisearchable against: [:body],
                   update_if: :body_previously_changed?,
   additional_attributes: -> (answer) { { author_id: answer.author_id } }
-  pg_search_scope :search_by_answers, against: [:body, :author_id]
+  pg_search_scope :search_by_answers, against: [:body, :author_id],   using: :trigram
 
   belongs_to :question
   belongs_to :author, class_name: "User", foreign_key: :author_id

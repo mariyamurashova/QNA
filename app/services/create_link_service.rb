@@ -25,6 +25,8 @@ class CreateLinkService
           answer_link(res.id)
         when "Comment" 
           comment_link(res.id)
+        when "User" 
+          user_link(res)
       end 
     end
     return @links
@@ -47,6 +49,30 @@ private
       answer_link(comment.commentable_id)
     else
       question_link(comment.commentable_id)
+    end
+  end
+
+  def user_link(user)
+    user_questions_links(user) if user.questions
+    user_answers_links(user) if user.answers
+    user_comments_links(user) if user.comments
+  end
+
+  def user_questions_links(user)
+    user.questions.each do |question|
+      question_link(question.id)
+    end
+  end
+
+  def user_answers_links(user)
+    user.answers.each do |answer|
+      answer_link(answer.id)
+    end
+  end
+
+  def user_comments_links(user)
+    user.comments.each do |comment|
+      comment_link(comment.id)
     end
   end
 end

@@ -9,6 +9,9 @@
 .comment_search
   b= "Search in Comments"
   =render 'shared/search_form', url:  "/comment_search"
+.user_search
+  b= "Search in Users"
+  =render 'shared/search_form', url:  "/user_search"
 
 p = link_to 'My Awords', awords_path
 

@@ -13,33 +13,33 @@ class SearchController < ApplicationController
 
   def question_search
     @result = Question.search_by_questions(search_params[:query])
-    if !@result.empty?
-      render json: {links: scope_link("Question"), results: @result }
-    else
-      render json: { text: "No results"}
-    end
+     render_search_results("Question") 
   end
 
   def answer_search
-    @result = Answer.search_by_answers(search_params[:query])
-    if !@result.empty?
-      render json: {links: scope_link("Answer"), results: @result }
-    else
-      render json: { text: "No results"}
-    end
+    @result = Answer.search_by_answers(search_params[:query]) 
+    render_search_results("Answer")
   end
-
 
   def comment_search
     @result = Comment.search_by_comments(search_params[:query])
+     render_search_results("Comment") 
+  end
+
+  def user_search
+    @result = User.search_by_users(search_params[:query])
+     render_search_results("User") 
+  end
+
+  private
+
+  def render_search_results(attr)
     if !@result.empty?
-      render json: {links: scope_link("Comment"), results: @result }
+      render json: {links: scope_link(attr), results: @result }
     else
       render json: { text: "No results"}
     end
   end
-
-  private
 
   def link
     CreateLinkService.new.make_link_multisearch(@result)
@@ -52,6 +52,4 @@ class SearchController < ApplicationController
   def search_params
     params.permit(:query)
   end
-
-
 end

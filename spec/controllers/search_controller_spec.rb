@@ -1,33 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe SearchController, type: :controller do
+
   describe 'GET #multisearch' do 
     let!(:question) {create(:question, body: 'global searching' )}
     let!(:answer) {create(:answer, body: 'global searching' )}
     let(:results) { PgSearch.multisearch('global searching') }
 
     context 'there is searching content' do
-      before { get :multisearch, params: { query: 'global searching'}, format: :json }
-
-      it 'populates an array of all items with given parameters' do  
-        expect(assigns(:result)).to match_array(results) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+       before { get :multisearch, params: { query: 'global searching'}, format: :json }
+       it_behaves_like 'has searching content'
     end
 
     context 'there is not searching content' do
       before { get :multisearch, params: { query: 'not existing content'}, format: :json }
-
-      it 'returns empty collection' do  
-        expect(assigns(:result)).to match_array([ ]) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+      it_behaves_like 'has not searching content'
     end
    end
 
@@ -37,26 +24,12 @@ RSpec.describe SearchController, type: :controller do
 
     context 'there is searching content' do
       before { get :question_search, params: { query: 'question_search'}, format: :json }
-
-      it 'populates an array of all items with given parameters' do  
-        expect(assigns(:result)).to match_array(results) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+      it_behaves_like 'has searching content'
     end
 
     context 'there is not searching content' do
       before { get :question_search, params: { query: 'not existing content'}, format: :json }
-
-      it 'returns empty collection' do  
-        expect(assigns(:result)).to match_array([ ]) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+      it_behaves_like 'has not searching content'
     end
   end
 
@@ -66,26 +39,12 @@ RSpec.describe SearchController, type: :controller do
 
     context 'there is searching content' do
       before { get :answer_search, params: { query: 'answer_search'}, format: :json }
-
-      it 'populates an array of all items with given parameters' do  
-        expect(assigns(:result)).to match_array(results) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+      it_behaves_like 'has searching content'
     end
-
+  
     context 'there is not searching content' do
       before { get :answer_search, params: { query: 'not existing content'}, format: :json }
-
-      it 'returns empty collection' do  
-        expect(assigns(:result)).to match_array([ ]) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+      it_behaves_like 'has not searching content'
     end
   end
 
@@ -96,26 +55,31 @@ RSpec.describe SearchController, type: :controller do
 
     context 'there is searching content' do
       before { get :comment_search, params: { query: 'comment_search'}, format: :json }
-
-      it 'populates an array of all items with given parameters' do  
-        expect(assigns(:result)).to match_array(results) 
-      end
-
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+       it_behaves_like 'has searching content'
     end
 
     context 'there is not searching content' do
       before { get :comment_search, params: { query: 'not existing content'}, format: :json }
+      it_behaves_like 'has not searching content'
+    end
+  end
 
-      it 'returns empty collection' do  
-        expect(assigns(:result)).to match_array([ ]) 
-      end
+  describe 'GET #user_search' do
+    let(:user) {create(:user, email: "user@mail.com")}
+    let(:answer) {create(:answer, author: user)} 
+    let(:question) {create(:question, author: user)}
+    let(:comment) {create(:comment, commentable: question)} 
+    
+    let(:results) { User.search_by_users('user@mail.com') }
 
-      it 'it returns status 200' do 
-        expect(response).to have_http_status(:ok)
-      end
+    context 'there is searching content' do
+      before { get :user_search, params: { query: 'user@mail.com'}, format: :json }
+       it_behaves_like 'has searching content'
+    end
+
+    context 'there is not searching content' do
+      before { get :user_search, params: { query: 'not existing content'}, format: :json }
+      it_behaves_like 'has not searching content'
     end
   end
 end
