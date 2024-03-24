@@ -1,4 +1,6 @@
-= form_with url: url, local: false, data: { type: :json }, method: :get, html: { id: url.sub('/', '')} do |form| 
-  = form.label :query, "Search for:" 
-  = form.text_field :query
+= form_with url: '/search', local: false, data: { type: :json }, method: :get, html: { id: "multisearch"} do |form|
+  = form.label :query, "Search " 
+  p
+  = form.text_field :query, id: "multisearch"
+  p
   = form.submit "Search", class: "search-btn"

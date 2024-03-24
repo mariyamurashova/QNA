@@ -31,12 +31,15 @@ feature 'User can search content', %q{
     end
   end
 
-  describe 'Question scope search' do
+  describe 'Scope search' do
+
+  context 'Question scope search' do
     given!(:questions) {create_list(:question, 3, title: 'question search',  body: 'question body' )}
 
     scenario 'there is content user looking for', js: true do
       visit questions_path
-      within '.question_search' do
+      within '.scope_search' do
+        select "Question", :from => "category"
         fill_in :query, with:  'question search'
         click_on 'Search'
       end
@@ -48,7 +51,8 @@ feature 'User can search content', %q{
 
     scenario 'there is no content user looking for', js: true do
       visit questions_path
-      within '.question_search' do
+      within '.scope_search' do
+        select "Question", :from => "category"
         fill_in 'query', with: 'looking for smth'
         click_on 'Search'
       end
@@ -57,12 +61,13 @@ feature 'User can search content', %q{
     end
   end
 
-  describe 'Answer scope search' do
+  context 'Answer scope search' do
     given!(:answers) {create_list(:answer, 3, body: 'answer search')}
 
     scenario 'there is content user looking for', js: true do
       visit questions_path
-      within '.answer_search' do
+      within '.scope_search' do
+        select "Answer", :from => "category"
         fill_in :query, with:  'answer search'
         click_on 'Search'
       end
@@ -74,7 +79,8 @@ feature 'User can search content', %q{
 
     scenario 'there is no content user looking for', js: true do
       visit questions_path
-      within '.answer_search' do
+      within '.scope_search' do
+        select "Answer", :from => "category"
         fill_in 'query', with: 'looking for smth'
         click_on 'Search'
       end
@@ -83,13 +89,14 @@ feature 'User can search content', %q{
     end
   end
 
-  describe 'Comment scope search' do
+  context 'Comment scope search' do
     given(:question) {create(:question)}
     given!(:comments) {create_list(:comment, 3, body: 'comment search', commentable: question)}
 
     scenario 'there is content user looking for', js: true do
       visit questions_path
-      within '.comment_search' do
+      within '.scope_search' do
+        select "Comment", :from => "category"
         fill_in :query, with:  'comment search'
         click_on 'Search'
       end
@@ -101,7 +108,8 @@ feature 'User can search content', %q{
 
     scenario 'there is no content user looking for', js: true do
       visit questions_path
-      within '.answer_search' do
+      within '.scope_search' do
+        select "Comment", :from => "category"
         fill_in 'query', with: 'looking for smth'
         click_on 'Search'
       end
@@ -111,19 +119,19 @@ feature 'User can search content', %q{
   end
 
    describe 'User scope search' do
-     given!(:user) {create(:user, email: 'user1@test.com')}
+    given!(:user) {create(:user, email: 'user1@test.com')}
     given!(:question) {create(:question, author: user)}
-     given!(:answer) {create(:answer, author: user)}
+    given!(:answer) {create(:answer, author: user)}
     given!(:comment) {create(:comment, commentable: question, user: user)}
 
     scenario 'there is content user looking for', js: true do
       visit questions_path
-      within '.user_search' do
+      within '.scope_search' do
+        select "User", :from => "category"
         fill_in 'query', with: 'user1@test.com'
         click_on 'Search'
       end
 
-      #expect(page).to have_content("No results") 
       expect(page).to have_content("http://localhost:3000/questions/#{question.id}") 
       expect(page).to have_content("http://localhost:3000/questions/#{answer.question.id}") 
       expect(page).to have_content("http://localhost:3000/questions/#{comment.commentable.id}") 
@@ -131,7 +139,8 @@ feature 'User can search content', %q{
 
     scenario 'there is no content user looking for', js: true do
       visit questions_path
-      within '.user_search' do
+      within '.scope_search' do
+        select "User", :from => "category"
         fill_in 'query', with: 'looking for smth'
         click_on 'Search'
       end
@@ -139,4 +148,5 @@ feature 'User can search content', %q{
       expect(page).to have_content("No results") 
     end
   end
+end
 end

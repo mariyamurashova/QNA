@@ -1,17 +1,9 @@
 .multisearch
-  =render 'shared/search_form', url:  "/search"
-.question_search
-  b= "Search in Questions"
-  =render 'shared/search_form', url:  "/question_search"
-.answer_search
-  b= "Search in Answers"
-  =render 'shared/search_form', url:  "/answer_search"
-.comment_search
-  b= "Search in Comments"
-  =render 'shared/search_form', url:  "/comment_search"
-.user_search
-  b= "Search in Users"
-  =render 'shared/search_form', url:  "/user_search"
+  =render 'shared/search_form'
+.scope_search
+  b= "Search in categories"
+  =render 'shared/scope_search_form'
+
 
 p = link_to 'My Awords', awords_path
 

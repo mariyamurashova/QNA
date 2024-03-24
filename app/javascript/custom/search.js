@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 $(document).ready(function(){
-  $('#search').on('ajax:success', function (e) {
+  $('#multisearch').on('ajax:success', function (e) {
     hide_index_template_content()
     if (e.detail[0]['links']) 
       render_results(e.detail[0], 'searchable_type', 'content')
@@ -9,27 +9,10 @@ $(document).ready(function(){
       render_no_results(e.detail[0])   
  })
 
-  $('#question_search, #answer_search, #comment_search').on('ajax:success', function (e) {
+  $('#scope_search').on('ajax:success', function (e) {
       hide_index_template_content()
     if (e.detail[0]['links']) 
       render_results(e.detail[0], 'title', 'body')
-    else 
-      render_no_results(e.detail[0])
-  })
-
-  $('#user_search').on('ajax:success', function (e) {
-      hide_index_template_content() 
-    if (e.detail[0]['links']) {
-      $('.search_results_title').html(" ");
-      $('.search_results_title').append('<h1>Search Results, by user'+' '+'-'+ e.detail[0]['results']['email'] +': </h1>');
-      $.each(e.detail[0]['links'], function(index, value) { 
-        let aTag = document.createElement('a');
-        aTag.innerHTML='<p>'+value + '<p>';
-        aTag.href=value;
-        aTag.title="search results";
-        $('.search_results').append(aTag);
-      }) 
-    }  
     else 
       render_no_results(e.detail[0])
   })
@@ -42,21 +25,42 @@ $(document).ready(function(){
   }
   
   function render_results(edetail, field_key1, field_key2) {
-    $.each(edetail['links'], function(index, value) {  
-      let aTag = document.createElement('a');
-      if (!edetail['results'][index][field_key2])
-        aTag.innerHTML='<p>' + edetail['results'][index][field_key1] + '<p>';
+     if (edetail['results'][0]['email'])
+        render_user_search_results(edetail)
       else
-        aTag.innerHTML='<p>'+edetail['results'][index][field_key1] +' ' + edetail['results'][index][field_key2] + '<p>';
-      aTag.href=value;
-      aTag.title="search results";
-      $('.search_results').append(aTag);
-    })
+        $.each(edetail['links'], function(index, value) {  
+          let aTag = document.createElement('a');
+
+          if (!edetail['results'][index][field_key2]) // rendering for answers, comments without field - 'title'
+            aTag.innerHTML='<p>' + edetail['results'][index][field_key1] + '<p>';
+          else
+            aTag.innerHTML='<p>'+edetail['results'][index][field_key1] +' ' + edetail['results'][index][field_key2] + '<p>';
+
+          aTag.href=value;
+          aTag.title="search results";
+          $('.search_results').append(aTag);
+        })
   }
   
   function render_no_results(edetail){
     $('.search_results').html(" ");
     $('.search_results').append(edetail['text']);  
+  }
+
+  function render_user_search_results(edetail){
+    if (edetail['links']) {
+      $('.search_results_title').html(" ");
+      $('.search_results_title').append('<h1>Search Results, by user'+' '+'-'+ edetail['results']['email'] +': </h1>');
+      $.each(edetail['links'], function(index, value) { 
+        let aTag = document.createElement('a');
+        aTag.innerHTML='<p>'+value + '<p>';
+        aTag.href=value;
+        aTag.title="search results";
+        $('.search_results').append(aTag);
+      }) 
+    }
+    else
+      render_no_results(e.detail[0])
   }
 })
 

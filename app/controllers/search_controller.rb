@@ -2,40 +2,21 @@ class SearchController < ApplicationController
 
   skip_authorization_check
 
-  def multisearch
+  def search
     @result = PgSearch.multisearch(search_params[:query])
-    if !@result.empty?
-      render json: {links: link, results: @result }
-    else
-      render json: { text: "No results"}
-    end
+    render_search_results(link) 
   end
 
-  def question_search
-    @result = Question.search_by_questions(search_params[:query])
-     render_search_results("Question") 
-  end
-
-  def answer_search
-    @result = Answer.search_by_answers(search_params[:query]) 
-    render_search_results("Answer")
-  end
-
-  def comment_search
-    @result = Comment.search_by_comments(search_params[:query])
-     render_search_results("Comment") 
-  end
-
-  def user_search
-    @result = User.search_by_users(search_params[:query])
-     render_search_results("User") 
+  def scope_search
+    @result =SearchService.new.searching(search_params[:category], search_params[:query])
+    render_search_results(scope_link(search_params[:category])) 
   end
 
   private
 
-  def render_search_results(attr)
+  def render_search_results(links)
     if !@result.empty?
-      render json: {links: scope_link(attr), results: @result }
+      render json: {links: links, results: @result }
     else
       render json: { text: "No results"}
     end
@@ -50,6 +31,6 @@ class SearchController < ApplicationController
   end
 
   def search_params
-    params.permit(:query)
+    params.permit(:query, :category)
   end
 end
