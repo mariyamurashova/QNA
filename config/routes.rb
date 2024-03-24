@@ -40,6 +40,9 @@ Rails.application.routes.draw do
 
   resources :awords, only: :index
 
+  get '/search' => 'search#search' 
+  get '/scope_search' => 'search#scope_search' 
+  
   mount ActionCable.server => '/cable'
 
   namespace :api do
