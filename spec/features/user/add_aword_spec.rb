@@ -16,8 +16,9 @@ feature "The best answer's author gets an aword", %q{
     scenario 'user has awords' do
       sign_in answer_author
       visit questions_path
-      click_on 'My Awords'
-   
+      within '.navbar' do
+        click_on 'My Awords'
+      end
       expect(page).to have_content("Your awords:")
       expect(page).to have_content(aword.title)
       expect(page).to have_content(aword.question.title)
@@ -27,8 +28,9 @@ feature "The best answer's author gets an aword", %q{
     scenario "user hasn't awords" do
       sign_in question_author
       visit questions_path
-      click_on 'My Awords'
-   
+      within '.navbar' do
+        click_on 'My Awords'
+      end   
       expect(page).to have_content("You have no awords yet")
     end
   end

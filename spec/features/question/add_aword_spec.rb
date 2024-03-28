@@ -13,7 +13,9 @@ describe 'Authenticated user' do
   background do
     sign_in(user)
     visit questions_path
-    click_on 'Ask question'
+    within '.navbar' do
+      click_on 'Ask question'
+    end
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
    end
@@ -22,9 +24,9 @@ describe 'Authenticated user' do
 
     fill_in 'Aword Title', with: 'Best answer'
     attach_file "question[aword_attributes][image]",image
-
-    click_on 'Ask'
-
+    within '.ask_question' do
+      click_on 'Ask'
+    end
     expect(page).to have_content 'Your question successfully created.'
     expect(page).to have_content 'Test question'
     expect(page).to have_content 'text text text'

@@ -24,8 +24,9 @@ feature 'User can add links to question', %q{
 
     page.all('.nested_fields').first.fill_in 'Link name', with:  'Google'
     page.all('.nested_fields').first.fill_in 'Url', with: google_url
-
-    click_on 'Ask'
+    within '.ask_question' do
+      click_on 'Ask'
+    end
     within '.question' do
       expect(page).to have_css('.gist')
       expect(page).to have_link('Google'), href: google_url

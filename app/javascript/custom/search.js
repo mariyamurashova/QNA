@@ -2,6 +2,7 @@ import $ from "jquery";
 
 $(document).ready(function(){
   $('#multisearch').on('ajax:success', function (e) {
+    console.log("multisearch")
     hide_index_template_content()
     if (e.detail[0]['links']) 
       render_results(e.detail[0], 'searchable_type', 'content')

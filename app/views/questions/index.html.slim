@@ -1,17 +1,10 @@
-.multisearch
-  =render 'shared/search_form'
 .scope_search
   b= "Search in categories"
   =render 'shared/scope_search_form'
 
-
-p = link_to 'My Awords', awords_path
-
 .search_results_title
 .search_results
 
-- if can?(:create, Question)
-  p= link_to 'Ask question', new_question_path
 .questions_list
   -@questions.each do |question|
     p = link_to question.title, question_path(question), class: "questions_list" 

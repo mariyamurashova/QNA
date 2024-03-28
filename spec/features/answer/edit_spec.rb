@@ -32,7 +32,9 @@ feature 'User can edit his answer', %q{
     background do
       sign_in author
       visit question_path(question) 
-      click_on 'Edit'
+      within '.edit_answer' do
+        click_on 'Edit'
+      end
     end 
 
     scenario 'edits his answer', js: true do
@@ -101,7 +103,9 @@ feature 'User can edit his answer', %q{
       background do
         answer.files.attach(io: File.open(Rails.root.join('spec', 'fixtures', '1.txt')), filename: '1.txt', content_type: 'text/txt')
         visit question_path(question) 
-        click_on 'Edit'
+        within '.edit_answer' do
+          click_on 'Edit'
+        end
       end
 
       scenario 'can add files to his question', js: true do

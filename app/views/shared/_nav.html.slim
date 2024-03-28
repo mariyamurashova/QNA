@@ -1,6 +1,21 @@
--if user_signed_in?
-  = link_to 'Log out', destroy_user_session_path, method: :delete
--else 
-  = link_to 'Sign in', new_user_session_path
+ nav class="navbar navbar-expand-lg navbar-light 
+    bg-light"
+      .container-fluid
+        a class="navbar-brand" href=questions_path QNA
+
+        ul class = "navbar-nav me-auto mb-2 mb-lg-0"
+          li class="nav-item"
+            a class="nav-link active" aria-current="page" href=new_question_path Ask question
+     
+          li class="nav-item"
+            a class="nav-link active" aria-current="page" href=awords_path My Awords
+
+        =render 'shared/search_form'
+        -if user_signed_in?
+          = link_to ' Log out |', destroy_user_session_path, method: :delete,  class: "nav-link active font-weight-bold"
+          = link_to ' Sign in ', new_user_session_path,  class: "nav-link disabled"
+        -else 
+          = link_to ' Sign in  |', new_user_session_path,  class: "nav-link active"
+          = link_to ' Log out ', destroy_user_session_path, method: :delete,  class: "nav-link disabled"
 
 

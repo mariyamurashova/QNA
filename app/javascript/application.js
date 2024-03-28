@@ -14,7 +14,8 @@ import Cocooned from '@notus.sh/cocooned'
 Cocooned.start()
 console.log("Cocooned")
 
-import * as bootstrap from "bootstrap"  
+//import "popper"
+import "bootstrap"
 
 import jquery from 'jquery'
 window.jQuery = jquery

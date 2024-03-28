@@ -12,14 +12,16 @@ describe 'Authenticated user' do
   background do
     sign_in(user)
     visit questions_path
-    click_on 'Ask question'
+    within '.navbar' do
+      click_on 'Ask question'
+    end
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
    end
 
   scenario 'asks a question' do 
-
-    click_on 'Ask'
+      click_on 'Ask'
+   
 
     expect(page).to have_content 'Your question successfully created.'
     expect(page).to have_content 'Test question'
@@ -55,7 +57,9 @@ context "mulitple sessions", js:true do
     end
   
     Capybara.using_session('user') do
-      click_on 'Ask question'
+      within '.navbar' do
+        click_on 'Ask question'
+      end
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
       click_on 'Ask'
@@ -74,7 +78,11 @@ end
 
    scenario 'Unauthenticated user tries to ask a question' do 
     visit questions_path
+    within '.navbar' do
+      click_on 'Ask question'
+    end
     
-    expect(page).to_not have_link 'Ask_question'
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    #expect(page).to_not have_link 'Ask_question'
    end
 end

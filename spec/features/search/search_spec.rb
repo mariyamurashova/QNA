@@ -12,7 +12,7 @@ feature 'User can search content', %q{
 
     scenario 'there is content user looking for', js: true do
       visit questions_path
-      within '.multisearch' do
+      within '.navbar' do
         fill_in :query, with: 'global searching'
         click_on 'Search'
       end
@@ -23,7 +23,7 @@ feature 'User can search content', %q{
 
     scenario 'there is no content user looking for', js: true do
       visit questions_path
-      within '.multisearch' do
+      within '.navbar' do
         fill_in 'query', with: 'looking for smth'
         click_on 'Search'
       end
