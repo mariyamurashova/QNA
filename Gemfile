@@ -36,6 +36,7 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'pg_search'
+gem 'mini_racer'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -44,6 +45,12 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0.0'
   gem 'byebug', '~> 11.1'
   gem 'letter_opener'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :development do
