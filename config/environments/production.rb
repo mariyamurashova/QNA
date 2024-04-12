@@ -88,9 +88,11 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
   address:              'smtp.yandex.ru',
   port:                  465,
-  domain:               'gmail.com',
-  user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
-  password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
+  domain:               'yandex.ru',
+  user_name:            'mariya04.2024@yandex.ru',
+  password:             'Lionking2626',
+  #user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
+  #password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
   authentication:       'plain',
   enable_starttls_auto: true  }
 

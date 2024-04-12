@@ -340,6 +340,8 @@ GEM
     rake (13.1.0)
     rdoc (6.6.0)
       psych (>= 4.0.0)
+    redis (5.1.0)
+      redis-client (>= 0.17.0)
     redis-client (0.20.0)
       connection_pool
     regexp_parser (2.8.2)
@@ -496,6 +498,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.1.1)
   rails-controller-testing
+  redis
   rspec-rails (~> 6.0.0)
   sass-rails
   selenium-webdriver
