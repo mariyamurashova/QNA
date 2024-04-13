@@ -33,16 +33,18 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
 #gem 'sidekiq'
-#gem 'sidekiq', '< 7'
-gem 'sidekiq', '~> 6.5.5'
-gem 'sidekiq-unique-jobs'
+gem 'sidekiq', '< 7'
+#gem 'sidekiq', '~> 6.5.5'
+#gem 'sidekiq-unique-jobs'
+gem 'sidekiq-unique-jobs', '~> 7.1'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'pg_search'
 gem 'mini_racer'
 gem 'base64', '~> 0.1.1'
-gem 'redis'
-gem 'redis-client'
+#gem 'redis'
+gem 'redis', '~> 4'
+#gem 'redis-client'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -343,10 +343,7 @@ GEM
     rake (13.1.0)
     rdoc (6.6.0)
       psych (>= 4.0.0)
-    redis (5.1.0)
-      redis-client (>= 0.17.0)
-    redis-client (0.20.0)
-      connection_pool
+    redis (4.8.1)
     regexp_parser (2.8.2)
     reline (0.4.0)
       io-console (~> 0.5)
@@ -505,14 +502,13 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.1.1)
   rails-controller-testing
-  redis
-  redis-client
+  redis (~> 4)
   rspec-rails (~> 6.0.0)
   sass-rails
   selenium-webdriver
   shoulda-matchers
-  sidekiq (~> 6.5.5)
-  sidekiq-unique-jobs
+  sidekiq (< 7)
+  sidekiq-unique-jobs (~> 7.1)
   sinatra
   slim-rails
   sprockets-rails
