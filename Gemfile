@@ -32,7 +32,8 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
-gem 'sidekiq'
+#gem 'sidekiq'
+gem 'sidekiq', '< 7'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'pg_search'
