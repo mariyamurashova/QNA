@@ -499,6 +499,7 @@ DEPENDENCIES
   rails (~> 7.1.1)
   rails-controller-testing
   redis
+  redis-client
   rspec-rails (~> 6.0.0)
   sass-rails
   selenium-webdriver
