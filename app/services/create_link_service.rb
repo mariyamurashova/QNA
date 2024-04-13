@@ -35,12 +35,12 @@ class CreateLinkService
 private
 
   def question_link(id)
-    @links << "http://localhost:3000/questions/#{id}"
+    @links << "http://79.174.80.177/questions/#{id}"
   end
 
   def answer_link(id)
     answer = Answer.where(id:id).first
-    @links << "http://localhost:3000/questions/#{answer.question.id}"
+    @links << "http://79.174.80.177/questions/#{answer.question.id}"
   end
 
   def comment_link(id)

@@ -6,8 +6,8 @@ RSpec.describe CreateLinkService do
     let!(:answer) {create(:answer, body: 'global searching' )}
     let!(:comment) {create(:comment, commentable: answer, body: 'global searching' )}
     let(:search_results) { PgSearch.multisearch('global searching') }
-    let!(:links) {["http://localhost:3000/questions/#{question.id}", "http://localhost:3000/questions/#{answer.question.id}", 
-                  "http://localhost:3000/questions/#{answer.question.id}"]}
+    let!(:links) {["http://79.174.80.177/questions/#{question.id}", "http://79.174.80.177/questions/#{answer.question.id}", 
+                  "http://79.174.80.177/questions/#{answer.question.id}"]}
 
     it 'makes links for multisearching results' do
       subject { CreateLinkService.new }
@@ -18,8 +18,8 @@ RSpec.describe CreateLinkService do
   describe 'Question_search_scope' do
     let!(:question_array) {create_list(:question, 3, body: 'scope search' )}
     let(:question_scope_search_results) { Question.search_by_questions('scope search') }
-    let!(:questions_links) {["http://localhost:3000/questions/#{question_array[0].id}", "http://localhost:3000/questions/#{question_array[1].id}", 
-                  "http://localhost:3000/questions/#{question_array[2].id}"]}
+    let!(:questions_links) {["http://79.174.80.177/questions/#{question_array[0].id}", "http://79.174.80.177/questions/#{question_array[1].id}", 
+                  "http://79.174.80.177/questions/#{question_array[2].id}"]}
   
     it 'makes links for question_scope_search results' do
       subject { CreateLinkService.new }

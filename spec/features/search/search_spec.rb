@@ -132,9 +132,9 @@ feature 'User can search content', %q{
         click_on 'Search'
       end
 
-      expect(page).to have_content("http://localhost:3000/questions/#{question.id}") 
-      expect(page).to have_content("http://localhost:3000/questions/#{answer.question.id}") 
-      expect(page).to have_content("http://localhost:3000/questions/#{comment.commentable.id}") 
+      expect(page).to have_content("http://79.174.80.177/questions/#{question.id}") 
+      expect(page).to have_content("http://79.174.80.177/questions/#{answer.question.id}") 
+      expect(page).to have_content("http://79.174.80.177/questions/#{comment.commentable.id}") 
     end
 
     scenario 'there is no content user looking for', js: true do
