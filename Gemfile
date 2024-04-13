@@ -33,7 +33,8 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
 #gem 'sidekiq'
-gem 'sidekiq', '< 7'
+#gem 'sidekiq', '< 7'
+gem 'sidekiq', '~> 6.5.5'
 gem 'sidekiq-unique-jobs'
 gem 'sinatra', require: false
 gem 'whenever', require: false
