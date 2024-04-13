@@ -82,17 +82,16 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: "http://79.174.80.177"}    
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
+  tls:                  true,
   address:              'smtp.yandex.ru',
   port:                  465,
   domain:               'yandex.ru',
-  user_name:            'mariya04.2024@yandex.ru',
-  password:             'Lionking2626',
-  #user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
-  #password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
+  user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
+  password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
   authentication:       'plain',
   enable_starttls_auto: true  }
 
