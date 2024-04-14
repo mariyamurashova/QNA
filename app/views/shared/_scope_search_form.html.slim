@@ -1,9 +1,9 @@
-= form_with url: {controller: 'search', action: 'scope_search'}, local: false, data: { type: :json }, method: :get, html: { id: "/scope_search".sub('/', '')} do |form|
-  = form.label  "Select category " 
-  = form.select :category, ["Question", "Answer", "Comment", "User"],   class: "store-select"
+= form_with url: {controller: 'search', action: 'scope_search'}, local: false, data: { type: :json }, method: :get, class: "mb-3", html: { id: "/scope_search".sub('/', '')} do |form|
+  = form.label  "Select category", class:"fs-4" 
+  = form.select :category, ["Question", "Answer", "Comment", "User"],   class: "form-control"
   p
   = form.label :query, "Search " 
-  = form.text_field :query, id: "scope_search"
+  = form.text_field :query, id: "scope_search", class: "form-control"
   p
 
-  = form.submit "Search", class: "search-btn"
+  = form.submit "Search", class: "btn btn-secondary"
