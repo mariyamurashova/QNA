@@ -42,7 +42,7 @@ gem 'whenever', require: false
 gem 'pg_search'
 gem 'mini_racer'
 gem 'base64', '~> 0.1.1'
-gem 'redis'
+gem 'redis', '~>4.7.1'
 #gem 'redis', '~> 4'
 gem 'redis-client'
 
