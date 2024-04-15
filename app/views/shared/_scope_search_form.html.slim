@@ -1,6 +1,7 @@
 = form_with url: {controller: 'search', action: 'scope_search'}, local: false, data: { type: :json }, method: :get, class: "mb-3", html: { id: "/scope_search".sub('/', '')} do |form|
   = form.label  "Select category", class:"fs-4" 
-  = form.select :category, ["Question", "Answer", "Comment", "User"],   class: "form-control"
+  div class = "input-group-text"
+    = form.select(:category, ["Question", "Answer", "Comment", "User"])
   p
   = form.label :query, "Search " 
   = form.text_field :query, id: "scope_search", class: "form-control"

@@ -1,10 +1,10 @@
-= link_to "UP", question_vote_path(resource, :vottable_id => resource.id, :value => "like"), method: :post, class: "vote-up", remote: true, data: { type: :json }
+= link_to "UP", question_vote_path(resource, :vottable_id => resource.id, :value => "like"), method: :post, class: "vote-up btn btn-secondary btn-sm border border-black rounded-circle width=20 ", remote: true, data: { type: :json }
 
 .rating
   p id="change_question#{resource.id}_rating" value="#{resource.rating}"=resource.rating
  
-= link_to "DOWN", question_vote_path(resource, :vottable_id => resource.id, :value => "dislike"), method: :post, class: "vote-down", remote: true, data: { type: :json }
+= link_to "DOWN", question_vote_path(resource, :vottable_id => resource.id, :value => "dislike"), method: :post, class: "vote-down btn btn-secondary btn-sm border border-black  rounded-circle", remote: true, data: { type: :json }
 
 br
-= link_to 're-vote', vote_path(resource, :vottable => resource.class.name, :vottable_id => resource.id ), method: :delete, data: { confirm: ('Are you sure?'), remote: true, type: :json }, class: "question_delete_vote"
-br
+= link_to 're-vote', vote_path(resource, :vottable => resource.class.name, :vottable_id => resource.id ), method: :delete, data: { confirm: ('Are you sure?'), remote: true, type: :json }, class: "question_delete_vote btn btn-outline-secondary btn-sm "
+p

@@ -1,25 +1,35 @@
-.question
-  = render @question
--if can?(:create, Subscription)
-  .question_subscribe
-    -if !@question.subscribed?(current_user)
-      =render 'subscriptions/form', resource: @question
+.container-fluid
+  div class="row justify-content"
+    div class="col-9 text-left"
+      div class="p-3"
+        .question
+          h1= "Question:"
+          = render @question
 
-  .question_unsubscribe class = "button"
-    -if @question.subscribed?(current_user) 
-      =render 'subscriptions/delete_btn', resource: @question
+      -if can?(:create, Subscription)
+        .question_subscribe
 
-  br=
-.question_votes 
-  -if can?(:create, @question)
-    =render 'votes/form_question', resource: @question
+          -if !@question.subscribed?(current_user)
+            div class = "d-flex align-items-end"
+              =render 'subscriptions/form', resource: @question
+        .question_unsubscribe class = "button"
+          -if @question.subscribed?(current_user)
+            div class = "d-flex align-items-end" 
+              =render 'subscriptions/delete_btn', resource: @question
+        
+    div class="col-3 text-right"
+      div class="p-3"     
+        = "Add Your answer:"
+        =render 'answers/form'
 
-.answers
-  = render @question.answers
+  div class="row justify-content-between"
+    div class="p-3"
+      .answers
+        = "Answers:"
+        =render @question.answers
+        p
+      
+  .errors
 
-.errors
-=render 'answers/form'
-
-
-p= link_to 'Back', questions_path
+  p= link_to 'Back', questions_path
 

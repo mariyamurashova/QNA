@@ -1,6 +1,5 @@
-
 = form_with url: '/search', local: false, data: { type: :json }, method: :get, html: { id: "multisearch"}, class: "d-flex f" do |form|
   p
   = form.text_field :query, id: "multisearch", placeholder:"Search", class: "form-control me-2 form-inline " 
   p
-  = form.submit "Search", class: "search-btn", class: "btn btn-outline-primary my-2 my-sm-0"
+  = form.submit "Search", class: "search-btn", class: "btn btn-outline-secondary my-2 my-sm-0"
