@@ -1,32 +1,28 @@
 .container-fluid
   .errors
+
   div class="row" 
-    div class="col-6"  
+    div class="col-6"
+      h3 = "Question:"
+      hr
       .question
         = render @question
+        
+      -if can?(:create, Subscription)
+        .question_subscribe
+          -if !@question.subscribed?(current_user)
+            =render 'subscriptions/form', resource: @question
+        .question_unsubscribe class = "button"
+          -if @question.subscribed?(current_user)
+            =render 'subscriptions/delete_btn', resource: @question
 
     div class="col-6"
-      div class="p-3"
-        .answers
-          h3= "Answers:"
-          hr
-          =render @question.answers
+      .answers
+        h3= "Answers:"
+        hr
+        =render @question.answers
       div class="row" 
         h5="Add Your answer:"
         =render 'answers/form'
-
-  div class="row" 
-    div class="col-1"
-      -if can?(:create, Subscription)
-        .question_subscribe
-
-          -if !@question.subscribed?(current_user)
-            div class = "d-flex align-items-end"
-              =render 'subscriptions/form', resource: @question
-        .question_unsubscribe class = "button"
-          -if @question.subscribed?(current_user)
-            div class = "d-flex align-items-end" 
-              =render 'subscriptions/delete_btn', resource: @question
       
     p= link_to 'Back', questions_path
-

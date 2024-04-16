@@ -11,7 +11,6 @@ div class="container"
           = render 'votes/form_question', resource: @question
 
     div class="col-6 question_comments" 
-      h3 = "Question:"
       h3= question.title
       h6=question.body
       = render 'shared/attached_files', resource: question
