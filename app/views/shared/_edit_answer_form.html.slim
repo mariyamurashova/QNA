@@ -2,12 +2,13 @@
   = form_with model: resource, class: 'hidden', html: { id: "edit-answer-#{resource.id}" }, turbo: false, local: false do |form|
     = form.label :body, "Your answer"
     = form.text_area :body, id: "edit_answer_#{resource.id}"
-    = form.label :files
-    = form.file_field :files, multiple: true
+    = form.label :files, class:"form-label"
+    = form.file_field :files, multiple: true, class:"form-control"
     
     = cocooned_container do
     = form.fields_for :links do |link_form|
       = render 'link_fields', f: link_form
     = cocooned_add_item_link 'Add Link', form, :links
-
+    br
+    br
     = form.submit 'Save'

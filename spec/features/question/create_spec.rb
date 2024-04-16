@@ -62,8 +62,10 @@ context "mulitple sessions", js:true do
       end
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
-      click_on 'Ask'
-     
+      
+      within '.ask_question' do
+        click_on 'Ask'
+      end
       expect(page).to have_content 'Test question'
     end
      

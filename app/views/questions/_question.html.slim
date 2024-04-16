@@ -3,46 +3,48 @@
   h5 = 'You can get an award for the best answer'
   = question.aword.title
   = image_tag question.aword.image, id: 'aword_image'
-
 div class="container"
-  div class="row align-items-start border border-black"
-    
+  div class="row row-cols p-2 ms-auto"
     div class="col-2" 
       .question_votes 
         -if can?(:create, @question)
           = render 'votes/form_question', resource: @question
 
-    div class="col-2" 
-      h4= question.title
-      p=question.body
+    div class="col-6 question_comments" 
+      h3 = "Question:"
+      h3= question.title
+      h6=question.body
       = render 'shared/attached_files', resource: question
 
-    div class="row align-items-start"
-      div class="col-2"
+      div class="row"
         .Links
+          h4 = "Links:"
           = render 'shared/links', resource: question
 
-    div class="row align-items-start"
-      div class="col-2"
-        .question_comments
-          p class='questions_#{question.id}_comments'
-            = render 'shared/comments', resource: question
+      div class="row"
+        h5="Comments:"
+      
+        p class='questions_#{question.id}_comments'
+          = render 'shared/comments', resource: question
 
-  div class="row align-items-start border"
-    div class="col-2"
+      div class="row"
+        - if can?(:create, Comment)
+          =link_to 'Add Comment', '#', class: 'comment-question-link', data: { question_id: question.id }, id: "edit_question_#{question.id}"
+        - else
+          =link_to 'Add Comment', new_user_session_path
+        = render 'comments/form', resource: question
+
+    div class="col-1"
       - if can?(:update, question) 
-        =link_to 'EditQuestion', '#', class: "edit-question-link btn btn-outline-secondary btn-sm", data: { question_id: question.id } 
-
-    div class="col-2"
+        =link_to 'EditQuestion', '#', class: "edit-question-link", data: { question_id: question.id } 
+      = render 'shared/edit_question_form', resource: question
+      br
       - if can?(:destroy, question) 
-        =link_to 'Delete Question', question, method: :delete, data: { confirm: ('Are you sure?') }, class: "btn btn-outline-secondary btn-sm"
+        =link_to 'Delete Question', question, method: :delete, data: { confirm: ('Are you sure?') }
 
-        = render 'shared/edit_question_form', resource: question
 
-    div class="col-2"
-      - if can?(:create, Comment)
-        =link_to 'Add Comment', '#', class: 'comment-question-link btn btn-outline-secondary btn-sm', data: { question_id: question.id }, id: "edit_question_#{question.id}"
-      - else
-        =link_to 'Add Comment', new_user_session_path
-      = render 'comments/form', resource: question
+
+   
+
+
     

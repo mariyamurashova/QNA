@@ -90,11 +90,8 @@ Rails.application.configure do
   address:              'smtp.yandex.ru',
   port:                  465,
   domain:               'yandex.ru',
-  user_name:             ENV['SMTP_EMAIL'],
-  password:              ENV['SMTP_PASSWORD'],
-
-  #user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
-  #password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
+  user_name:             Rails.application.credentials[Rails.env.to_sym][:yandex][:email],
+  password:              Rails.application.credentials[Rails.env.to_sym][:yandex][:password],
   authentication:       'plain',
   enable_starttls_auto: true  }
 

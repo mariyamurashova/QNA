@@ -5,6 +5,6 @@
  
 = link_to "DOWN", question_vote_path(resource, :vottable_id => resource.id, :value => "dislike"), method: :post, class: "vote-down btn btn-secondary btn-sm border border-black", remote: true, data: { type: :json }
 
-br
+p
 = link_to 're-vote', vote_path(resource, :vottable => resource.class.name, :vottable_id => resource.id ), method: :delete, data: { confirm: ('Are you sure?'), remote: true, type: :json }, class: "question_delete_vote btn btn-outline-secondary btn-sm "
 p

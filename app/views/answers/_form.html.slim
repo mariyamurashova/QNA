@@ -1,16 +1,15 @@
-= form_with model: [@question, @answer], multipart: true, local: false do |form|
-  = form.label :body, 'Your answer'
-  = form.text_area :body
-  br =
+div class="mb-3"
+  = form_with model: [@question, @answer], multipart: true, local: false do |form|
+    = form.label :body, 'Your answer', class: "form-label"
+    = form.text_area :body,  class:"form-control"
+    p
+    div class="mb-3"
+      = form.file_field :files, multiple: true, direct_upload: true,  class:"form-control"
 
-  = form.label :files
-  
-  = form.file_field :files, multiple: true, direct_upload: true
-
-  h3 Links:
-  = cocooned_container do
-    = form.fields_for :links do |link_form|
-      = render 'link_fields', f: link_form
-    = cocooned_add_item_link 'Add Link', form, :links
-    
-  = form.submit 'Add Answer'
+    = cocooned_container do
+      = form.fields_for :links do |link_form|
+        = render 'link_fields', f: link_form
+      = cocooned_add_item_link 'Add Link', form, :links
+      p
+    div class= "row"
+      = form.submit 'Add Answer', class: "btn btn-secondary"

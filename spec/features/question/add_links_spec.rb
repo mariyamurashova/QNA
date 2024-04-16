@@ -43,7 +43,9 @@ feature 'User can add links to question', %q{
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: '://bar.com/baz'
     
-    click_on 'Ask'
+    within '.ask_question' do
+      click_on 'Ask'
+    end
 
     within '.error' do
       expect(page).to have_content 'Links url is invalid'

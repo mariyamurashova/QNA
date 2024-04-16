@@ -1,11 +1,22 @@
 .container-fluid
-  div class="row justify-content"
-    div class="col-9 text-left"
-      div class="p-3"
-        .question
-          h1= "Question:"
-          = render @question
+  .errors
+  div class="row" 
+    div class="col-6"  
+      .question
+        = render @question
 
+    div class="col-6"
+      div class="p-3"
+        .answers
+          h3= "Answers:"
+          hr
+          =render @question.answers
+      div class="row" 
+        h5="Add Your answer:"
+        =render 'answers/form'
+
+  div class="row" 
+    div class="col-1"
       -if can?(:create, Subscription)
         .question_subscribe
 
@@ -16,20 +27,6 @@
           -if @question.subscribed?(current_user)
             div class = "d-flex align-items-end" 
               =render 'subscriptions/delete_btn', resource: @question
-        
-    div class="col-3 text-right"
-      div class="p-3"     
-        = "Add Your answer:"
-        =render 'answers/form'
-
-  div class="row justify-content-between"
-    div class="p-3"
-      .answers
-        = "Answers:"
-        =render @question.answers
-        p
       
-  .errors
-
-  p= link_to 'Back', questions_path
+    p= link_to 'Back', questions_path
 
