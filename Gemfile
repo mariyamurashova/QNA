@@ -45,6 +45,7 @@ gem 'base64', '~> 0.1.1'
 gem 'redis', '~>4.7.1'
 #gem 'redis', '~> 4'
 gem 'redis-client'
+gem 'unicorn'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -60,6 +61,7 @@ group :development, :test do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development do
