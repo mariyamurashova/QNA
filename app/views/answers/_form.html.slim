@@ -3,8 +3,8 @@ div class="mb-3"
     = form.label :body, 'Your answer', class: "form-label"
     = form.text_area :body,  class:"form-control"
     p
-    div class="mb-3"
-      = form.file_field :files, multiple: true, direct_upload: true,  class:"form-control"
+   
+    = form.file_field :files, multiple: true, direct_upload: true,  class:"form-control"
 
     = cocooned_container do
       = form.fields_for :links do |link_form|

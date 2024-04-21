@@ -1,0 +1,4 @@
+-resource.each do |question|
+              
+  ol class = "list-group list-group-numbered"
+    li= link_to question.title, question_path(question), class: "questions_list list-group-item list-group-item-action" 

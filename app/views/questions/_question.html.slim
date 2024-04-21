@@ -9,22 +9,22 @@ div class="container"
       .question_votes 
         -if can?(:create, @question)
           = render 'votes/form_question', resource: @question
-
     div class="col-6 question_comments" 
-      h3= question.title
-      h6=question.body
-      = render 'shared/attached_files', resource: question
+      - cache question do
+        h3= question.title
+        h6=question.body
+        = render 'shared/attached_files', resource: question, cached: true
 
       div class="row"
         .Links
           h4 = "Links:"
-          = render 'shared/links', resource: question
+          = render 'shared/links', resource: question, cached: true
 
       div class="row"
         h5="Comments:"
       
         p class='questions_#{question.id}_comments'
-          = render 'shared/comments', resource: question
+          = render 'shared/comments', resource: question, cached:true
 
       div class="row"
         - if can?(:create, Comment)
