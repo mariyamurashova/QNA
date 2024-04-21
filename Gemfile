@@ -46,6 +46,7 @@ gem 'redis', '~>4.7.1'
 #gem 'redis', '~> 4'
 gem 'redis-client'
 gem 'unicorn'
+gem 'redis-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
