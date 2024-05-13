@@ -1,24 +1,12 @@
 # README
+ Q&A  - приложение для вопросов и ответов. 
+ В проекте реализованы следующие возможности:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ - авторизация пользователя (gem "cancancan")
+ - аутентификация пользователя через соц. сети: github, vkontakte
+ - зарегестрированные пользователи могут задавать вопросы/давать ответы оставлять комментарии, голосовать за понравившийся ответ.вопрос. Эти возможности реализованы различными формами Ajax.
+ -  повления новых комментариев, ответов у пользователей, которые находятся на странице осуществляется через вебсокет. Для этого был использован ActionCable
+ - при появлении новых ответов на вопрос автор и все пользователь, подписанные на вопрос, получают уведомление на e-mail. Рассылка уведомлений осуществляется в фоне при помощи выполнения задач по расписанию. (ActiveJob, gem 'whenever')
+ - реализовано API с использованием ActiveModelSerializer
+ - реализована функцию поиска по вопросам, ответам, комментариям и пользователям.(pg full text search)
+ 
